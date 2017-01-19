@@ -5,26 +5,24 @@ include_once (dirname(__FILE__) . "/MasterController.php");
 class UserController extends  MasterController{
 
 /****************************************************************************************************/
-	// public function sales_view()
-	// {
-	// 	switch ($this->session->userdata('login')) 
-	// 	{
-	// 		case FALSE:
-	// 			redirect(base_url());
-	// 			break;
+	public function user_view()
+	{
+		switch ($this->session->userdata('login')) 
+		{
+			case FALSE:
+				redirect(base_url());
+				break;
 
-	// 		case TRUE:			
-	// 			$data= array(
-	// 			'get_header'=> $this->get_header(),
-	// 			'get_menu'=> $this->get_menu(8),					
-	// 			'get_footer'=> $this->get_footer(),
-	// 			'get_information_user'=> $this->get_information_user());
+			case TRUE:			
+				$data= array(
+				'get_view'=> 'UserView/Index',				
+				'get_menu'=> $this->get_menu(8),
+				'get_information_user'=> $this->get_information_user());
 
-	// 			$this->load->view('SaleView/Index',$data);
-	// 			break;			
-	// 	}
-		
-	// }
+				$this->load->view('MasterView/Index',$data);
+				break;	;			
+		}		
+	}
 /****************************************************************************************************/
 	public function login_user()
 	{
@@ -65,4 +63,40 @@ class UserController extends  MasterController{
 		}
 	}
 /****************************************************************************************************/
+	// public function get_all_users()
+	// {                   
+	// 	$get_all_users=$this->UserModel->get_all_users();
+	// 	echo json_encode($get_all_users);
+	// }
+
+	public function get_all_users()
+	{
+		$list = $this->UserModel->get_datatables();
+		$data = array();
+		$no = $_POST['start'];
+		foreach ($list as $user) {
+			$no++;
+			$row = array();
+			$row[] = $no;			
+			$row[] = $user->UserImage;
+			$row[] = $user->UserLoginName;
+			$row[] = $user->UserName;
+			$row[] = $user->UserLastName;
+			$row[] = $user->UserBirthdate;
+			$row[] = $user->UserTelephone;
+			$row[] = $user->UserEmail;
+			$row[] = $user->UserStatus;
+
+			$data[] = $row;
+		}
+
+		$output = array(
+						"draw" => $_POST['draw'],
+						"recordsTotal" => $this->UserModel->count_all(),
+						"recordsFiltered" => $this->UserModel->count_filtered(),
+						"data" => $data,
+				);
+		//output to json format
+		echo json_encode($output);
+	}
 }

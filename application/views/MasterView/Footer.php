@@ -30,7 +30,7 @@
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 <script type="text/javascript" src="assets/global/plugins/select2/select2.min.js"></script>
 <script type="text/javascript" src="assets/global/plugins/datatables/media/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="assets/global/plugins/datatables/extensions/TableTools/js/dataTables.tableTools.min.js"></script>
+<!--<script type="text/javascript" src="assets/global/plugins/datatables/extensions/TableTools/js/dataTables.tableTools.min.js"></script>-->
 <script type="text/javascript" src="assets/global/plugins/datatables/extensions/ColReorder/js/dataTables.colReorder.min.js"></script>
 <script type="text/javascript" src="assets/global/plugins/datatables/extensions/Scroller/js/dataTables.scroller.min.js"></script>
 <script type="text/javascript" src="assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js"></script>
@@ -39,13 +39,19 @@
 <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
 <script src="assets/admin/layout2/scripts/layout.js" type="text/javascript"></script>
 <script src="assets/admin/layout2/scripts/demo.js" type="text/javascript"></script>
-<script src="assets/admin/pages/scripts/table-advanced.js"></script>
+<!--<script src="assets/admin/pages/scripts/table-advanced.js"></script>-->
+
+<!-- END MY SCRIPTS -->
+<script src="application/helpers/FunctionsHelper.js" type="text/javascript"></script>
+<script src="application/helpers/UserHelper.js" type="text/javascript"></script>
+<!-- END MY SCRIPTS -->
+
 <script>
 jQuery(document).ready(function() {       
-   Metronic.init(); // init metronic core components
-Layout.init(); // init current layout
-Demo.init(); // init demo features
-   TableAdvanced.init();
+	Metronic.init(); // init metronic core components
+	Layout.init(); // init current layout
+	Demo.init(); // init demo features
+	//TableAdvanced.init();
 });
 </script>
 <!-- END JAVASCRIPTS -->

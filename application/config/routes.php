@@ -6,7 +6,10 @@ $route['404_override'] 			= '';
 $route['translate_uri_dashes']	= FALSE;
 
 /*********************************************************************/
-$route['login_user'] 		= 'UserController/login_user';
+$route['login-user'] 		= 'UserController/login_user';
 /*********************************************************************/
-$route['registro-ventas'] 	= 'SaleController/sale_view';
+$route['register-sale'] 	= 'SaleController/sale_view';
+/*********************************************************************/
+$route['register-user'] 	= 'UserController/user_view';
+$route['get-all-users'] 	= 'UserController/get_all_users';
 /*********************************************************************/

@@ -21,7 +21,7 @@ function Fnc_Login ()
 
     $.ajax({
         type: "POST",
-        url: "login_user",
+        url: "login-user",
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
