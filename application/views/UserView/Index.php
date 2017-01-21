@@ -12,12 +12,6 @@
 			<a href="javascritp:void(0);">Registro de ventas</a>
 		</li> -->
 	</ul>
-	<div class="page-toolbar">
-		<div id="dashboard-report-range" class="tooltips btn btn-fit-height btn-sm green-haze btn-dashboard-daterange" data-container="body" data-placement="left" data-original-title="Change dashboard date range">
-			<i class="icon-calendar"></i>&nbsp;&nbsp; 
-			<i class="fa fa-angle-down"></i>
-		</div>
-	</div>
 </div>
 
 <!-- END PAGE HEADER-->
@@ -37,7 +31,10 @@
 			<div class="portlet-body">
 				<button type="button" class="btn btn-circle btn-primary" id="btn-callmodal-user">
 					<i class="fa fa-plus"></i>&nbsp;&nbsp;Agregar
-				</button>			
+				</button>	
+
+				<!-- <i class="fa fa-spinner fa-spin fa-3x color-spinner"></i> -->
+
 				<table class="table table-striped table-bordered table-hover" id="datatable-user">					
 				</table>
 			</div>

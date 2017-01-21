@@ -59,7 +59,7 @@ function Fnc_GetSubMenu ()
         },
         success: function (resp) 
         {  
-           alert('Exito!');
+           //alert('Exito!');
         },
         complete: function () 
         {           

@@ -68,8 +68,8 @@ class UserModel extends CI_Model {
 		if ($query->num_rows()>0)
 		{
 			$resp= $query->result();
-			$query->next_result();
-			$query->free_result();
+			// $query->next_result();
+			// $query->free_result();
 			return $resp;
 		}
 		else

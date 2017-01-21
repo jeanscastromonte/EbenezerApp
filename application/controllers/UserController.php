@@ -16,7 +16,7 @@ class UserController extends  MasterController{
 			case TRUE:			
 				$data= array(
 				'get_view'=> 'UserView/Index',				
-				'get_menu'=> $this->get_menu(8),
+				'get_menu'=> $this->get_menu(3),
 				'get_information_user'=> $this->get_information_user());
 
 				$this->load->view('MasterView/Index',$data);
@@ -63,38 +63,42 @@ class UserController extends  MasterController{
 		}
 	}
 /****************************************************************************************************/
-	// public function get_all_users()
-	// {                   
-	// 	$get_all_users=$this->UserModel->get_all_users();
-	// 	echo json_encode($get_all_users);
-	// }
+	public function get_all_users1()
+	{                   
+		$get_all_users=$this->UserModel->get_all_users();
+		
+		 $output = array("Data" => $get_all_users);
+		//$output['Data']   =  $get_all_users[0];
+		echo json_encode($output);
+	}
 
 	public function get_all_users()
 	{
-		$list = $this->UserModel->get_datatables();
+		$list = $this->UserModel->get_all_users();
 		$data = array();
-		$no = $_POST['start'];
+		$no = 0;
 		foreach ($list as $user) {
 			$no++;
 			$row = array();
 			$row[] = $no;			
 			$row[] = $user->UserImage;
 			$row[] = $user->UserLoginName;
+			$row[] = $user->RoleName;
 			$row[] = $user->UserName;
 			$row[] = $user->UserLastName;
 			$row[] = $user->UserBirthdate;
 			$row[] = $user->UserTelephone;
 			$row[] = $user->UserEmail;
-			$row[] = $user->UserStatus;
+			$row[] = $user->UserStatus;			
 
 			$data[] = $row;
 		}
 
 		$output = array(
-						"draw" => $_POST['draw'],
-						"recordsTotal" => $this->UserModel->count_all(),
-						"recordsFiltered" => $this->UserModel->count_filtered(),
-						"data" => $data,
+						// "draw" => $_POST['draw'],
+						// "recordsTotal" => $this->UserModel->count_all(),
+						// "recordsFiltered" => $this->UserModel->count_filtered(),
+						"Data" => $data,
 				);
 		//output to json format
 		echo json_encode($output);

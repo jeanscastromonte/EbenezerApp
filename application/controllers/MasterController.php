@@ -37,6 +37,7 @@ class MasterController extends CI_Controller {
 			$MenuId=$row->MenuId;			
 			$ModuleMenuName=$row->ModuleMenuName;
 			$ModuleMenuLink=$row->ModuleMenuLink;
+			$ModuleMenuIcon=$row->ModuleMenuIcon;
 
 			switch($ModuleMenuLink)
 			{
@@ -73,7 +74,7 @@ class MasterController extends CI_Controller {
 			
 			$menu.='<li class="'.$active_menu.'">
 			<a class="module-menu" href="'.$ModuleMenuLink.'">
-			<i class="icon-basket"></i>
+			<i class="'.$ModuleMenuIcon.'"></i>
 			<span class="title"> '.$ModuleMenuName.'</span>
 			<span class="arrow "></span></a><ul class="sub-menu">'.$sub_menu.'</ul></li>';
 

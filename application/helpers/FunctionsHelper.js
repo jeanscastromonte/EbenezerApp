@@ -115,9 +115,10 @@ function fnc_modal_init(event)
     fnc_modal_events();
 
     var _modal=event.data.param;   
-   _modal.modal({"backdrop": "static","keyboard": false, "show": true});
-
+   _modal.modal({"backdrop": "static","keyboard": false, "show": true});  
+    
 }
+
 function fnc_modal_events()
 {
     fnc_modal_mouseup();
@@ -125,7 +126,8 @@ function fnc_modal_events()
 
      $('.modal').on('show.bs.modal', fnc_modal_show)
     .on('mousedown','.modal-header',fnc_modal_mousedown)
-    .on('mouseup','.modal-header',fnc_modal_mouseup);
+    .on('mouseup','.modal-header',fnc_modal_mouseup)
+    .on('mouseover','.modal-header',fnc_modal_mouseup);
 
     $('.modal-dialog').draggable({handle: ".modal-header",containment: 'body',});
     $('.modal-header').css('cursor','move');
@@ -143,7 +145,9 @@ function fnc_modal_mouseup()
 
 function fnc_modal_show()
 {
+
     $(this).data({'originalLeft': $('.modal-dialog').css('left'), 'origionalTop': $('.modal-dialog').css('top')});
+     
 }
 
 function fnc_modal_initposition()
