@@ -1,0 +1,14 @@
+
+/************************************************************************************************************************************/
+.opacity
+{
+  opacity: 0.5;
+}
+
+.modal2 {
+top:5%;
+right:50%;
+outline: none;
+overflow:hidden;
+}
+/*$btn_callmodal_user.on('click',{ param: $responsive }, fnc_modal_init);*/

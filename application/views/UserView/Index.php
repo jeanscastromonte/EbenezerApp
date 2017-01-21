@@ -35,11 +35,83 @@
 				</div>
 			</div>
 			<div class="portlet-body">
-				<table class="table table-striped table-bordered table-hover" id="datatable_1">					
+				<button type="button" class="btn btn-circle btn-primary" id="btn-callmodal-user">
+					<i class="fa fa-plus"></i>&nbsp;&nbsp;Agregar
+				</button>			
+				<table class="table table-striped table-bordered table-hover" id="datatable-user">					
 				</table>
 			</div>
 		</div>
 		<!-- END EXAMPLE TABLE PORTLET-->
 	</div>
 </div>
-<!-- END PAGE CONTENT
+<!-- END PAGE CONTENT-->
+
+<div id="responsive" class="modal fade" tabindex="-1" aria-hidden="true">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+												<h4 class="modal-title">Responsive & Scrollable</h4>
+											</div>
+											<div class="modal-body">
+												<div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible1="1">
+													<div class="row">
+														<div class="col-md-6">
+															<h4>Some Input</h4>
+															<p>
+																<input type="text" class="col-md-12 form-control">
+															</p>
+															<p>
+																<input type="text" class="col-md-12 form-control">
+															</p>
+															<p>
+																<input type="text" class="col-md-12 form-control">
+															</p>
+															<p>
+																<input type="text" class="col-md-12 form-control">
+															</p>
+															<p>
+																<input type="text" class="col-md-12 form-control">
+															</p>
+															<p>
+																<input type="text" class="col-md-12 form-control">
+															</p>
+															<p>
+																<input type="text" class="col-md-12 form-control">
+															</p>
+														</div>
+														<div class="col-md-6">
+															<h4>Some More Input</h4>
+															<p>
+																<input type="text" class="col-md-12 form-control">
+															</p>
+															<p>
+																<input type="text" class="col-md-12 form-control">
+															</p>
+															<p>
+																<input type="text" class="col-md-12 form-control">
+															</p>
+															<p>
+																<input type="text" class="col-md-12 form-control">
+															</p>
+															<p>
+																<input type="text" class="col-md-12 form-control">
+															</p>
+															<p>
+																<input type="text" class="col-md-12 form-control">
+															</p>
+															<p>
+																<input type="text" class="col-md-12 form-control">
+															</p>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button type="button" data-dismiss="modal" class="btn default">Close</button>
+												<button type="button" class="btn green">Save changes</button>
+											</div>
+										</div>
+									</div>
+								</div>

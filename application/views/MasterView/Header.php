@@ -27,6 +27,7 @@
 <link href="assets/admin/layout2/css/layout.css" rel="stylesheet" type="text/css"/>
 <link id="style_color" href="assets/admin/layout2/css/themes/grey.css" rel="stylesheet" type="text/css"/>
 <link href="assets/admin/layout2/css/custom.css" rel="stylesheet" type="text/css"/>
+<link href="assets/mycss/mycss.css" rel="stylesheet" type="text/css"/>
 <!-- END THEME STYLES -->
 <link rel="shortcut icon" href="favicon.ico"/>
 </head>
