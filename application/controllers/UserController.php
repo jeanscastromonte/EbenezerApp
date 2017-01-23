@@ -3,7 +3,7 @@
 include_once (dirname(__FILE__) . "/MasterController.php");
 
 class UserController extends  MasterController{
-
+ 
 /****************************************************************************************************/
 	public function user_view()
 	{
