@@ -1,48 +1,54 @@
 /*****************************************************************************************************************************************************************************/
 $(document).ready(InitUser);
 /******************************************************************************************************************************************************************************/
-var $datatable_user      =   $('#datatable-user');
-var $responsive      =   $('#responsive');
-var $btn_callmodal_user      =   $('#btn-callmodal-user');
-
-/******************************************************************************************************************************************************************************/
 function InitUser()
-{     
-    var columns=[
-    { "title": "Nro" },
-    { "title": "Foto" },
-    { "title": "Usuario" },
-    { "title": "Nombre(s)" },
-    { "title": "Apellido(s)" },
-    { "title": "Fecha de Nacimiento"},
-    { "title": "Teléfono"},
-    { "title": "E-mail"},
-    { "title": "Estado"}];
+{
+    //Private variable
+    var $datatable_user       =   $('#datatable-user');
+    var $responsive           =   $('#responsive');
+    var $btn_callmodal_user   =   $('#btn-callmodal-user');
+    var $form_user            =   $('#form-user');
+    var $cbo_role             =   $('#cbo-role');
 
+    //Call Modal User 
     $btn_callmodal_user.on('click',{ param: $responsive }, fnc_modal_init);
 
-    //fnc_datatable($datatable_user,columns,"get-all-users");
+    //Init Datatable users
+    fnc_datatable_user($datatable_user);
 
-    $datatable_user.DataTable({
+    //Validation form user
+    fnc_form_validation($form_user);
+
+    //Select2 roles
+    fnc_select2_roles($cbo_role)
+    
+$('#chck-status').bootstrapSwitch({onText:'&nbsp;&nbsp;Activo&nbsp;&nbsp;',offText:'&nbsp;&nbsp;Inactivo&nbsp;&nbsp;',onColor: 'success',offColor:'danger'});
+$('.select2').on('change', function() {
+    $(this).valid();
+});
+}
+/*****************************************************************************************************************************************************************************/
+function fnc_datatable_user(_datatable)
+{
+    $('#spinner-loading').show();  
+   _datatable.DataTable({
             'ajax':
              {
                 "dataSrc": "Data",
                 "type"   : "POST",
                 "url"    : "get-all-users",
                 "data": {
-                "cmd" : "refresh",
-                // "from": $("#from-date")+" "+$("#from-time").val(),
-                // "to"  : $("#to-date").val()+" "+$("#to-time").val()
-                }
+                    "cmd" : "refresh"
+                },
+                complete: function () 
+                {
+                    $('#spinner-loading').hide();           
+                },
               },
               "bLengthChange" : false,
-              "processing": true,
               "language": {
                 "url": "http://cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
               },
-            // sDom:'rtp',
-            // sort:false,
-            // paginate:false,
             "columns": [
                     { "title": "Nro" ,sClass: "text-center"},    
                     { "title": "Foto" ,sClass: "text-center"},
@@ -54,17 +60,15 @@ function InitUser()
                     { "title": "Teléfono",sClass: "text-center"},
                     { "title": "E-mail",sClass: "text-center"},
                     { "title": "Estado",sClass: "text-center"},
-                    {//Column de botones
-                      title: "Opciones",sClass: "text-center",
+                    { "title": "Opciones",sClass: "text-center",
                         "mRender": function(data, type, full) {
-
                             return '<div class="btn-group btn-group-circle btn-group-solid">'
                                     +'<button type="button" class="btn default grey-cascade-stripe"><i class="fa fa-edit"></i> Editar</button>'
                                     +' <button type="button" class="btn default grey-cascade-stripe"><i class="fa fa-trash"></i> Eliminar</button>'
                                     +'</div>';
                         }
                     }
-                ],// definen reglas por cada columna[8]
+                ],
             "columnDefs" : [
                         { targets : [9],
                           render : function (data, type, row) {
@@ -77,5 +81,21 @@ function InitUser()
                   $('td:eq(2),td:eq(4),td:eq(5)', nRow).removeClass( "text-center" );
                 }
         });
+}
+/*****************************************************************************************************************************************************************************/
+function fnc_select2_roles(_cbo)
+{
+    $.getJSON("get-all-roles", function (data){ 
+        _cbo.html('<option></option>');
+        for (var i = 0; i<data.length;i++) 
+        {
+            _cbo.append('<option value="'+data[i].RoleId+'">'+data[i].RoleName+'</option>');                   
+        }
+    });
+     _cbo.select2({
+        placeholder: "Seleccione...",
+        allowClear: true,
+        formatNoMatches: function () { return "No se encontraron resultados"; },        
+    });
 }
 /*****************************************************************************************************************************************************************************/
