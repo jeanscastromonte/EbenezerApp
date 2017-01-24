@@ -66,25 +66,26 @@ class UserController extends  MasterController{
 	public function get_all_users()
 	{
 		$list = $this->UserModel->get_all_users();
-		$data = array();
-		$no = 0;
-		foreach ($list as $user) {
-			$no++;
-			$row = array();
-			$row[] = $no;			
-			$row[] = $user->UserImage;
-			$row[] = $user->UserLoginName;
-			$row[] = $user->RoleName;
-			$row[] = $user->UserName;
-			$row[] = $user->UserLastName;
-			$row[] = $user->UserBirthdate;
-			$row[] = $user->UserTelephone;
-			$row[] = $user->UserEmail;
-			$row[] = $user->UserStatus;			
+		// $data = array();
+		// $no = 0;
+		// foreach ($list as $user) {
+		// 	$no++;
+		// 	$row = array();
+		// 	$row[] = $no;			
+		// 	$row[] = $user->UserImage;
+		// 	$row[] = $user->UserLoginName;
+		// 	$row[] = $user->RoleName;
+		// 	$row[] = $user->UserName;
+		// 	$row[] = $user->UserLastName;
+		// 	$row[] = $user->UserBirthdate;
+		// 	$row[] = $user->UserTelephone;
+		// 	$row[] = $user->UserEmail;
+		// 	$row[] = $user->UserStatus;			
 
-			$data[] = $row;
-		}
-		$output = array("Data" => $data);
+		// 	$data[] = $row;
+		// }
+		//$output = array("Data" => $data);
+		$output = array("Data" => $list);
 		echo json_encode($output);
 	}
 

@@ -12,6 +12,8 @@ File Encoding         : 65001
 
 Date: 2017-01-23 23:24:56
 */
+CREATE DATABASE IF NOT EXISTS `db_ebenezer` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `db_ebenezer`;
 
 SET FOREIGN_KEY_CHECKS=0;
 

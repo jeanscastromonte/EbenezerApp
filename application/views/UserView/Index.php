@@ -30,9 +30,10 @@
 			</div>
 			<div class="portlet-body">
 				<div>
-					<button type="button" class="btn btn-circle btn-primary" id="btn-callmodal-user">
+					<button type="button" class="btn btn-circle btn-primary tooltips" id="btn-callmodal-user" data-container="body" data-placement="top" data-original-title="Agregar usuario">
 						<i class="fa fa-plus"></i>&nbsp;&nbsp;Agregar
 					</button>
+
 				</div>
 				<div class="text-center" id="spinner-loading" hidden="hidden">
 					<i class="fa fa-spinner fa-spin fa-3x color-spinner"></i>&nbsp;Cargando...
@@ -46,6 +47,7 @@
 </div>
 <!-- END PAGE CONTENT-->
 
+<!-- BEGIN MODAL USER-->
 <div id="responsive" class="modal fade bs-modal-lg" tabindex="-1" aria-hidden="true">
 	<div class="modal-dialog modal-lg">		
 		<div class="modal-content">
@@ -172,3 +174,4 @@
 		</div>
 	</div>
 </div>
+<!-- END MODAL USER-->
