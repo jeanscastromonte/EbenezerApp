@@ -88,7 +88,7 @@ var FormValidation = function () {
 
     }
 
-    // validation using icons
+  
     var handleValidation2 = function() {
         // for more info visit the official plugin documentation: 
             // http://docs.jquery.com/Plugins/Validation
@@ -98,6 +98,7 @@ var FormValidation = function () {
             var success2 = $('.alert-success', form2);
 
             form2.validate({
+                lang: 'fi',
                 errorElement: 'span', //default input error message container
                 errorClass: 'help-block help-block-error', // default input error message class
                 focusInvalid: false, // do not focus the last invalid input

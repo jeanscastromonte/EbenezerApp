@@ -63,15 +63,6 @@ class UserController extends  MasterController{
 		}
 	}
 /****************************************************************************************************/
-	public function get_all_users1()
-	{                   
-		$get_all_users=$this->UserModel->get_all_users();
-		
-		 $output = array("Data" => $get_all_users);
-		//$output['Data']   =  $get_all_users[0];
-		echo json_encode($output);
-	}
-
 	public function get_all_users()
 	{
 		$list = $this->UserModel->get_all_users();
@@ -93,14 +84,23 @@ class UserController extends  MasterController{
 
 			$data[] = $row;
 		}
-
-		$output = array(
-						// "draw" => $_POST['draw'],
-						// "recordsTotal" => $this->UserModel->count_all(),
-						// "recordsFiltered" => $this->UserModel->count_filtered(),
-						"Data" => $data,
-				);
-		//output to json format
+		$output = array("Data" => $data);
 		echo json_encode($output);
 	}
+
+	// public function get_all_users1()
+	// {                   
+	// 	$get_all_users=$this->UserModel->get_all_users();
+		
+	// 	 $output = array("Data" => $get_all_users);
+	// 	//$output['Data']   =  $get_all_users[0];
+	// 	echo json_encode($output);
+	// }
+/****************************************************************************************************/
+	public function get_all_roles()
+	{                   
+		$get_all_roles=$this->UserModel->get_all_roles();
+		echo json_encode($get_all_roles);
+	}
+/****************************************************************************************************/
 }

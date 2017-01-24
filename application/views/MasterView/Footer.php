@@ -26,9 +26,16 @@
 <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
 <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
 <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+<script src="assets/global/plugins/jquery-validation/js/jquery.validate.js" type="text/javascript"></script>
 <!-- END CORE PLUGINS -->
+
 <!-- BEGIN PAGE LEVEL PLUGINS -->
+<script type="text/javascript" src="assets/global/plugins/bootstrap-select/bootstrap-select.min.js"></script>
 <script type="text/javascript" src="assets/global/plugins/select2/select2.min.js"></script>
+<script type="text/javascript" src="assets/global/plugins/jquery-multi-select/js/jquery.multi-select.js"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+
+<!-- BEGIN PAGE LEVEL PLUGINS -->
 <script type="text/javascript" src="assets/global/plugins/datatables/media/js/jquery.dataTables.min.js"></script>
 <!--<script type="text/javascript" src="assets/global/plugins/datatables/extensions/TableTools/js/dataTables.tableTools.min.js"></script>-->
 <script type="text/javascript" src="assets/global/plugins/datatables/extensions/ColReorder/js/dataTables.colReorder.min.js"></script>
@@ -39,19 +46,20 @@
 <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
 <script src="assets/admin/layout2/scripts/layout.js" type="text/javascript"></script>
 <script src="assets/admin/layout2/scripts/demo.js" type="text/javascript"></script>
+<script src="assets/admin/pages/scripts/form-validation.js"></script>
+<script src="assets/admin/pages/scripts/components-dropdowns.js"></script>
 <!--<script src="assets/admin/pages/scripts/table-advanced.js"></script>-->
-
 <!-- END MY SCRIPTS -->
 <script src="application/helpers/FunctionsHelper.js" type="text/javascript"></script>
 <script src="application/helpers/UserHelper.js" type="text/javascript"></script>
 <!-- END MY SCRIPTS -->
-
 <script>
 jQuery(document).ready(function() {       
 	Metronic.init(); // init metronic core components
 	Layout.init(); // init current layout
 	Demo.init(); // init demo features
-	//TableAdvanced.init();
+	FormValidation.init();
+	//ComponentsDropdowns.init();
 });
 </script>
 <!-- END JAVASCRIPTS -->
