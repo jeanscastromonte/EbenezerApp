@@ -53,7 +53,7 @@ class UserController extends  MasterController{
 				break;
 			
 			case FALSE:
-				$result = array('result' => '<div class="alert alert-danger display-hide">
+				$result = array('result' => '<div class="alert alert-danger">
 				<button class="close" data-close="alert"></button>
 				<span>
 				Usuario y/o contraseña incorrecto, Vuelva intentalo. </span>
