@@ -11,6 +11,9 @@ $route['login-user'] 		= 'UserController/login_user';
 $route['register-sale'] 	= 'SaleController/sale_view';
 /*********************************************************************/
 $route['register-user'] 	= 'UserController/user_view';
+
 $route['get-all-users'] 	= 'UserController/get_all_users';
 $route['get-all-roles'] 	= 'UserController/get_all_roles';
+/*********************************************************************/
+$route['sunat-schedule'] 	= 'CalendarController/schedule_view';
 /*********************************************************************/

@@ -39,6 +39,10 @@
 	<?php $this->load->view('MasterView/Footer');?>
 	<!-- END FOOTER -->
 
+	<!-- BEGIN Js PAGE -->				
+	<?=isset($get_script_page)?$get_script_page:'';?>
+	<!-- END JS PAGE -->
+
 	</body>
 	<!-- END BODY -->
 	

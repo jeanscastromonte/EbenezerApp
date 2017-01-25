@@ -1,4 +1,4 @@
-<!-- BEGIN HEADER -->
+BEGIN HEADER -->
 <div class="page-header navbar navbar-fixed-top">
 	<!-- BEGIN HEADER INNER -->
 	<div class="page-header-inner">
@@ -88,14 +88,14 @@
 		<div class="page-top">
 			<!-- BEGIN HEADER SEARCH BOX -->
 			<!-- DOC: Apply "search-form-expanded" right after the "search-form" class to have half expanded search box -->
-			<form class="search-form search-form-expanded" action="extra_search.html" method="GET">
+			<!-- <form class="search-form search-form-expanded" action="extra_search.html" method="GET">
 				<div class="input-group">
 					<input type="text" class="form-control" placeholder="Search..." name="query">
 					<span class="input-group-btn">
 					<a href="javascript:;" class="btn submit"><i class="icon-magnifier"></i></a>
 					</span>
 				</div>
-			</form>
+			</form> -->
 			<!-- END HEADER SEARCH BOX -->
 			<!-- BEGIN TOP NAVIGATION MENU -->
 			<div class="top-menu">
@@ -105,7 +105,7 @@
 					<li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 						<i class="icon-bell"></i>
-						<span class="badge badge-default">
+						<span class="badge badge-danger">
 						7 </span>
 						</a>
 						<ul class="dropdown-menu">
@@ -212,7 +212,7 @@
 					<!-- END NOTIFICATION DROPDOWN -->
 					<!-- BEGIN INBOX DROPDOWN -->
 					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
-					<li class="dropdown dropdown-extended dropdown-inbox" id="header_inbox_bar">
+					<!-- <li class="dropdown dropdown-extended dropdown-inbox" id="header_inbox_bar">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 						<i class="icon-envelope-open"></i>
 						<span class="badge badge-default">
@@ -298,14 +298,14 @@
 								</ul>
 							</li>
 						</ul>
-					</li>
+					</li> -->
 					<!-- END INBOX DROPDOWN -->
 					<!-- BEGIN TODO DROPDOWN -->
 					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
 					<li class="dropdown dropdown-extended dropdown-tasks" id="header_task_bar">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 						<i class="icon-calendar"></i>
-						<span class="badge badge-default">
+						<span class="badge badge-danger">
 						3 </span>
 						</a>
 						<ul class="dropdown-menu extended tasks">
@@ -408,34 +408,28 @@
 						</a>
 						<ul class="dropdown-menu dropdown-menu-default">
 							<li>
-								<a href="extra_profile.html">
-								<i class="icon-user"></i> My Profile </a>
+								<a href="javascript:void(0);">
+								<i class="icon-user"></i> Mi Perfil </a>
 							</li>
 							<li>
-								<a href="page_calendar.html">
-								<i class="icon-calendar"></i> My Calendar </a>
-							</li>
+								<a href="javascript:void(0);">
+								<i class="icon-calendar"></i> Mi Calendario </a>
+							</li>						
 							<li>
-								<a href="inbox.html">
-								<i class="icon-envelope-open"></i> My Inbox <span class="badge badge-danger">
-								3 </span>
-								</a>
-							</li>
-							<li>
-								<a href="page_todo.html">
-								<i class="icon-rocket"></i> My Tasks <span class="badge badge-success">
+								<a href="javascript:void(0);">
+								<i class="icon-rocket"></i> Mis Tareas <span class="badge badge-success">
 								7 </span>
 								</a>
 							</li>
 							<li class="divider">
 							</li>
-							<li>
+							<!-- <li>
 								<a href="extra_lock.html">
 								<i class="icon-lock"></i> Lock Screen </a>
-							</li>
+							</li> -->
 							<li>
-								<a href="login.html">
-								<i class="icon-key"></i> Log Out </a>
+								<a href="javascript:void(0);">
+								<i class="icon-key"></i>Cerrar Sesión</a>
 							</li>
 						</ul>
 					</li>
@@ -448,4 +442,4 @@
 	</div>
 	<!-- END HEADER INNER -->
 </div>
-<!-- END HEADER -->
+<!-- END HEADER

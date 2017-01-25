@@ -17,7 +17,8 @@ class UserController extends  MasterController{
 				$data= array(
 				'get_view'=> 'UserView/Index',				
 				'get_menu'=> $this->get_menu(3),
-				'get_information_user'=> $this->get_information_user());
+				'get_information_user'=> $this->get_information_user(),
+				'get_script_page'=>'<script src="application/helpers/UserHelper.js" type="text/javascript"></script>');
 
 				$this->load->view('MasterView/Index',$data);
 				break;	;			
