@@ -48,7 +48,7 @@
 <!-- END PAGE CONTENT-->
 
 <!-- BEGIN MODAL USER-->
-<div id="responsive" class="modal fade bs-modal-lg" tabindex="-1" aria-hidden="true">
+<div id="modal-user" class="modal fade bs-modal-lg" tabindex="-1" aria-hidden="true">
 	<div class="modal-dialog modal-lg">		
 		<div class="modal-content">
 			<form role="form" class="form-horizontal" id="form-user" onsubmit="return false">
@@ -158,7 +158,9 @@
 									<div class="col-md-9">
 										<div class="input-icon right">
 											<i class="fa"></i>
-											<input type="checkbox" checked class="make-switch" id="chck-status">
+											<input type="checkbox" checked id="chck-status">
+											
+											<!-- <input class="make-switch" data-on-text="&nbsp;Activo&nbsp;" data-off-text="&nbsp;Inactivo&nbsp;" type="checkbox"> -->
 										</div>
 									</div>
 								</div>

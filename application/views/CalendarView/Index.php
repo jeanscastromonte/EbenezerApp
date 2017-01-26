@@ -38,18 +38,14 @@
 				</div>
 			</div>
 			<div class="portlet-body">
-				
-					<!-- <button type="button" class="btn btn-circle btn-primary tooltips" id="btn-callmodal-user" data-container="body" data-placement="top" data-original-title="Agregar usuario">
-						<i class="fa fa-plus"></i>&nbsp;&nbsp;Agregar
-					</button> -->
-
-					
-						<div class="col-md-3 row">
-							<div class="input-icon right">
-								<i class="fa"></i>
-								<input type="text" class="form-control" name="txtperiod" placeholder="Periodo" />
-							</div>
-						</div>
+				<div class="col-md-3 row">
+					<div class="input-group group-design">
+						<span class="input-group-addon">
+							<i class="fa fa-calendar"></i>
+						</span>
+						<input class="form-control" placeholder="Periodo"  name="txtperiod" type="text">
+					</div> 
+				</div>
 
 				<div class="text-center" id="spinner-loading" hidden="hidden">
 					<i class="fa fa-spinner fa-spin fa-3x color-spinner"></i>&nbsp;Cargando...
@@ -63,14 +59,14 @@
 </div>
 <!-- END PAGE CONTENT-->
 
-<!-- BEGIN MODAL USER-->
+<!-- BEGIN MODAL SCHEDULE-->
 <div id="modal-schedule" class="modal fade bs-modal-lg" tabindex="-1" aria-hidden="true">
 	<div class="modal-dialog modal-lg">		
 		<div class="modal-content">
-			<form role="form" class="form-horizontal" id="form-user" onsubmit="return false">
+			<form role="form" class="form-horizontal" id="form-schedule" onsubmit="return false">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-					<h4 class="modal-title">Registrar Usuario</h4>
+					<h4 class="modal-title">Registrar Cronograma</h4>
 				</div>
 				<div class="modal-body">
 					<div class="alertform alert alert-danger display-hide">
@@ -83,98 +79,62 @@
 					</div>	
 					<div class="row">
 						<div class="col-md-6">
-
 							<div class="form-body">
 								<div class="form-group">
-									<div class="text-left col-md-3"><label class="control-label">Rol:</label></div>
-									<div class="col-md-9">
-										<select class="form-control" id="cbo-role" required="">
-										<option value=""></option>
-									</select>
-									</div>
-								</div>
-								<div class="form-group">
-									<div class="text-left col-md-3"><label class="control-label">Usuario:</label></div>
-									<div class="col-md-9">
+									<div class="text-left col-md-5"><label class="control-label">Periodo:</label></div>
+									<div class="col-md-7">
 										<div class="input-icon right">
 											<i class="fa"></i>
-											<input type="text" class="form-control" name="txtuser"/>
+											<input type="text" class="form-control" name="txtperiod"/>
 										</div>
 									</div>
 								</div>
 								<div class="form-group">
-									<div class="text-left col-md-3"><label class="control-label">Contraseña:</label></div>
-									<div class="col-md-9">
+									<div class="text-left col-md-5"><label class="control-label">Dígito:</label></div>
+									<div class="col-md-7">
 										<div class="input-icon right">
 											<i class="fa"></i>
-											<input type="text" class="form-control" name="txtpassword"/>
+											<input type="text" class="form-control" name="txtdigit"/>
 										</div>
 									</div>
 								</div>
 								<div class="form-group">
-									<div class="text-left col-md-3"><label class="control-label">Nombre(s):</label></div>
-									<div class="col-md-9">
+									<div class="text-left col-md-5"><label class="control-label">Fecha Vencimiento:</label></div>
+									<div class="col-md-7">
 										<div class="input-icon right">
 											<i class="fa"></i>
-											<input type="text" class="form-control" name="txtname"/>
+											<input type="text" class="form-control" name="txtduedate"/>
 										</div>
 									</div>
-								</div>
-								<div class="form-group">
-									<div class="text-left col-md-3"><label class="control-label">Apellidos:</label></div>
-									<div class="col-md-9">
-										<div class="input-icon right">
-											<i class="fa"></i>
-											<input type="text" class="form-control" name="txtlastname"/>
-										</div>
-									</div>
-								</div>
+								</div>																
 							</div>
 						</div>
 						<div class="col-md-6">
+							<div class="form-group">
+								<div class="text-left col-md-5"><label class="control-label">Fecha Programada:</label></div>
+								<div class="col-md-7">
+									<div class="input-icon right">
+										<i class="fa"></i>
+										<input type="text" class="form-control" name="txtscheduleddate"/>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="text-left col-md-5"><label class="control-label">Frecuencia:</label></div>
+								<div class="col-md-7">
+									<div class="input-icon right">
+										<i class="fa"></i>
+										<input type="text" class="form-control" name="txtfrecuency"/>
+									</div>
+								</div>
+							</div>
 							<div class="form-body">
 								<div class="form-group">
-									<div class="text-left col-md-3"><label class="control-label">Fecha Nac:</label></div>
-									<div class="col-md-9">
+									<div class="text-left col-md-5"><label class="control-label">Estado:</label></div>
+									<div class="col-md-7">
 										<div class="input-icon right">
 											<i class="fa"></i>
-											<input type="text" class="form-control" name="txtbirthday"/>
-										</div>
-									</div>
-								</div>
-								<div class="form-group">
-									<div class="text-left col-md-3"><label class="control-label">Teléfono:</label></div>
-									<div class="col-md-9">
-										<div class="input-icon right">
-											<i class="fa"></i>
-											<input type="text" class="form-control" name="txttelephone"/>
-										</div>
-									</div>
-								</div>
-								<div class="form-group">
-									<div class="text-left col-md-3"><label class="control-label">E-mail(s):</label></div>
-									<div class="col-md-9">
-										<div class="input-icon right">
-											<i class="fa"></i>
-											<input type="text" class="form-control" name="txtemail"/>
-										</div>
-									</div>
-								</div>
-								<div class="form-group">
-									<div class="text-left col-md-3"><label class="control-label">Imagen:</label></div>
-									<div class="col-md-9">
-										<div class="input-icon right">
-											<i class="fa"></i>
-											<input type="text" class="form-control" name="txtimage"/>
-										</div>
-									</div>
-								</div>
-								<div class="form-group">
-									<div class="text-left col-md-3"><label class="control-label">Estado:</label></div>
-									<div class="col-md-9">
-										<div class="input-icon right">
-											<i class="fa"></i>
-											<input type="checkbox" checked class="make-switch" id="chck-status">
+											<input type="checkbox" checked id="chck-status">
 										</div>
 									</div>
 								</div>
@@ -190,4 +150,24 @@
 		</div>
 	</div>
 </div>
-<!-- END MODAL USER-->
+<!-- END MODAL SCHEDULE-->
+
+<!-- BEGIN MODAL MESSAGE-->
+<div id="modal-message" class="modal fade bs-modal-sm" id="small" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+				<h4 class="modal-title">Modal Title</h4>
+			</div>
+			<div class="modal-body"> Modal body goes here </div>
+			<div class="modal-footer">
+				<button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+				<button type="button" class="btn green">Save changes</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- END MODAL MESSAGE-->

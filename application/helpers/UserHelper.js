@@ -3,28 +3,28 @@ $(document).ready(InitUser);
 /******************************************************************************************************************************************************************************/
 function InitUser()
 {
-    //Private variables
+    //***Private variables**
     var $datatable_user       =   $('#datatable-user');
-    var $responsive           =   $('#responsive');
+    var $modal_user           =   $('#modal-user');
     var $btn_callmodal_user   =   $('#btn-callmodal-user');
     var $form_user            =   $('#form-user');
     var $cbo_role             =   $('#cbo-role');
     var $chck_status          =   $('#chck-status');
 
-    //Call Modal User 
-    $btn_callmodal_user.on('click',{ param: $responsive }, fnc_modal_init);
+    //***Call Modal User*** 
+    $btn_callmodal_user.on('click',{ "modal": $modal_user }, fnc_modal_init);
 
-    //Init Datatable users
+    //***Init Datatable users***
     fnc_datatable_user($datatable_user);
 
-    //Validation form user
+    //***Validation form user***
     fnc_form_validation($form_user);
 
-    //Select2 roles
+    //***Select2 roles***
     fnc_select2_roles($cbo_role)
     
-    $chck_status.bootstrapSwitch({onText:'&nbsp;&nbsp;Activo&nbsp;&nbsp;',offText:'&nbsp;&nbsp;Inactivo&nbsp;&nbsp;',onColor: 'success',offColor:'danger'});
-
+    //***Switch Status user***
+    fnc_switch_status($chck_status);
    // $(document).on('click','.btn-editmodal-user', function () {        
    // });
 

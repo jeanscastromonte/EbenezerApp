@@ -126,7 +126,7 @@ function fnc_modal_mouseup()
 }
 
 function fnc_modal_show()
-{
+{  
   $(this).data({'originalLeft': $('.modal-dialog').css('left'), 'origionalTop': $('.modal-dialog').css('top')});
 }
 
@@ -246,4 +246,10 @@ function fnc_form_validation(_form)
 
 
     }
+/******************************************************************************************************************************************************************************/
+function fnc_switch_status(_selector)
+{
+   _selector.bootstrapSwitch({onText:'Activo',offText:'&nbsp;Inactivo&nbsp;',onColor: 'success',offColor:'danger',size: 'normal'});
+    $('.bootstrap-switch').css('width','150px');
+}
 /******************************************************************************************************************************************************************************/

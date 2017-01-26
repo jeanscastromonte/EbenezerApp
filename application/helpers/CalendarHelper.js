@@ -8,14 +8,34 @@ function InitUser()
   var $datatable_schedule     =   $('#datatable-schedule');
   var $btn_callmodal_schedule =   $('#btn-callmodal-schedule');
   var $modal_schedule         =   $('#modal-schedule');
-    // var $cbo_role             =   $('#cbo-role');
-    // var $chck_status          =   $('#chck-status');
+  var $modal_message          =   $('#modal-message');
+  var $chck_status            =   $('#chck-status');
 
   //***Call Modal User ***
-  $btn_callmodal_schedule.on('click',{ modal: $modal_schedule}, fnc_modal_init);
-
+  $btn_callmodal_schedule.on('click',function () {
+    fnc_modal_events();
+    if($txt_period.val()!='')
+    {
+      
+      $modal_schedule.modal({"backdrop": "static","keyboard": false, "show": true});
+    }
+    else
+    {
+      $modal_message.modal({"backdrop": "static","keyboard": false, "show": true});
+    }
+  });
   //***Init Datatable***     
   var datatable=fnc_datatable_schedule($datatable_schedule);
+
+  //***Switch Status***
+  fnc_switch_status($chck_status);
+
+  // $modal_schedule.on('show.bs.modal', function () {
+
+  //   alert('Md');
+  //   $modal_schedule.modal('hide');
+
+  // });
 
     //Validation form user
     // fnc_form_validation($form_user);

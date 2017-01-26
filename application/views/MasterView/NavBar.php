@@ -3,9 +3,9 @@
 	<!-- BEGIN HEADER INNER -->
 	<div class="page-header-inner">
 		<!-- BEGIN LOGO -->
-		<div class="page-logo">
-			<a href="index.html">
-			<img src="assets/admin/layout2/img/logo-default.png" alt="logo" class="logo-default"/>
+		<div class="page-logo div-logo">
+			<a href="<?=base_url();?>">
+			<img src="assets/img/logo-ebenezer.jpg" alt="logo" class="img-logo logo-default"/>
 			</a>
 			<div class="menu-toggler sidebar-toggler">
 				<!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
