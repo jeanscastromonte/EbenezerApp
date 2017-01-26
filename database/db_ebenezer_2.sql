@@ -19,7 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `db_ebenezer`
 --
-CREATE DATABASE IF NOT EXISTS `db_ebenezer` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+DROP DATABASE IF EXISTS `db_ebenezer`;
+CREATE DATABASE IF NOT EXISTS `db_ebenezer` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `db_ebenezer`;
 
 DELIMITER $$
@@ -39,7 +40,7 @@ END$$
 DROP PROCEDURE IF EXISTS `sp_GetAllUsers`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetAllUsers` ()  BEGIN
 			SELECT
-            u.UserId,
+      u.UserId,
 			u.UserImage,
 			u.UserLoginName,
 			u.UserName,

@@ -25,7 +25,16 @@
 				<div class="caption">
 					<i class="fa fa-users"></i>Cronograma Sunat
 				</div>
+				<div class="actions">
+					<!-- <a href="#" class="btn btn-default btn-sm">
+					<i class="fa fa-plus"></i> Add </a>
+					<a href="#" class="btn btn-default btn-sm">
+					<i class="fa fa-print"></i> Print </a> -->
+				</div>
 				<div class="tools">
+					<button type="button" class="btn btn-default tooltips" id="btn-callmodal-schedule" data-container="body" data-placement="top" data-original-title="Agregar Cronograma">
+					<i class="fa fa-plus"></i>&nbsp;&nbsp;Agregar
+					</button>
 				</div>
 			</div>
 			<div class="portlet-body">

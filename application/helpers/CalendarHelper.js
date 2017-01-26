@@ -4,19 +4,18 @@ $(document).ready(InitUser);
 /******************************************************************************************************************************************************************************/
 function InitUser()
 {
-    //Private variables
-  var $datatable_schedule   =   $('#datatable-schedule');
-  var $btn_callmodal_user   =   $('#btn-callmodal-user');
-    // var $form_user            =   $('#form-user');
+  //***Private variables***
+  var $datatable_schedule     =   $('#datatable-schedule');
+  var $btn_callmodal_schedule =   $('#btn-callmodal-schedule');
+  var $modal_schedule         =   $('#modal-schedule');
     // var $cbo_role             =   $('#cbo-role');
     // var $chck_status          =   $('#chck-status');
 
-    //Call Modal User 
-    // $btn_callmodal_user.on('click',{ param: $responsive }, fnc_modal_init);
+  //***Call Modal User ***
+  $btn_callmodal_schedule.on('click',{ modal: $modal_schedule}, fnc_modal_init);
 
-    //Init Datatable users
-     
-     var datatable=fnc_datatable_schedule($datatable_schedule);
+  //***Init Datatable***     
+  var datatable=fnc_datatable_schedule($datatable_schedule);
 
     //Validation form user
     // fnc_form_validation($form_user);
@@ -106,5 +105,7 @@ function fnc_datatable_schedule(_datatable)
    return datatable;
 }
 /*****************************************************************************************************************************************************************************/
-
+function fnc_modal_initl()
+{
+}
 /*****************************************************************************************************************************************************************************/
