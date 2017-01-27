@@ -85,17 +85,25 @@
 									<div class="col-md-7">
 										<div class="input-icon right">
 											<i class="fa"></i>
-											<input type="text" class="form-control" name="txtperiod"/>
+											<input type="text" class="form-control" name="txtperiod2"/>
 										</div>
 									</div>
 								</div>
 								<div class="form-group">
 									<div class="text-left col-md-5"><label class="control-label">Dígito:</label></div>
 									<div class="col-md-7">
-										<div class="input-icon right">
-											<i class="fa"></i>
-											<input type="text" class="form-control" name="txtdigit"/>
-										</div>
+										<select class="form-control" name="cbo-digit" required="">
+										<option value="0">0</option>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="5">5</option>
+										<option value="6">6</option>
+										<option value="7">7</option>
+										<option value="8">8</option>
+										<option value="9">9</option>
+									</select>
 									</div>
 								</div>
 								<div class="form-group">
@@ -120,6 +128,15 @@
 								</div>
 							</div>
 							<div class="form-group">
+								<div class="text-left col-md-5"><label class="control-label">Hora Programada:</label></div>
+								<div class="col-md-7">
+									<div class="input-icon">
+										<i class="fa"></i>
+										<input type="text" class="form-control" name="txtscheduledtime"/>
+									</div>
+								</div>
+							</div><!-- 
+							<div class="form-group">
 								<div class="text-left col-md-5"><label class="control-label">Frecuencia:</label></div>
 								<div class="col-md-7">
 									<div class="input-icon right">
@@ -127,7 +144,7 @@
 										<input type="text" class="form-control" name="txtfrecuency"/>
 									</div>
 								</div>
-							</div>
+							</div> -->
 							<div class="form-body">
 								<div class="form-group">
 									<div class="text-left col-md-5"><label class="control-label">Estado:</label></div>

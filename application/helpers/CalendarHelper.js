@@ -10,6 +10,11 @@ function InitUser()
   var $modal_schedule         =   $('#modal-schedule');
   var $modal_message          =   $('#modal-message');
   var $chck_status            =   $('#chck-status');
+  var $txt_duedate            =   $('[name=txtduedate]');
+  var $txt_scheduleddate      =   $('[name=txtscheduleddate]');
+  var $txt_scheduletime       =   $('[name=txtscheduledtime]');
+  var $cbo_digit              =   $('[name=cbo-digit]');
+  var $txt_period2            =   $('[name=txtperiod2]');
 
   //***Call Modal User ***
   $btn_callmodal_schedule.on('click',function () {
@@ -51,7 +56,8 @@ function InitUser()
     // $('.select2').on('change', function() {
     //     $(this).valid();
     // });
-    
+
+
   $txt_period.datepicker( {
     format: "MM/yyyy",
     startView: "months", 
@@ -59,14 +65,52 @@ function InitUser()
     pickTime: false,
     autoclose: true,
     language: 'es'
-  }).on("changeDate", function(e) {
-       //alert(holas);
-      $('#spinner-loading').show();  
-       datatable.ajax.reload(function (data) {
-         $('#spinner-loading').hide();  
-         //alert(data.Data[0].UserName);
-       });
+  }).on("changeDate", function(e){
+
+    var period=$(this).val();
+    $txt_period2.val(period).attr('disabled', 'disabled');
+    $txt_scheduleddate.attr('disabled', 'disabled');
+
+    $('#spinner-loading').show();  
+    datatable.ajax.reload(function (data) {
+    $('#spinner-loading').hide();  
+    //alert(data.Data[0].UserName);
     });
+  });
+
+  $txt_duedate.datepicker({
+    format: 'dd/mm/yyyy',
+    pickTime: false,
+    autoclose: true,
+    language: 'es'
+  }).on("changeDate", function(e){
+
+    var duedate=$(this).datepicker('getDate');
+    $txt_scheduleddate.datepicker('setDate', duedate);
+    $txt_scheduleddate.removeAttr('disabled', 'disabled');
+
+  });
+
+  $txt_scheduleddate.datepicker({
+    format: 'dd/mm/yyyy',
+    pickTime: false,
+    autoclose: true,
+    language: 'es'
+  });
+
+  $txt_scheduletime.timepicker({defaultTime: '08:00 AM'})
+  .on("changeTime.timepicker", function(e){
+
+     alert($(this).data("timepicker").getTime());
+
+  });
+
+  $cbo_digit.select2({
+    placeholder: "Seleccione...",
+    allowClear: true,
+    formatNoMatches: function () { return "No se encontraron resultados"; },        
+  });
+
 }
 /*****************************************************************************************************************************************************************************/
 function fnc_datatable_schedule(_datatable)
