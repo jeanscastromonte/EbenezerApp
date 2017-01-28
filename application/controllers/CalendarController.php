@@ -25,4 +25,12 @@ class CalendarController extends  MasterController{
 		}		
 	}
 /****************************************************************************************************/
+	public function get_schedule_sunat()
+	{
+		$period = $this->input->post('period', TRUE);
+		$list 	= $this->CalendarModel->get_schedule_sunat($period);
+		$output = array("Data" => $list);
+		echo json_encode($output);
+	}
+/****************************************************************************************************/
 }
