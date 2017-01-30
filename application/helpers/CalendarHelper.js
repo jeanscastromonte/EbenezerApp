@@ -54,6 +54,9 @@ function InitUser()
       $txt_period2.datepicker('setDate', period);
       $txt_scheduleddate.attr('disabled', 'disabled');
 
+
+  
+
       $('#spinner-loading').show();  
       datatable.ajax.reload(function (data) {
       $('#spinner-loading').hide();  
@@ -117,7 +120,11 @@ function fnc_datatable_schedule(_datatable)
       "type"   : "POST",
       "url"    : "get-schedule-sunat",
       "data"   : function( d ) {
-        d.period= $txt_period.val()!=''?$txt_period.val():0;
+        
+        var period=$txt_period.datepicker('getDate');
+        var dateUsFormat = moment(period).format('YYYY-MM-DD');
+
+        d.period= dateUsFormat!=''?dateUsFormat:0;
       },
       complete: function () 
       {

@@ -12,6 +12,9 @@ File Encoding         : 65001
 
 Date: 2017-01-28 17:48:40
 */
+DROP DATABASE IF EXISTS `db_ebenezer`;
+CREATE DATABASE IF NOT EXISTS `db_ebenezer` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `db_ebenezer`;
 
 SET FOREIGN_KEY_CHECKS=0;
 
