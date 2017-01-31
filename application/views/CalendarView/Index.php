@@ -46,7 +46,6 @@
 						<input class="form-control" placeholder="Periodo"  name="txtperiod" type="text">
 					</div> 
 				</div>
-
 				<div class="text-center" id="spinner-loading" hidden="hidden">
 					<i class="fa fa-spinner fa-spin fa-3x color-spinner"></i>&nbsp;Cargando...
 				</div>
@@ -92,17 +91,7 @@
 								<div class="form-group">
 									<div class="text-left col-md-5"><label class="control-label">Dígito:</label></div>
 									<div class="col-md-7">
-										<select class="form-control" name="cbo-digit" required="">
-										<option value="0">0</option>
-										<option value="1">1</option>
-										<option value="2">2</option>
-										<option value="3">3</option>
-										<option value="4">4</option>
-										<option value="5">5</option>
-										<option value="6">6</option>
-										<option value="7">7</option>
-										<option value="8">8</option>
-										<option value="9">9</option>
+										<select class="form-control" name="cbo-digit" required="">										
 									</select>
 									</div>
 								</div>
@@ -111,7 +100,7 @@
 									<div class="col-md-7">
 										<div class="input-icon right">
 											<i class="fa"></i>
-											<input type="date" class="form-control" name="txtduedate"/>
+											<input type="text" class="form-control" name="txtduedate" required="" />
 										</div>
 									</div>
 								</div>																
@@ -135,7 +124,8 @@
 										<input type="text" class="form-control" name="txtscheduledtime"/>
 									</div>
 								</div>
-							</div><!-- 
+							</div>							
+							<!-- 
 							<div class="form-group">
 								<div class="text-left col-md-5"><label class="control-label">Frecuencia:</label></div>
 								<div class="col-md-7">

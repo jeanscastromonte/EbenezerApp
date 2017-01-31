@@ -1,7 +1,14 @@
 /*****************************************************************************************************************************************************************************/
 $(document).ready(InitUser);
+
   //***Public Variables***
-    var $txt_period   =   $('[name=txtperiod]');
+    var $txt_period             =   $('[name=txtperiod]');
+    var $txt_period2            =   $('[name=txtperiod2]');    
+    var $cbo_digit              =   $('[name=cbo-digit]');        
+    var $txt_duedate            =   $('[name=txtduedate]');
+    var $txt_scheduleddate      =   $('[name=txtscheduleddate]');
+    var $txt_scheduletime       =   $('[name=txtscheduledtime]');
+    var $chck_status            =   $('#chck-status');
 /******************************************************************************************************************************************************************************/
 function InitUser()
 {
@@ -10,27 +17,13 @@ function InitUser()
     var $btn_callmodal_schedule =   $('#btn-callmodal-schedule');
     var $modal_schedule         =   $('#modal-schedule');
     var $modal_message          =   $('#modal-message');
-    var $chck_status            =   $('#chck-status');
-    
-    var $txt_duedate            =   $('[name=txtduedate]');
-    var $txt_scheduleddate      =   $('[name=txtscheduleddate]');
-    var $txt_scheduletime       =   $('[name=txtscheduledtime]');
-    var $cbo_digit              =   $('[name=cbo-digit]');
-    var $txt_period2            =   $('[name=txtperiod2]');
     var $form_schedule          =   $('#form-schedule');
 
   //***Button Call Modal***
     $btn_callmodal_schedule.on('click',function () {
       fnc_modal_events();
-      if($txt_period.val()!='')
-      {
-        
-        $modal_schedule.modal({"backdrop": "static","keyboard": false, "show": true});
-      }
-      else
-      {
-        $modal_message.modal({"backdrop": "static","keyboard": false, "show": true});
-      }
+      $modal_schedule.modal({"backdrop": "static","keyboard": false, "show": true});
+      fnc_clear_form($form_schedule);
     });
 
   //***Init Datatable***     
@@ -52,10 +45,6 @@ function InitUser()
 
       var period=$(this).datepicker('getDate');
       $txt_period2.datepicker('setDate', period);
-      $txt_scheduleddate.attr('disabled', 'disabled');
-
-
-  
 
       $('#spinner-loading').show();  
       datatable.ajax.reload(function (data) {
@@ -96,18 +85,17 @@ function InitUser()
   //***Init Timepicker***
     $txt_scheduletime.timepicker({defaultTime: '08:00 AM'})
     .on("changeTime.timepicker", function(e){
+      
     });
 
   //***Init Select2***
-    $cbo_digit.select2({
-      placeholder: "Seleccione...",
-      allowClear: true,
-      formatNoMatches: function () { return "No se encontraron resultados"; },        
-    });
-
+    fnc_select2( $cbo_digit,"Seleccione dígito...");
+    fnc_fill_options_digits();
+ 
   //***Init Validation Form***
-  fnc_validation_schedule($form_schedule);
-  
+    var rules = {"txtduedate": {"minlength": 10, "maxlength": 10, "required": true }, "txtscheduleddate": {"minlength": 10, "maxlength": 10, "required": true }};
+    fnc_validation_schedule($form_schedule);
+
 }
 /*****************************************************************************************************************************************************************************/
 function fnc_datatable_schedule(_datatable)
@@ -175,12 +163,14 @@ function fnc_validation_schedule(_form)
   var success2 = $('.alert-success', _form);
 
   _form.validate({
-    lang: 'fi',
     errorElement: 'span', 
     errorClass: 'help-block help-block-error', 
     focusInvalid: false, 
     ignore: "",
     rules: {
+      txtperiod2: {
+        required: true
+      },
       txtduedate: {
         minlength: 10,
         maxlength: 10,
@@ -190,7 +180,7 @@ function fnc_validation_schedule(_form)
         minlength: 10,
         maxlength: 10,
         required: true
-      },      
+      }
     },
     invalidHandler: function (event, validator) {              
       success2.hide();
@@ -216,11 +206,68 @@ function fnc_validation_schedule(_form)
     submitHandler: function (form) {
       success2.show();
       error2.hide();
-
-      alert("Hola"+form[0].txtscheduleddate);
+      fnc_registrar_cliente ();
+      //alert("Hola"+form[0].txtscheduleddate);
     }
   });
+}
+/*****************************************************************************************************************************************************************************/
+function fnc_fill_options_digits()
+{
+  var options="";
+  for (var i =0;i<10;i++)
+  {
+   options+='<option value="'+i+'">'+i+'</option>';
+  }
+ $cbo_digit.append(options);
+}
+/*****************************************************************************************************************************************************************************/
+function fnc_clear_form(_form)
+{
+  _form.trigger("reset"); 
+  $txt_scheduleddate.attr('disabled', 'disabled');
+  $cbo_digit.select2('val','');
+  $txt_scheduletime.timepicker('setTime', '08:00 AM');
+}
+/*****************************************************************************************************************************************************************************/
+function fnc_registrar_cliente ()
+{  
+  var period              = $txt_period2.datepicker('getDate');
+  var duedate             = $txt_duedate.datepicker('getDate');
+  //var scheduleddate       = $txt_scheduleddate.timepicker('getDate');
 
+  var time       = $txt_scheduletime.datepicker('getDate');
 
+  var data={};    
+  data.txt_period2        =  moment(period).format('YYYY-MM-DD');
+  data.cbo_digit          =  $cbo_digit.select2('val'); 
+  data.txt_duedate        =  moment(duedate).format('YYYY-MM-DD');
+  data.txt_scheduleddate  =  moment(scheduleddate).format('YYYY-MM-DD');
+  // data.txt_scheduletime   =  moment(time).format('HH:mm');
+  // data.chck_status        = 
+
+  $.ajax({
+    type: "POST",
+    url: "registrar_cliente",
+    data: JSON.stringify(data),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    async: false,
+    beforeSend: function () 
+    {            
+    },
+    success: function (resp) 
+    {  
+  // $modal_cliente.modal("hide");
+  // showSuccess('Se registró correctamente'); 
+  // fnc_listar_clientecrud();
+    },
+    complete: function () 
+    {     
+    },
+    error: function(resp)
+    {
+    }
+  });
 }
 /*****************************************************************************************************************************************************************************/

@@ -6,75 +6,14 @@ function fnc_clear_input ()
     $('input[type="checkbox"]').removeAttr('checked');  
 }
 /******************************************************************************************************************************************************************************/
-// function fnc_datatable_columns(_datatable,_columns)
-// {
-//     return _datatable.DataTable({"pageLength": 10,"aoColumns": _columns,
-//                 responsive: {
-//                     details: {
-//                         renderer: function ( api, rowIdx ) {
-//                             var data = api.cells( rowIdx, ':hidden' ).eq(0).map( function ( cell ) {
-//                                 var header = $( api.column( cell.column ).header() );
-//                                 return '<tr>'+
-//                                 '<td><b>'+
-//                                 header.text()+':'+
-//                                 '</b></td> '+
-//                                 '<td align="left">'+
-//                                 api.cell( cell ).data()+
-//                                 '</td>'+ 
-//                                 '</tr>';
-//                             } ).toArray().join('');
-
-//                             return data ?
-//                             $('<table/>').append( data ) :
-//                             false;
-//                         }
-//                     }
-//                 }
-//             });
-// }
-/******************************************************************************************************************************************************************************/
-// function fnc_datatable(_datatable,_columns,_url)
-// {
-   
-//     _datatable.DataTable({
-//     "language": {
-//         "processing": "Cargando...",
-//         "lengthMenu": "_MENU_ Record por pagina",
-//         "zeroRecords": "No se encontró ningún dato",
-//         "info": "Página _PAGE_ de _PAGES_",
-//         "infoEmpty": "No existen datos",
-//         "infoFiltered": "(Filtrado de _MAX_ registros)",
-//         "search":"Buscar",
-//         "paginate": {
-//             "previous": "Anterior",
-//             "next": "Siguiente"
-//             }
-//         },
-//         "bLengthChange" : false,
-//         "columns": _columns,
-//         "processing": true,
-//         "serverSide": true,
-
-//         "ajax": {
-//             "url": _url,
-//             "type": "POST",
-//             // "data": {
-//             //     "cmd" : "refresh",
-//             //     "from": $("#from-date")+" "+$("#from-time").val(),
-//             //     "to"  : $("#to-date").val()+" "+$("#to-time").val()
-//             // }
-//         }
-//     });
-// }
-/******************************************************************************************************************************************************************************/
-function fnc_select2 (_select,_placeholder)
+function fnc_select2(_select,_placeholder)
 {
     _select.html('<option></option>');
     _select.select2({
-        placeholder: _placeholder,
-        allowClear: true
+      placeholder:_placeholder,
+      allowClear: true,
+      formatNoMatches: function () { return "No se encontraron resultados"; },        
     });
-
 }
 /******************************************************************************************************************************************************************************/
 function fnc_tooltip ()
@@ -91,10 +30,8 @@ function fnc_tooltip ()
 function fnc_modal_init(event)
 {
     fnc_modal_events();
-
     var _modal=event.data.modal;   
-   _modal.modal({"backdrop": "static","keyboard": false, "show": true});
-     
+   _modal.modal({"backdrop": "static","keyboard": false, "show": true});     
 }
 
 function fnc_modal_events()
@@ -135,8 +72,7 @@ function fnc_modal_initposition()
   $('.modal-dialog').css({'left': $('.modal').data('originalLeft'), 'top': $('.modal').data('origionalTop')});
 }
 /******************************************************************************************************************************************************************************/
-
-function fnc_form_validation(_form)
+function fnc_form_validation2(_form)
 {
         // for more info visit the official plugin documentation: 
             // http://docs.jquery.com/Plugins/Validation
@@ -243,8 +179,47 @@ function fnc_form_validation(_form)
                     //form[0].submit(); // submit the form
                 }
             }).resetForm();
+}
+/******************************************************************************************************************************************************************************/
+function fnc_form_validation(_form,_rules)
+{
+  var error2 = $('.alert-danger', _form);
+  var success2 = $('.alert-success', _form);
 
+  _form.validate({
+    errorElement: 'span', 
+    errorClass: 'help-block help-block-error', 
+    focusInvalid: false, 
+    ignore: "",
+    rules: _rules,
 
+    invalidHandler: function (event, validator) {              
+      success2.hide();
+      error2.show();
+      Metronic.scrollTo(error2, -200);
+    },
+    errorPlacement: function (error, element) { 
+      var icon = $(element).parent('.input-icon').children('i');
+      icon.removeClass('fa-check').addClass("fa-warning");  
+      icon.attr("data-original-title", error.text()).tooltip({'container': 'body'});
+    },
+    highlight: function (element) { 
+      $(element)
+      .closest('.form-group').removeClass("has-success").addClass('has-error');
+    },
+    unhighlight: function (element) {
+    },
+    success: function (label, element) {
+      var icon = $(element).parent('.input-icon').children('i');
+      $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+      icon.removeClass("fa-warning").addClass("fa-check");
+    },
+    submitHandler: function (form) {
+      success2.show();
+      error2.hide();
+      //alert("Hola"+form[0].txtscheduleddate);
+    }
+  });
 }
 /******************************************************************************************************************************************************************************/
 function fnc_switch_status(_selector)
