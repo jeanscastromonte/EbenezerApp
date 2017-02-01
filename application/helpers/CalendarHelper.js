@@ -231,19 +231,20 @@ function fnc_clear_form(_form)
 }
 /*****************************************************************************************************************************************************************************/
 function fnc_registrar_cliente ()
-{  
+{
   var period              = $txt_period2.datepicker('getDate');
   var duedate             = $txt_duedate.datepicker('getDate');
-  //var scheduleddate       = $txt_scheduleddate.timepicker('getDate');
+  var scheduleddate       = $txt_scheduleddate.datepicker('getDate');
 
-  var time       = $txt_scheduletime.datepicker('getDate');
+  //var time       = $txt_scheduletime.datepicker('getDate');
+  var time                = $txt_scheduletime.data("timepicker").getTime();
 
   var data={};    
   data.txt_period2        =  moment(period).format('YYYY-MM-DD');
   data.cbo_digit          =  $cbo_digit.select2('val'); 
   data.txt_duedate        =  moment(duedate).format('YYYY-MM-DD');
   data.txt_scheduleddate  =  moment(scheduleddate).format('YYYY-MM-DD');
-  // data.txt_scheduletime   =  moment(time).format('HH:mm');
+  data.txt_scheduletime   =  moment(time).format('HH:mm');
   // data.chck_status        = 
 
   $.ajax({
@@ -269,5 +270,12 @@ function fnc_registrar_cliente ()
     {
     }
   });
+}
+/*****************************************************************************************************************************************************************************/
+function fnc_ej()
+{
+   var time          = $txt_scheduletime.data("timepicker").getTime();
+   var x= substring
+  // body...
 }
 /*****************************************************************************************************************************************************************************/
