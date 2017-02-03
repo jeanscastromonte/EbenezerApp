@@ -85,7 +85,7 @@ function InitUser()
   //***Init Timepicker***
     $txt_scheduletime.timepicker({defaultTime: '08:00 AM'})
     .on("changeTime.timepicker", function(e){
-      
+      fnc_ej();
     });
 
   //***Init Select2***
@@ -274,8 +274,20 @@ function fnc_registrar_cliente ()
 /*****************************************************************************************************************************************************************************/
 function fnc_ej()
 {
-   var time          = $txt_scheduletime.data("timepicker").getTime();
-   var x= substring
-  // body...
+  // var time = $txt_scheduletime.data("timepicker").getTime();
+  var hour = $txt_scheduletime.data('timepicker').hour;
+  var minute = $txt_scheduletime.data('timepicker').minute;
+  var meridian = $txt_scheduletime.data('timepicker').meridian;
+
+  if (meridian =='PM' && hour!=12)
+  {
+    hour=hour+12;
+  }
+  else if(meridian =='AM' && hour==12)
+  {
+    hour=hour-12;
+  }
+ var time=hour+":"+minute;
+ console.log(time);
 }
 /*****************************************************************************************************************************************************************************/
