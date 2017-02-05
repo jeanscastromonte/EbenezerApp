@@ -18,4 +18,5 @@ $route['get-all-roles'] 	= 'UserController/get_all_roles';
 $route['sunat-schedule'] 	= 'CalendarController/schedule_view';
 
 $route['get-schedule-sunat'] = 'CalendarController/get_schedule_sunat';
+$route['set-schedule-sunat'] = 'CalendarController/set_schedule_sunat';
 /*********************************************************************/

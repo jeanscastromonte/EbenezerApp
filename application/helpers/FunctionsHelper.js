@@ -37,7 +37,9 @@ function fnc_modal_init(event)
 function fnc_modal_events()
 { 
   $(".has-error").removeClass("has-error");
+  $(".has-success").removeClass("has-success");
   $(".fa-warning").removeClass("fa-warning");
+  $(".fa-check").removeClass("fa-check");
   $(".alertform").hide();
 
   fnc_modal_mouseup();

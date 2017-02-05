@@ -33,4 +33,12 @@ class CalendarController extends  MasterController{
 		echo json_encode($output);
 	}
 /****************************************************************************************************/
+	public function set_schedule_sunat()
+    {
+        $json 				= file_get_contents('php://input');
+        $data 				= json_decode($json,TRUE);		
+		$set_schedule_sunat = $this->CalendarModel->set_schedule_sunat($data);
+		json_encode( $set_schedule_sunat );
+    }
+/****************************************************************************************************/
 }

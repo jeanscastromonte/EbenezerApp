@@ -1,5 +1,7 @@
  <!--BEGIN DASHBOARD STATS -->
 <!-- BEGIN PAGE HEADER-->
+
+<div class="msj-alert"></div>
 <h3 class="page-title">Agenda</h3>
 <div class="page-bar">
 	<ul class="page-breadcrumb">
@@ -68,6 +70,7 @@
 					<h4 class="modal-title">Registrar Cronograma</h4>
 				</div>
 				<div class="modal-body">
+					<div class="modal-msj-alert"></div>
 					<div class="alertform alert alert-danger display-hide">
 					<button class="close" data-close="alert"></button>
 					Usted tiene algunos errores. Por favor, compruebe a continuación.

@@ -9,13 +9,15 @@ $(document).ready(InitUser);
     var $txt_scheduleddate      =   $('[name=txtscheduleddate]');
     var $txt_scheduletime       =   $('[name=txtscheduledtime]');
     var $chck_status            =   $('#chck-status');
+    var $datatable_schedule     =   $('#datatable-schedule');
+    var datatable               =   fnc_datatable_schedule($datatable_schedule);    
+    var $modal_schedule         =   $('#modal-schedule');
 /******************************************************************************************************************************************************************************/
 function InitUser()
 {
   //***Private Variables***
-    var $datatable_schedule     =   $('#datatable-schedule');
+    
     var $btn_callmodal_schedule =   $('#btn-callmodal-schedule');
-    var $modal_schedule         =   $('#modal-schedule');
     var $modal_message          =   $('#modal-message');
     var $form_schedule          =   $('#form-schedule');
 
@@ -27,7 +29,7 @@ function InitUser()
     });
 
   //***Init Datatable***     
-    var datatable=fnc_datatable_schedule($datatable_schedule);
+    
 
   //***Init Switch***
     fnc_switch_status($chck_status);
@@ -43,8 +45,8 @@ function InitUser()
       language: 'es'
     }).on("changeDate", function(e){
 
-      var period=$(this).datepicker('getDate');
-      $txt_period2.datepicker('setDate', period);
+      // var period=$(this).datepicker('getDate');
+      // $txt_period2.datepicker('setDate', period);
 
       $('#spinner-loading').show();  
       datatable.ajax.reload(function (data) {
@@ -83,9 +85,8 @@ function InitUser()
     });
 
   //***Init Timepicker***
-    $txt_scheduletime.timepicker({defaultTime: '08:00 AM'})
+    $txt_scheduletime.timepicker({defaultTime: '08:00 AM',minuteStep:1})
     .on("changeTime.timepicker", function(e){
-      fnc_ej();
     });
 
   //***Init Select2***
@@ -124,6 +125,7 @@ function fnc_datatable_schedule(_datatable)
     "language": {
       "url": "http://cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
     },
+    "pageLength": 10,
     "aoColumns": [
       { "data":"ScheduleDigit", "title": "Dígito" ,"sClass": "text-center"},    
       { "data":"ScheduleDueDate", "title": "Fecha Vencimiento" ,"sClass": "text-center"},
@@ -204,9 +206,10 @@ function fnc_validation_schedule(_form)
       icon.removeClass("fa-warning").addClass("fa-check");
     },
     submitHandler: function (form) {
-      success2.show();
-      error2.hide();
+      
       fnc_registrar_cliente ();
+     // success2.show();
+      error2.hide();
       //alert("Hola"+form[0].txtscheduleddate);
     }
   });
@@ -224,10 +227,11 @@ function fnc_fill_options_digits()
 /*****************************************************************************************************************************************************************************/
 function fnc_clear_form(_form)
 {
-  _form.trigger("reset"); 
-  $txt_scheduleddate.attr('disabled', 'disabled');
+  _form.trigger("reset");   
+  $txt_scheduleddate.attr('disabled', 'disabled');  
   $cbo_digit.select2('val','');
   $txt_scheduletime.timepicker('setTime', '08:00 AM');
+  $chck_status.bootstrapSwitch('state', true);
 }
 /*****************************************************************************************************************************************************************************/
 function fnc_registrar_cliente ()
@@ -235,49 +239,56 @@ function fnc_registrar_cliente ()
   var period              = $txt_period2.datepicker('getDate');
   var duedate             = $txt_duedate.datepicker('getDate');
   var scheduleddate       = $txt_scheduleddate.datepicker('getDate');
-
-  //var time       = $txt_scheduletime.datepicker('getDate');
-  var time                = $txt_scheduletime.data("timepicker").getTime();
+  var time                = fnc_format_time($txt_scheduletime);
 
   var data={};    
-  data.txt_period2        =  moment(period).format('YYYY-MM-DD');
+  data.txt_period         =  moment(period).format('YYYY-MM-DD');
   data.cbo_digit          =  $cbo_digit.select2('val'); 
   data.txt_duedate        =  moment(duedate).format('YYYY-MM-DD');
   data.txt_scheduleddate  =  moment(scheduleddate).format('YYYY-MM-DD');
-  data.txt_scheduletime   =  moment(time).format('HH:mm');
+  data.txt_scheduletime   =  time;
+  data.txt_status         =  $chck_status.bootstrapSwitch('state');
   // data.chck_status        = 
 
   $.ajax({
     type: "POST",
-    url: "registrar_cliente",
+    url: "set-schedule-sunat",
     data: JSON.stringify(data),
     contentType: "application/json; charset=utf-8",
     dataType: "json",
-    async: false,
+    async: true,
     beforeSend: function () 
     {            
     },
     success: function (resp) 
-    {  
-  // $modal_cliente.modal("hide");
-  // showSuccess('Se registró correctamente'); 
-  // fnc_listar_clientecrud();
+    {
+      fnc_msj_alert('success','Se registró exitosamente','','check',5);
+       $('#spinner-loading').show();  
+      datatable.ajax.reload(function (data) {
+      $('#spinner-loading').hide(); 
+      $modal_schedule.modal('hide'); 
+      //alert(data.Data[0].UserName);
+      });
     },
     complete: function () 
     {     
     },
     error: function(resp)
     {
+     fnc_msj_alert('danger','Error','.modal-msj-alert','warning',5);
+      
+     
+      console.log(resp.statusText);
     }
   });
 }
 /*****************************************************************************************************************************************************************************/
-function fnc_ej()
+function fnc_format_time(_timepicker)
 {
-  // var time = $txt_scheduletime.data("timepicker").getTime();
-  var hour = $txt_scheduletime.data('timepicker').hour;
+  var time = $txt_scheduletime.data("timepicker").getTime();
+  var hour = _timepicker.data('timepicker').hour;
   var minute = $txt_scheduletime.data('timepicker').minute;
-  var meridian = $txt_scheduletime.data('timepicker').meridian;
+  var meridian = _timepicker.data('timepicker').meridian;
 
   if (meridian =='PM' && hour!=12)
   {
@@ -287,7 +298,26 @@ function fnc_ej()
   {
     hour=hour-12;
   }
- var time=hour+":"+minute;
- console.log(time);
+ var time=twoDigit(hour)+":"+twoDigit(minute)+":00";
+  return time;
+}
+
+function twoDigit(number) {
+  var twodigit = number >= 10 ? number : "0"+number.toString();
+  return twodigit;
+}
+
+function fnc_msj_alert(_type,_message,_container,_icon,_seconds) {
+   Metronic.alert({
+                container: _container, // alerts parent container(by default placed after the page breadcrumbs)
+                place: "append", // "append" or "prepend" in container 
+                type: _type, // alert's type
+                message: _message, // alert's message
+                close: true, // make alert closable
+                reset: true, // close all previouse alerts first
+                focus: true, // auto scroll to the alert after shown
+                closeInSeconds: _seconds, // auto close after defined seconds
+                icon:_icon // put icon before the message
+            });
 }
 /*****************************************************************************************************************************************************************************/
