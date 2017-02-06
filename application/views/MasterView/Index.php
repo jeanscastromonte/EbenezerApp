@@ -27,7 +27,7 @@
 			<!-- BEGIN CONTENT -->
 			<div class="page-content-wrapper">
 				<div class="page-content">				  
-					<?php $this->load->view($get_view);?>
+					<?php $this->load->view($get_view); echo $horaActual = date("h:i:s A");?>
 				</div>
 			</div>
 			<!-- END CONTENT -->

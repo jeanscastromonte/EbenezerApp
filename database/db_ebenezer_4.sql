@@ -326,21 +326,19 @@ INSERT INTO `role` VALUES ('1', 'ADMINISTRADOR', '');
 -- ----------------------------
 DROP TABLE IF EXISTS `schedule_sunat`;
 CREATE TABLE `schedule_sunat` (
-  `ScheduleId` int(11) NOT NULL AUTO_INCREMENT,
   `SchedulePeriod` date NOT NULL,
   `ScheduleDigit` int(11) NOT NULL,
   `ScheduleDueDate` date NOT NULL,
   `ScheduleProgramDate` date NOT NULL,
   `ScheduleProgramTime` time NOT NULL,
   `ScheduleStatus` bit(1) NOT NULL,
-  PRIMARY KEY (`ScheduleId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+  `UserId` int(11) NOT NULL,
+  PRIMARY KEY (`SchedulePeriod`,`ScheduleDigit`),
+  KEY `fk_UserId` (`UserId`),
+  CONSTRAINT `fk_UserId` FOREIGN KEY (`UserId`) REFERENCES `user` (`UserId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `un_ScheduleDueDate` UNIQUE (`ScheduleDueDate`)
 
--- ----------------------------
--- Records of schedule_sunat
--- ----------------------------
-INSERT INTO `schedule_sunat` VALUES ('1', '2017-01-01', '0', '2017-02-14', '2017-02-10', '08:00:00', '');
-INSERT INTO `schedule_sunat` VALUES ('2', '2017-02-01', '0', '2017-03-14', '2017-03-14', '08:00:00', '');
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Table structure for tax_igv
@@ -475,10 +473,18 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetScheduleSunatByPeriod`(IN `_Period`  DATE)
 BEGIN
 
-  SELECT *
-	FROM schedule_sunat
-	WHERE SchedulePeriod LIKE (CASE WHEN _Period=0 THEN '%' ELSE _Period  END)
-	ORDER BY ScheduleDigit ASC;
+  SELECT
+  DATE_FORMAT(ss.SchedulePeriod,'%d/%m/%Y') as SchedulePeriod,
+  ss.ScheduleDigit,
+  DATE_FORMAT(ss.ScheduleDueDate,'%d/%m/%Y') as ScheduleDueDate,
+  DATE_FORMAT(ss.ScheduleProgramDate,'%d/%m/%Y') as ScheduleProgramDate,
+  TIME_FORMAT(ss.ScheduleProgramTime,'%h:%i %p') as ScheduleProgramTime,
+  ss.ScheduleStatus,
+  u.UserName  
+	FROM schedule_sunat ss
+  INNER JOIN User u ON u.UserId=ss.UserId
+	WHERE ss.SchedulePeriod LIKE (CASE WHEN _Period=0 THEN '%' ELSE _Period  END)
+	ORDER BY ss.ScheduleDigit ASC;
 END
 ;;
 DELIMITER ;
@@ -514,6 +520,19 @@ BEGIN
 	WHERE u.UserLoginName=`_UserLoginName` AND u.UserLoginPassword=`_UserLoginPassword`
 	AND u.UserStatus=TRUE AND r.RoleStatus=TRUE;
 
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for sp_SetScheduleSunat
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_SetScheduleSunat`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_SetScheduleSunat`(IN `_period` DATE,IN `_digit` INT,IN `_duedate` DATE,IN `_programdate` DATE,IN `_programtime` TIME,IN `_status` BIT,IN `_user` INT)
+BEGIN
+  INSERT INTO schedule_sunat(SchedulePeriod,ScheduleDigit,ScheduleDueDate,ScheduleProgramDate,ScheduleProgramTime,ScheduleStatus,UserId)
+  VALUES (`_period`,`_digit`,`_duedate`,`_programdate`,`_programtime`,`_status`,`_user`); 
 END
 ;;
 DELIMITER ;

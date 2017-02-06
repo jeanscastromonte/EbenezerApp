@@ -9,14 +9,16 @@ $(document).ready(InitUser);
     var $txt_scheduleddate      =   $('[name=txtscheduleddate]');
     var $txt_scheduletime       =   $('[name=txtscheduledtime]');
     var $chck_status            =   $('#chck-status');
-    var $datatable_schedule     =   $('#datatable-schedule');
-    var datatable               =   fnc_datatable_schedule($datatable_schedule);    
     var $modal_schedule         =   $('#modal-schedule');
+
+    //**+Init Datatable***
+    var datatable               =   fnc_datatable_schedule($('#datatable-schedule'));
+
+
 /******************************************************************************************************************************************************************************/
 function InitUser()
 {
-  //***Private Variables***
-    
+  //***Private Variables***    
     var $btn_callmodal_schedule =   $('#btn-callmodal-schedule');
     var $modal_message          =   $('#modal-message');
     var $form_schedule          =   $('#form-schedule');
@@ -28,12 +30,8 @@ function InitUser()
       fnc_clear_form($form_schedule);
     });
 
-  //***Init Datatable***     
-    
-
   //***Init Switch***
     fnc_switch_status($chck_status);
-
 
   //***Init Datepicker***
     $txt_period.datepicker( {
@@ -97,6 +95,9 @@ function InitUser()
     var rules = {"txtduedate": {"minlength": 10, "maxlength": 10, "required": true }, "txtscheduleddate": {"minlength": 10, "maxlength": 10, "required": true }};
     fnc_validation_schedule($form_schedule);
 
+    //  setInterval(function() {
+    //  fnc_get_notification();
+    // }, 1000);
 }
 /*****************************************************************************************************************************************************************************/
 function fnc_datatable_schedule(_datatable)
@@ -132,6 +133,7 @@ function fnc_datatable_schedule(_datatable)
       { "data":"ScheduleProgramDate", "title": "Fecha Programada" ,"sClass": "text-center"},
       { "data":"ScheduleProgramTime", "title": "Hora Programada" ,"sClass": "text-center"},
       { "data":"ScheduleStatus", "title": "Estado" ,"sClass": "text-center"},                  
+      { "data":"UserName", "title": "Registrado" ,"sClass": "text-center"},                  
       { "data":null, "title": "Opciones",
       "mRender": function(data, type, full) {
           return '<a href="javascript:void(0);" class="btn btn-circle btn-icon-only blue btn-editmodal-user" data-id="'+data['ScheduleId']+'"><i class="fa fa-edit"></i></a>'
@@ -149,7 +151,12 @@ function fnc_datatable_schedule(_datatable)
     "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
     // $('td:eq(2),td:eq(4),td:eq(5)', nRow).addClass( "text-left" );
     // $('td:eq(2),td:eq(4),td:eq(5)', nRow).removeClass( "text-center" );
+      //alert(aData.ScheduleProgramTime);
 
+        // setTimeout(function() {
+        // fnc_get_notification();
+        // }, 1000);
+      fnc_get_notification(aData.ScheduleProgramTime);
     //ADD TOOLTIP NEW ELEMENT CREATED
     // $('.btn-editmodal-user', nRow).tooltip({html: true, title: 'Editar usuario'});
     // $('.btn-deletemodal-user', nRow).tooltip({html: true, title: 'Eliminar usuario'});
@@ -207,7 +214,7 @@ function fnc_validation_schedule(_form)
     },
     submitHandler: function (form) {
       
-      fnc_registrar_cliente ();
+      fnc_set_schedule_sunat ();
      // success2.show();
       error2.hide();
       //alert("Hola"+form[0].txtscheduleddate);
@@ -227,14 +234,19 @@ function fnc_fill_options_digits()
 /*****************************************************************************************************************************************************************************/
 function fnc_clear_form(_form)
 {
-  _form.trigger("reset");   
-  $txt_scheduleddate.attr('disabled', 'disabled');  
+  $txt_duedate.datepicker('setDate', null);  
+  $txt_scheduleddate.datepicker('setDate', null);  
+  $txt_scheduleddate.attr('disabled', 'disabled');
+
+  var period=isNaN($txt_period.datepicker('getDate'))?null:$txt_period.datepicker('getDate');
+  $txt_period2.datepicker('setDate', period);
+
   $cbo_digit.select2('val','');
   $txt_scheduletime.timepicker('setTime', '08:00 AM');
   $chck_status.bootstrapSwitch('state', true);
 }
 /*****************************************************************************************************************************************************************************/
-function fnc_registrar_cliente ()
+function fnc_set_schedule_sunat()
 {
   var period              = $txt_period2.datepicker('getDate');
   var duedate             = $txt_duedate.datepicker('getDate');
@@ -248,7 +260,6 @@ function fnc_registrar_cliente ()
   data.txt_scheduleddate  =  moment(scheduleddate).format('YYYY-MM-DD');
   data.txt_scheduletime   =  time;
   data.txt_status         =  $chck_status.bootstrapSwitch('state');
-  // data.chck_status        = 
 
   $.ajax({
     type: "POST",
@@ -258,27 +269,34 @@ function fnc_registrar_cliente ()
     dataType: "json",
     async: true,
     beforeSend: function () 
-    {            
+    {  
+      $('#spinner-loading').show();          
     },
     success: function (resp) 
     {
-      fnc_msj_alert('success','Se registró exitosamente','','check',5);
-       $('#spinner-loading').show();  
-      datatable.ajax.reload(function (data) {
-      $('#spinner-loading').hide(); 
-      $modal_schedule.modal('hide'); 
-      //alert(data.Data[0].UserName);
-      });
+      switch(resp.status)
+      {
+        case true:
+          $modal_schedule.modal('hide');
+          fnc_msj_alert(resp.type,resp.message,'',resp.icon,5);
+          datatable.ajax.reload(function (data) {
+          $('#spinner-loading').hide();
+          });
+        break;
+
+        case false:
+         fnc_msj_alert(resp.type,resp.message,'.modal-msj-alert',resp.icon,5);
+         $('#spinner-loading').hide();
+        break;
+      }
     },
     complete: function () 
     {     
     },
     error: function(resp)
     {
-     fnc_msj_alert('danger','Error','.modal-msj-alert','warning',5);
-      
-     
-      console.log(resp.statusText);
+      fnc_msj_alert('danger','Error de Conexión, Vuelva intentarlo.','.modal-msj-alert','warning',5);
+      $('#spinner-loading').hide();
     }
   });
 }
@@ -298,26 +316,73 @@ function fnc_format_time(_timepicker)
   {
     hour=hour-12;
   }
- var time=twoDigit(hour)+":"+twoDigit(minute)+":00";
+ var time   = fnc_two_digit(hour)+":"+fnc_two_digit(minute)+":00";
   return time;
 }
-
-function twoDigit(number) {
-  var twodigit = number >= 10 ? number : "0"+number.toString();
+/*****************************************************************************************************************************************************************************/
+function fnc_two_digit(_number)
+{
+  var twodigit = _number >= 10 ? _number : "0"+_number.toString();
   return twodigit;
 }
+/*****************************************************************************************************************************************************************************/
+function fnc_msj_alert(_type,_message,_container,_icon,_seconds)
+{
+  Metronic.alert({
+    container: _container, // alerts parent container(by default placed after the page breadcrumbs)
+    place: "append", // "append" or "prepend" in container 
+    type: _type, // alert's type
+    message: _message, // alert's message
+    close: true, // make alert closable
+    reset: true, // close all previouse alerts first
+    focus: true, // auto scroll to the alert after shown
+    closeInSeconds: _seconds, // auto close after defined seconds
+    icon:_icon // put icon before the message
+  });
+}
+/*****************************************************************************************************************************************************************************/
+function fnc_notification8()
+{  
+    var settings = {    // sticky: true,
+    heading:"jean",
+    life:10000
+    }; 
+    $.notific8('zindex', 11500);
+    $.notific8("Notificación", settings);
+}
 
-function fnc_msj_alert(_type,_message,_container,_icon,_seconds) {
-   Metronic.alert({
-                container: _container, // alerts parent container(by default placed after the page breadcrumbs)
-                place: "append", // "append" or "prepend" in container 
-                type: _type, // alert's type
-                message: _message, // alert's message
-                close: true, // make alert closable
-                reset: true, // close all previouse alerts first
-                focus: true, // auto scroll to the alert after shown
-                closeInSeconds: _seconds, // auto close after defined seconds
-                icon:_icon // put icon before the message
-            });
+function fnc_get_notification(time)
+{
+ // var time="04:29:00 PM";
+
+  var data={};    
+  data.time =  time;
+   $.ajax({
+    type: "POST",
+    url: "get-notifications",
+    data: JSON.stringify(data),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    async: true,    
+    success: function (resp) 
+    {
+      if(resp==true)
+      {
+        //fnc_notification8();
+        // setInterval(function() {
+        //  fnc_get_notification( data.time);
+        // }, 1000);
+      }
+    },
+    complete: function () 
+    {     
+    },
+    error: function(resp)
+    {     
+    }
+  });  
+  // setTimeout(function() {
+  
+  // }, 60000);
 }
 /*****************************************************************************************************************************************************************************/

@@ -34,11 +34,30 @@ class CalendarController extends  MasterController{
 	}
 /****************************************************************************************************/
 	public function set_schedule_sunat()
-    {
-        $json 				= file_get_contents('php://input');
-        $data 				= json_decode($json,TRUE);		
+	{
+		$json 				= file_get_contents('php://input');
+		$data 				= json_decode($json,TRUE);		
 		$set_schedule_sunat = $this->CalendarModel->set_schedule_sunat($data);
-		json_encode( $set_schedule_sunat );
-    }
+		echo json_encode($set_schedule_sunat);
+	}
+/****************************************************************************************************/
+	public function get_notifications()
+	{
+		// echo $fechaActual = date("d/m/Y")."---";
+		// $json 				= file_get_contents('php://input');
+		// $data 				= json_decode($json,TRUE);	
+
+		// $horaActual = date("h:i A");
+		// $time=$data['time'];
+
+		// if($time>=$horaActual)
+		// {
+		// 	echo json_encode(TRUE);
+		// }
+		// else if($time<$horaActual)
+		// {
+		// 	echo json_encode(FALSE);
+		// }
+	}
 /****************************************************************************************************/
 }

@@ -29,10 +29,27 @@ class CalendarModel extends CI_Model {
     	$scheduleddate = $data['txt_scheduleddate'];
     	$scheduletime  = $data['txt_scheduletime'];
     	$status		   = $data['txt_status'];
+    	$iduser		   = $this->session->userdata('UserId');
 
+    	$query=$this->db->query("CALL sp_SetScheduleSunat('$period',$digit,'$duedate','$scheduleddate','$scheduletime',$status,$iduser)");
 
-    	$query=$this->db->query("CALL sp_SetScheduleSunat('$period',$digit,'$duedate','$scheduleddate','$scheduletime',$status)");
-		return ($this->db->affected_rows() != 1) ? false : true;
+    	if($query)
+		{
+			$output = array(
+			"status" => TRUE,
+			"message"=>"Se registró exitosamente",
+			"type"=>"success",
+			"icon"=>"check");			
+		}
+		else
+		{
+			$output = array(
+			"status" => FALSE,
+			"message"=>"ERROR, No se puede registrar, Vuelva a intentarlo.",
+			"type"=>"danger",
+			"icon"=>"warning");	
+		}		
+		return $output;
     }
 /*************************************************************************/
 }
