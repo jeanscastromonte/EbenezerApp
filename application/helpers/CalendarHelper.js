@@ -9,12 +9,11 @@ $(document).ready(InitUser);
     var $txt_scheduleddate      =   $('[name=txtscheduleddate]');
     var $txt_scheduletime       =   $('[name=txtscheduledtime]');
     var $chck_status            =   $('#chck-status');
+    var $chck_date_period       =   $('#chck-date-period');
     var $modal_schedule         =   $('#modal-schedule');
 
-    //**+Init Datatable***
+    //**Init Datatable***
     var datatable               =   fnc_datatable_schedule($('#datatable-schedule'));
-
-
 /******************************************************************************************************************************************************************************/
 function InitUser()
 {
@@ -33,25 +32,27 @@ function InitUser()
   //***Init Switch***
     fnc_switch_status($chck_status);
 
-  //***Init Datepicker***
-    $txt_period.datepicker( {
-      format: "MM/yyyy",
-      startView: "months", 
-      minViewMode: "months",
-      pickTime: false,
-      autoclose: true,
-      language: 'es'
-    }).on("changeDate", function(e){
+    
+    $chck_date_period.bootstrapSwitch({onText:'Mes',offText:'Año',onColor: 'success',offColor:'info',size: 'small'})
+    .on('switchChange.bootstrapSwitch', function (e,state) {
 
-      // var period=$(this).datepicker('getDate');
-      // $txt_period2.datepicker('setDate', period);
+    console.log(state);
 
-      $('#spinner-loading').show();  
-      datatable.ajax.reload(function (data) {
-      $('#spinner-loading').hide();  
-      //alert(data.Data[0].UserName);
-      });
+    switch (state){
+      case true:
+      fnc_period("MM/yyyy","months");
+      break;
+
+      case false:
+      fnc_period("yyyy","years");
+      break;
+    } 
     });
+
+  //***Init Datepicker***
+
+    fnc_period("MM/yyyy","months");
+       
 
     $txt_period2.datepicker( {
       format: "MM/yyyy",
@@ -62,10 +63,18 @@ function InitUser()
       language: 'es'
     });
 
+// var currentTime = new Date("2017-02");
+// // First Date Of the month 
+// var startDateFrom = new Date(currentTime.getFullYear(),currentTime.getMonth(),1);
+// // Last Date Of the Month 
+// var startDateTo = new Date(currentTime.getFullYear(),currentTime.getMonth() +1,0);
+
     $txt_duedate.datepicker({
       format: 'dd/mm/yyyy',
       pickTime: false,
-      autoclose: true,
+      autoclose: true,      
+      // startDate: startDateFrom,
+      // endDate: startDateTo,
       language: 'es'
     }).on("changeDate", function(e){
 
@@ -100,8 +109,33 @@ function InitUser()
     // }, 1000);
 }
 /*****************************************************************************************************************************************************************************/
+function fnc_period(format,mode) {
+
+  $txt_period.datepicker('remove');  
+  $txt_period.datepicker( {
+      format: format,
+      startView: mode, 
+      minViewMode: mode,
+      defaultDate:'now',
+      pickTime: false,
+      autoclose: true,
+      language: 'es'
+    }).on("changeDate", function(e){
+
+      // var period=$(this).datepicker('getDate');
+      // $txt_period2.datepicker('setDate', period);
+
+      // $('#spinner-loading').show();  
+      // datatable.ajax.reload(function (data) {
+      // $('#spinner-loading').hide();
+      //alert(data.Data[0].UserName);
+      // });
+    });
+    $txt_period.datepicker('setDate', new Date())
+}
+/*****************************************************************************************************************************************************************************/
 function fnc_datatable_schedule(_datatable)
-{
+{var data2 =[];
   $('#spinner-loading').show();  
   var datatable=_datatable.DataTable({
     "ajax":
@@ -111,10 +145,10 @@ function fnc_datatable_schedule(_datatable)
       "url"    : "get-schedule-sunat",
       "data"   : function( d ) {
         
-        var period=$txt_period.datepicker('getDate');
-        var dateUsFormat = moment(period).format('YYYY-MM-DD');
+        // var period=$txt_period.datepicker('getDate');
+        // var dateUsFormat = moment(period).format('YYYY-MM-DD');
 
-        d.period= dateUsFormat!=''?dateUsFormat:0;
+        // d.period= dateUsFormat!=''?dateUsFormat:0;
       },
       complete: function () 
       {
@@ -152,14 +186,18 @@ function fnc_datatable_schedule(_datatable)
     // $('td:eq(2),td:eq(4),td:eq(5)', nRow).addClass( "text-left" );
     // $('td:eq(2),td:eq(4),td:eq(5)', nRow).removeClass( "text-center" );
       //alert(aData.ScheduleProgramTime);
+ 
+ //data2.push(aData.ScheduleDueDate);
 
         // setTimeout(function() {
         // fnc_get_notification();
         // }, 1000);
-      fnc_get_notification(aData.ScheduleProgramTime);
+      // fnc_get_notification(aData.ScheduleProgramTime);
     //ADD TOOLTIP NEW ELEMENT CREATED
     // $('.btn-editmodal-user', nRow).tooltip({html: true, title: 'Editar usuario'});
     // $('.btn-deletemodal-user', nRow).tooltip({html: true, title: 'Eliminar usuario'});
+ //console.log(data2)
+
     }
   });
 
@@ -234,16 +272,16 @@ function fnc_fill_options_digits()
 /*****************************************************************************************************************************************************************************/
 function fnc_clear_form(_form)
 {
-  $txt_duedate.datepicker('setDate', null);  
-  $txt_scheduleddate.datepicker('setDate', null);  
-  $txt_scheduleddate.attr('disabled', 'disabled');
+  // $txt_duedate.datepicker('setDate', null);  
+  // $txt_scheduleddate.datepicker('setDate', null);  
+  // $txt_scheduleddate.attr('disabled', 'disabled');
 
-  var period=isNaN($txt_period.datepicker('getDate'))?null:$txt_period.datepicker('getDate');
-  $txt_period2.datepicker('setDate', period);
+  // var period=isNaN($txt_period.datepicker('getDate'))?null:$txt_period.datepicker('getDate');
+  // $txt_period2.datepicker('setDate', period);
 
-  $cbo_digit.select2('val','');
-  $txt_scheduletime.timepicker('setTime', '08:00 AM');
-  $chck_status.bootstrapSwitch('state', true);
+  // $cbo_digit.select2('val','');
+  // $txt_scheduletime.timepicker('setTime', '08:00 AM');
+  // $chck_status.bootstrapSwitch('state', true);
 }
 /*****************************************************************************************************************************************************************************/
 function fnc_set_schedule_sunat()
@@ -350,7 +388,7 @@ function fnc_notification8()
     $.notific8('zindex', 11500);
     $.notific8("Notificación", settings);
 }
-
+/*****************************************************************************************************************************************************************************/
 function fnc_get_notification(time)
 {
  // var time="04:29:00 PM";

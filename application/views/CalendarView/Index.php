@@ -1,6 +1,6 @@
- <!--BEGIN DASHBOARD STATS -->
-<!-- BEGIN PAGE HEADER-->
+ <!--BEGIN CALENDAR STATS -->
 
+<!-- BEGIN PAGE HEADER-->
 <div class="msj-alert"></div>
 <h3 class="page-title">Agenda</h3>
 <div class="page-bar">
@@ -15,7 +15,6 @@
 		</li> -->
 	</ul>
 </div>
-
 <!-- END PAGE HEADER-->
 
 <!-- BEGIN PAGE CONTENT-->
@@ -40,6 +39,7 @@
 				</div>
 			</div>
 			<div class="portlet-body">
+
 				<div class="col-md-3 row">
 					<div class="input-group group-design">
 						<span class="input-group-addon">
@@ -48,11 +48,45 @@
 						<input class="form-control" placeholder="Periodo"  name="txtperiod" type="text">
 					</div> 
 				</div>
+
+				<div class="col-md-3 row">					
+					<div class="input-icon right">
+						<i class="fa"></i>
+						<input type="checkbox" checked id="chck-date-period">
+					</div>									
+				</div>
+
+				<!-- BEGIN SPINNER LOADING -->
 				<div class="text-center" id="spinner-loading" hidden="hidden">
 					<i class="fa fa-spinner fa-spin fa-3x color-spinner"></i>&nbsp;Cargando...
 				</div>
+				<!-- END SPINNER LOADING -->
+
+				<!-- BEGIN TABLE SCHEDULE SUNAT -->
 				<table class="table table-striped table-bordered table-hover" id="datatable-schedule">					
-				</table>	
+				</table>
+				<!-- END TABLE SCHEDULE SUNAT -->
+
+				<!-- BEGIN TABLE SCHEDULE SUNAT -->
+				<table class="table table-striped table-bordered table-hover" id="datatable-schedule-year">	
+					<thead>
+						<tr>
+							<th>Periodo Tributario</th>
+							<th>0</th>
+							<th>1</th>
+							<th>2</th>
+							<th>3</th>
+							<th>4</th>
+							<th>5</th>
+							<th>6</th>
+							<th>7</th>
+							<th>8</th>
+							<th>9</th>
+						</tr>
+					</thead>	
+				</table>
+				<!-- END TABLE SCHEDULE SUNAT -->
+
 			</div>
 		</div>
 		<!-- END EXAMPLE TABLE PORTLET-->
