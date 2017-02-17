@@ -11,9 +11,12 @@ $(document).ready(InitUser);
     var $chck_status            =   $('#chck-status');
     var $chck_date_period       =   $('#chck-date-period');
     var $modal_schedule         =   $('#modal-schedule');
+    var $datatable_schedule     =   $('#datatable-schedule');
+    var $datatable_schedule_year=   $('#datatable-schedule-year');
 
     //**Init Datatable***
-    var datatable               =   fnc_datatable_schedule($('#datatable-schedule'));
+    fnc_datatable_scheduleYear($datatable_schedule_year)
+    var datatable    =fnc_datatable_schedule($datatable_schedule);
 /******************************************************************************************************************************************************************************/
 function InitUser()
 {
@@ -35,23 +38,38 @@ function InitUser()
     
     $chck_date_period.bootstrapSwitch({onText:'Mes',offText:'Año',onColor: 'success',offColor:'info',size: 'small'})
     .on('switchChange.bootstrapSwitch', function (e,state) {
+      console.log(state);
+      switch (state){
+        case true:
 
-    console.log(state);
+        $datatable_schedule_year.hide();
+        $datatable_schedule.DataTable().destroy();
+        $datatable_schedule_year.DataTable().destroy();
 
-    switch (state){
-      case true:
-      fnc_period("MM/yyyy","months");
-      break;
+        $datatable_schedule.show();
+        datatable  = fnc_datatable_schedule($datatable_schedule);
+        fnc_period("MM/yyyy","months");
 
-      case false:
-      fnc_period("yyyy","years");
-      break;
-    } 
+        break;
+
+        case false:
+
+
+        $datatable_schedule.hide();
+        $datatable_schedule.DataTable().destroy();
+        $datatable_schedule_year.DataTable().destroy();
+
+        $datatable_schedule_year.show();
+        datatable  = fnc_datatable_scheduleYear($datatable_schedule_year);
+        fnc_period("yyyy","years");
+
+        break;
+      } 
     });
 
   //***Init Datepicker***
 
-    fnc_period("MM/yyyy","months");
+    //fnc_period("MM/yyyy","months");
        
 
     $txt_period2.datepicker( {
@@ -63,11 +81,11 @@ function InitUser()
       language: 'es'
     });
 
-// var currentTime = new Date("2017-02");
-// // First Date Of the month 
-// var startDateFrom = new Date(currentTime.getFullYear(),currentTime.getMonth(),1);
-// // Last Date Of the Month 
-// var startDateTo = new Date(currentTime.getFullYear(),currentTime.getMonth() +1,0);
+  // var currentTime = new Date("2017-02");
+  // // First Date Of the month 
+  // var startDateFrom = new Date(currentTime.getFullYear(),currentTime.getMonth(),1);
+  // // Last Date Of the Month 
+  // var startDateTo = new Date(currentTime.getFullYear(),currentTime.getMonth() +1,0);
 
     $txt_duedate.datepicker({
       format: 'dd/mm/yyyy',
@@ -115,8 +133,7 @@ function fnc_period(format,mode) {
   $txt_period.datepicker( {
       format: format,
       startView: mode, 
-      minViewMode: mode,
-      defaultDate:'now',
+      minViewMode: mode,      
       pickTime: false,
       autoclose: true,
       language: 'es'
@@ -125,17 +142,18 @@ function fnc_period(format,mode) {
       // var period=$(this).datepicker('getDate');
       // $txt_period2.datepicker('setDate', period);
 
-      // $('#spinner-loading').show();  
-      // datatable.ajax.reload(function (data) {
-      // $('#spinner-loading').hide();
+      $('#spinner-loading').show();  
+      datatable.ajax.reload(function (data) {
+      $('#spinner-loading').hide();
       //alert(data.Data[0].UserName);
-      // });
+      });
     });
     $txt_period.datepicker('setDate', new Date())
 }
 /*****************************************************************************************************************************************************************************/
 function fnc_datatable_schedule(_datatable)
-{var data2 =[];
+{
+  var data2 =[];
   $('#spinner-loading').show();  
   var datatable=_datatable.DataTable({
     "ajax":
@@ -145,10 +163,10 @@ function fnc_datatable_schedule(_datatable)
       "url"    : "get-schedule-sunat",
       "data"   : function( d ) {
         
-        // var period=$txt_period.datepicker('getDate');
-        // var dateUsFormat = moment(period).format('YYYY-MM-DD');
+        var period=$txt_period.datepicker('getDate');
+        var dateUsFormat = moment(period).format('YYYY-MM-DD');
 
-        // d.period= dateUsFormat!=''?dateUsFormat:0;
+        d.period= dateUsFormat!=''?dateUsFormat:0;
       },
       complete: function () 
       {
@@ -199,6 +217,51 @@ function fnc_datatable_schedule(_datatable)
  //console.log(data2)
 
     }
+  });
+
+  return datatable;
+}
+/*****************************************************************************************************************************************************************************/
+function fnc_datatable_scheduleYear(_datatable) {
+  
+  $('#spinner-loading').show();  
+  var datatable=_datatable.DataTable({
+    "ajax":
+    {
+      "dataSrc": "Data",
+      "type"   : "POST",
+      "url"    : "get-schedule-year-sunat",
+      "data"   : function( d ) {
+        
+        var period=$txt_period.datepicker('getDate');
+        var dateUsFormat = moment(period).format('YYYY');
+        d.period= dateUsFormat;
+         
+      },
+      complete: function () 
+      {
+        $('#spinner-loading').hide();           
+      },
+    },
+    "searching":false,
+    "bLengthChange" : false,
+    "language": {
+      "url": "http://cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
+    },
+    "pageLength": 10,
+    "aoColumns": [
+      { "data":"Period", "title": "Período Tributario"},    
+      { "data":"d0", "title": "0" ,"sClass": "text-center"},
+      { "data":"d1", "title": "1" ,"sClass": "text-center"},
+      { "data":"d2", "title": "2" ,"sClass": "text-center"},
+      { "data":"d3", "title": "3" ,"sClass": "text-center"},
+      { "data":"d4", "title": "4" ,"sClass": "text-center"},
+      { "data":"d5", "title": "5" ,"sClass": "text-center"},
+      { "data":"d6", "title": "6" ,"sClass": "text-center"},
+      { "data":"d7", "title": "7" ,"sClass": "text-center"},
+      { "data":"d8", "title": "8" ,"sClass": "text-center"},
+      { "data":"d9", "title": "9" ,"sClass": "text-center"}
+    ]
   });
 
   return datatable;

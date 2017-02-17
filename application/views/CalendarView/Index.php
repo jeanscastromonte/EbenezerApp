@@ -68,22 +68,7 @@
 				<!-- END TABLE SCHEDULE SUNAT -->
 
 				<!-- BEGIN TABLE SCHEDULE SUNAT -->
-				<table class="table table-striped table-bordered table-hover" id="datatable-schedule-year">	
-					<thead>
-						<tr>
-							<th>Periodo Tributario</th>
-							<th>0</th>
-							<th>1</th>
-							<th>2</th>
-							<th>3</th>
-							<th>4</th>
-							<th>5</th>
-							<th>6</th>
-							<th>7</th>
-							<th>8</th>
-							<th>9</th>
-						</tr>
-					</thead>	
+				<table class="table table-striped table-bordered table-hover" id="datatable-schedule-year">						
 				</table>
 				<!-- END TABLE SCHEDULE SUNAT -->
 
