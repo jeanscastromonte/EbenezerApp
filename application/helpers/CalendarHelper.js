@@ -15,8 +15,8 @@ $(document).ready(InitUser);
     var $datatable_schedule_year=   $('#datatable-schedule-year');
 
     //**Init Datatable***
-    fnc_datatable_scheduleYear($datatable_schedule_year)
-    var datatable    =fnc_datatable_schedule($datatable_schedule);
+    //fnc_datatable_scheduleYear($datatable_schedule_year)
+    var datatablexxx   =fnc_datatable_schedule($datatable_schedule);
 /******************************************************************************************************************************************************************************/
 function InitUser()
 {
@@ -34,42 +34,36 @@ function InitUser()
 
   //***Init Switch***
     fnc_switch_status($chck_status);
-
     
     $chck_date_period.bootstrapSwitch({onText:'Mes',offText:'Año',onColor: 'success',offColor:'info',size: 'small'})
     .on('switchChange.bootstrapSwitch', function (e,state) {
+
+      $txt_period.val('');
       console.log(state);
+
       switch (state){
+
         case true:
-
-        $datatable_schedule_year.hide();
-        $datatable_schedule.DataTable().destroy();
-        $datatable_schedule_year.DataTable().destroy();
-
-        $datatable_schedule.show();
-        datatable  = fnc_datatable_schedule($datatable_schedule);
-        fnc_period("MM/yyyy","months");
-
-        break;
+          $datatable_schedule_year.DataTable().destroy();
+          $datatable_schedule_year.empty();
+          $datatable_schedule.show();
+          datatablexxx  = fnc_datatable_schedule($datatable_schedule);
+          fnc_period("MM/yyyy","months");
+          break;
 
         case false:
-
-
-        $datatable_schedule.hide();
-        $datatable_schedule.DataTable().destroy();
-        $datatable_schedule_year.DataTable().destroy();
-
-        $datatable_schedule_year.show();
-        datatable  = fnc_datatable_scheduleYear($datatable_schedule_year);
-        fnc_period("yyyy","years");
-
-        break;
+          $datatable_schedule.DataTable().destroy();
+          $datatable_schedule.empty();
+          $datatable_schedule_year.show();
+          datatablexxx  = fnc_datatable_scheduleYear($datatable_schedule_year);
+          fnc_period("yyyy","years");
+          break;
       } 
     });
 
   //***Init Datepicker***
 
-    //fnc_period("MM/yyyy","months");
+    fnc_period("MM/yyyy","months");
        
 
     $txt_period2.datepicker( {
@@ -81,18 +75,11 @@ function InitUser()
       language: 'es'
     });
 
-  // var currentTime = new Date("2017-02");
-  // // First Date Of the month 
-  // var startDateFrom = new Date(currentTime.getFullYear(),currentTime.getMonth(),1);
-  // // Last Date Of the Month 
-  // var startDateTo = new Date(currentTime.getFullYear(),currentTime.getMonth() +1,0);
 
     $txt_duedate.datepicker({
       format: 'dd/mm/yyyy',
       pickTime: false,
-      autoclose: true,      
-      // startDate: startDateFrom,
-      // endDate: startDateTo,
+      autoclose: true,
       language: 'es'
     }).on("changeDate", function(e){
 
@@ -141,18 +128,19 @@ function fnc_period(format,mode) {
 
       // var period=$(this).datepicker('getDate');
       // $txt_period2.datepicker('setDate', period);
-
+      
       $('#spinner-loading').show();  
-      datatable.ajax.reload(function (data) {
+      datatablexxx.ajax.reload(function (data) {
       $('#spinner-loading').hide();
       //alert(data.Data[0].UserName);
       });
     });
-    $txt_period.datepicker('setDate', new Date())
+
 }
 /*****************************************************************************************************************************************************************************/
 function fnc_datatable_schedule(_datatable)
 {
+  
   var data2 =[];
   $('#spinner-loading').show();  
   var datatable=_datatable.DataTable({
@@ -223,7 +211,7 @@ function fnc_datatable_schedule(_datatable)
 }
 /*****************************************************************************************************************************************************************************/
 function fnc_datatable_scheduleYear(_datatable) {
-  
+   
   $('#spinner-loading').show();  
   var datatable=_datatable.DataTable({
     "ajax":
@@ -380,7 +368,7 @@ function fnc_set_schedule_sunat()
         case true:
           $modal_schedule.modal('hide');
           fnc_msj_alert(resp.type,resp.message,'',resp.icon,5);
-          datatable.ajax.reload(function (data) {
+          datatablexxx.ajax.reload(function (data) {
           $('#spinner-loading').hide();
           });
         break;

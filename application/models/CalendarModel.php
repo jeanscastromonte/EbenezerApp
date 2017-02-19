@@ -62,7 +62,7 @@ class CalendarModel extends CI_Model {
 		{
 			$output = array(
 			"status" => FALSE,
-			"message"=>"ERROR, No se puede registrar, Vuelva a intentarlo.",
+			"message"=>"ERROR, No se puede registrar, Vuelva a intentarlo2.",
 			"type"=>"danger",
 			"icon"=>"warning");	
 		}		
