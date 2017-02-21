@@ -27,7 +27,19 @@
 			<!-- BEGIN CONTENT -->
 			<div class="page-content-wrapper">
 				<div class="page-content">				  
-					<?php $this->load->view($get_view); echo $horaActual = date("h:i:s A");?>
+					<?php $this->load->view($get_view);
+
+					//$horaActual = date("h:i:s A")
+
+					$strStart =  date("h:i:s A"); 
+					$strEnd   = '11:47 PM'; 
+					$dteStart = new DateTime($strStart); 
+					$dteEnd   = new DateTime($strEnd); 
+					$dteDiff  = $dteStart->diff($dteEnd); 
+					print $dteDiff->format("%H:%I:%S"); 
+
+
+					//echo $horaActual = date("h:i:s A");?>
 				</div>
 			</div>
 			<!-- END CONTENT -->

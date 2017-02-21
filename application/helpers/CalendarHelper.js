@@ -14,8 +14,7 @@ $(document).ready(InitUser);
     var $datatable_schedule     =   $('#datatable-schedule');
     var $datatable_schedule_year=   $('#datatable-schedule-year');
 
-    //**Init Datatable***
-    //fnc_datatable_scheduleYear($datatable_schedule_year)
+  //**Init Datatable***    
     var datatablexxx   =fnc_datatable_schedule($datatable_schedule);
 /******************************************************************************************************************************************************************************/
 function InitUser()
@@ -110,7 +109,7 @@ function InitUser()
     fnc_validation_schedule($form_schedule);
 
     //  setInterval(function() {
-    //  fnc_get_notification();
+    //  fnc_get_notification(1);
     // }, 1000);
 }
 /*****************************************************************************************************************************************************************************/
@@ -192,17 +191,17 @@ function fnc_datatable_schedule(_datatable)
     // $('td:eq(2),td:eq(4),td:eq(5)', nRow).addClass( "text-left" );
     // $('td:eq(2),td:eq(4),td:eq(5)', nRow).removeClass( "text-center" );
       //alert(aData.ScheduleProgramTime);
- 
- //data2.push(aData.ScheduleDueDate);
+ data=[];
+ function_name(aData.ScheduleProgramTime);
 
-        // setTimeout(function() {
-        // fnc_get_notification();
+        // setInterval(function() {
+        // fnc_get_notification(aData.ScheduleDueDate);
         // }, 1000);
       // fnc_get_notification(aData.ScheduleProgramTime);
     //ADD TOOLTIP NEW ELEMENT CREATED
     // $('.btn-editmodal-user', nRow).tooltip({html: true, title: 'Editar usuario'});
     // $('.btn-deletemodal-user', nRow).tooltip({html: true, title: 'Eliminar usuario'});
- //console.log(data2)
+ 
 
     }
   });
@@ -323,16 +322,16 @@ function fnc_fill_options_digits()
 /*****************************************************************************************************************************************************************************/
 function fnc_clear_form(_form)
 {
-  // $txt_duedate.datepicker('setDate', null);  
-  // $txt_scheduleddate.datepicker('setDate', null);  
-  // $txt_scheduleddate.attr('disabled', 'disabled');
+  $txt_duedate.datepicker('setDate', null);  
+  $txt_scheduleddate.datepicker('setDate', null);  
+  $txt_scheduleddate.attr('disabled', 'disabled');
 
-  // var period=isNaN($txt_period.datepicker('getDate'))?null:$txt_period.datepicker('getDate');
-  // $txt_period2.datepicker('setDate', period);
+  var period=isNaN($txt_period.datepicker('getDate'))?null:$txt_period.datepicker('getDate');
+  $txt_period2.datepicker('setDate', period);
 
-  // $cbo_digit.select2('val','');
-  // $txt_scheduletime.timepicker('setTime', '08:00 AM');
-  // $chck_status.bootstrapSwitch('state', true);
+  $cbo_digit.select2('val','');
+  $txt_scheduletime.timepicker('setTime', '08:00 AM');
+  $chck_status.bootstrapSwitch('state', true);
 }
 /*****************************************************************************************************************************************************************************/
 function fnc_set_schedule_sunat()
@@ -390,46 +389,6 @@ function fnc_set_schedule_sunat()
   });
 }
 /*****************************************************************************************************************************************************************************/
-function fnc_format_time(_timepicker)
-{
-  var time = $txt_scheduletime.data("timepicker").getTime();
-  var hour = _timepicker.data('timepicker').hour;
-  var minute = $txt_scheduletime.data('timepicker').minute;
-  var meridian = _timepicker.data('timepicker').meridian;
-
-  if (meridian =='PM' && hour!=12)
-  {
-    hour=hour+12;
-  }
-  else if(meridian =='AM' && hour==12)
-  {
-    hour=hour-12;
-  }
- var time   = fnc_two_digit(hour)+":"+fnc_two_digit(minute)+":00";
-  return time;
-}
-/*****************************************************************************************************************************************************************************/
-function fnc_two_digit(_number)
-{
-  var twodigit = _number >= 10 ? _number : "0"+_number.toString();
-  return twodigit;
-}
-/*****************************************************************************************************************************************************************************/
-function fnc_msj_alert(_type,_message,_container,_icon,_seconds)
-{
-  Metronic.alert({
-    container: _container, // alerts parent container(by default placed after the page breadcrumbs)
-    place: "append", // "append" or "prepend" in container 
-    type: _type, // alert's type
-    message: _message, // alert's message
-    close: true, // make alert closable
-    reset: true, // close all previouse alerts first
-    focus: true, // auto scroll to the alert after shown
-    closeInSeconds: _seconds, // auto close after defined seconds
-    icon:_icon // put icon before the message
-  });
-}
-/*****************************************************************************************************************************************************************************/
 function fnc_notification8()
 {  
     var settings = {    // sticky: true,
@@ -443,6 +402,14 @@ function fnc_notification8()
 function fnc_get_notification(time)
 {
  // var time="04:29:00 PM";
+// console.log(new Date().toString("hh:mm tt"));
+  var now  = "04/09/2013 15:00:00";
+  var then = "02/09/2013 14:20:30";
+
+  var ms = moment(now,"DD/MM/YYYY HH:mm:ss").diff(moment(then,"DD/MM/YYYY HH:mm:ss"));
+  var d = moment.duration(ms);
+  var s = Math.floor(d.asHours()) + moment.utc(ms).format(":mm:ss");
+  //console.log(s);
 
   var data={};    
   data.time =  time;
@@ -455,13 +422,7 @@ function fnc_get_notification(time)
     async: true,    
     success: function (resp) 
     {
-      if(resp==true)
-      {
-        //fnc_notification8();
-        // setInterval(function() {
-        //  fnc_get_notification( data.time);
-        // }, 1000);
-      }
+      if(resp!=null){alert(resp);}
     },
     complete: function () 
     {     
@@ -475,3 +436,19 @@ function fnc_get_notification(time)
   // }, 60000);
 }
 /*****************************************************************************************************************************************************************************/
+ var data=[];
+function function_name(argument) {
+
+
+ data.push(convertTo24Hour(argument));
+ var mayor=data[0];
+
+  for (var i = 0;i<data.length;i++) {
+    
+    if (data[i]>mayor)
+    {
+      mayor=data[i];
+    }
+  }
+  console.log(data);
+}

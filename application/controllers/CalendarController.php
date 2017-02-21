@@ -51,21 +51,18 @@ class CalendarController extends  MasterController{
 /****************************************************************************************************/
 	public function get_notifications()
 	{
-		// echo $fechaActual = date("d/m/Y")."---";
-		// $json 				= file_get_contents('php://input');
-		// $data 				= json_decode($json,TRUE);	
+		$json 	  = file_get_contents('php://input');
+		$data 	  = json_decode($json,TRUE);	
 
-		// $horaActual = date("h:i A");
-		// $time=$data['time'];
-
-		// if($time>=$horaActual)
-		// {
-		// 	echo json_encode(TRUE);
-		// }
-		// else if($time<$horaActual)
-		// {
-		// 	echo json_encode(FALSE);
-		// }
+		$strStart =  date("h:i:s A");
+		$strEnd   = $data['time'];
+		$dteStart = new DateTime($strStart);
+		$dteEnd   = new DateTime($strEnd);
+		$dteDiff  = $dteStart->diff($dteEnd);
+		if($dteStart==$dteEnd){
+			echo json_encode("Exito");
+		}
+		//print $dteDiff->format("%H:%I:%S");
 	}
 /****************************************************************************************************/
 }

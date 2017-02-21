@@ -73,115 +73,7 @@ function fnc_modal_initposition()
 {
   $('.modal-dialog').css({'left': $('.modal').data('originalLeft'), 'top': $('.modal').data('origionalTop')});
 }
-/******************************************************************************************************************************************************************************/
-function fnc_form_validation2(_form)
-{
-        // for more info visit the official plugin documentation: 
-            // http://docs.jquery.com/Plugins/Validation
 
-            //var form2 = $('#form_sample_2');
-            var error2 = $('.alert-danger', _form);
-            var success2 = $('.alert-success', _form);
-
-            _form.validate({
-                lang: 'fi',
-                errorElement: 'span', //default input error message container
-                errorClass: 'help-block help-block-error', // default input error message class
-                focusInvalid: false, // do not focus the last invalid input
-                ignore: "",  // validate all fields including form hidden input
-                rules: {
-                    txtuser: {
-                        minlength: 2,
-                        required: true
-                    },
-                    txtpassword: {
-                        minlength: 2,
-                        required: true
-                    },
-                    txtname: {
-                        minlength: 2,
-                        required: true
-                    },
-                    txtlastname: {
-                        minlength: 2,
-                        required: true
-                    },
-                    txtbirthday: {
-                        minlength: 2,
-                        required: true
-                    },
-                    txttelephone: {
-                        minlength: 2,
-                        required: true
-                    },
-                    txtemail: {
-                        minlength: 2,
-                        required: true
-                    },
-                    txtimage: {
-                        minlength: 2,
-                        required: true
-                    },
-                    // email: {
-                    //     required: true,
-                    //     email: true
-                    // },
-                    // email: {
-                    //     required: true,
-                    //     email: true
-                    // },
-                    // url: {
-                    //     required: true,
-                    //     url: true
-                    // },
-                    // number: {
-                    //     required: true,
-                    //     number: true
-                    // },
-                    // digits: {
-                    //     required: true,
-                    //     digits: true
-                    // },
-                    // creditcard: {
-                    //     required: true,
-                    //     creditcard: true
-                    // },
-                },
-
-                invalidHandler: function (event, validator) { //display error alert on form submit              
-                    success2.hide();
-                    error2.show();
-                    Metronic.scrollTo(error2, -200);
-                },
-
-                errorPlacement: function (error, element) { // render error placement for each input type
-                    var icon = $(element).parent('.input-icon').children('i');
-                    icon.removeClass('fa-check').addClass("fa-warning");  
-                    icon.attr("data-original-title", error.text()).tooltip({'container': 'body'});
-                },
-
-                highlight: function (element) { // hightlight error inputs
-                    $(element)
-                        .closest('.form-group').removeClass("has-success").addClass('has-error'); // set error class to the control group   
-                },
-
-                unhighlight: function (element) { // revert the change done by hightlight
-                    
-                },
-
-                success: function (label, element) {
-                    var icon = $(element).parent('.input-icon').children('i');
-                    $(element).closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
-                    icon.removeClass("fa-warning").addClass("fa-check");
-                },
-
-                submitHandler: function (form) {
-                    success2.show();
-                    error2.hide();
-                    //form[0].submit(); // submit the form
-                }
-            }).resetForm();
-}
 /******************************************************************************************************************************************************************************/
 function fnc_form_validation(_form,_rules)
 {
@@ -234,5 +126,56 @@ function fnc_get_year() {
 
   var currentTime = new Date();
   return currentTime.getFullYear();
+}
+/******************************************************************************************************************************************************************************/
+function fnc_format_time(_timepicker)
+{
+  var time = $txt_scheduletime.data("timepicker").getTime();
+  var hour = _timepicker.data('timepicker').hour;
+  var minute = $txt_scheduletime.data('timepicker').minute;
+  var meridian = _timepicker.data('timepicker').meridian;
+
+  if (meridian =='PM' && hour!=12)
+  {
+    hour=hour+12;
+  }
+  else if(meridian =='AM' && hour==12)
+  {
+    hour=hour-12;
+  }
+ var time   = fnc_two_digit(hour)+":"+fnc_two_digit(minute)+":00";
+  return time;
+}
+
+function convertTo24Hour(time) {
+    var hours = parseInt(time.substr(0, 2));
+    if(time.indexOf('AM') != -1 && hours == 12) {
+        time = time.replace('12', '0');
+    }
+    if(time.indexOf('PM')  != -1 && hours < 12) {
+        time = time.replace(hours, (hours + 12));
+    }
+    return time.replace(/(AM|PM)/,"");
+}
+/*****************************************************************************************************************************************************************************/
+function fnc_two_digit(_number)
+{
+  var twodigit = _number >= 10 ? _number : "0"+_number.toString();
+  return twodigit;
+}
+/*****************************************************************************************************************************************************************************/
+function fnc_msj_alert(_type,_message,_container,_icon,_seconds)
+{
+  Metronic.alert({
+    container: _container, // alerts parent container(by default placed after the page breadcrumbs)
+    place: "append", // "append" or "prepend" in container 
+    type: _type, // alert's type
+    message: _message, // alert's message
+    close: true, // make alert closable
+    reset: true, // close all previouse alerts first
+    focus: true, // auto scroll to the alert after shown
+    closeInSeconds: _seconds, // auto close after defined seconds
+    icon:_icon // put icon before the message
+  });
 }
 /******************************************************************************************************************************************************************************/

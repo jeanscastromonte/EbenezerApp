@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2017-02-16 23:49:27
+Date: 2017-02-21 00:54:09
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -339,11 +339,9 @@ CREATE TABLE `schedule_sunat` (
 -- ----------------------------
 -- Records of schedule_sunat
 -- ----------------------------
-INSERT INTO `schedule_sunat` VALUES ('2017-01-01', '0', '2017-02-11', '2017-02-11', '12:00:00', '', '1');
-INSERT INTO `schedule_sunat` VALUES ('2017-01-01', '1', '2017-02-15', '2017-02-15', '08:00:00', '', '1');
-INSERT INTO `schedule_sunat` VALUES ('2017-02-01', '0', '2017-02-01', '2017-02-01', '21:24:04', '', '1');
-INSERT INTO `schedule_sunat` VALUES ('2017-03-01', '0', '2017-03-23', '2017-03-23', '08:00:00', '', '1');
-INSERT INTO `schedule_sunat` VALUES ('2018-01-01', '1', '2018-01-01', '2018-01-01', '21:20:18', '', '1');
+INSERT INTO `schedule_sunat` VALUES ('2017-01-01', '0', '2017-02-14', '2017-02-14', '23:55:00', '', '1');
+INSERT INTO `schedule_sunat` VALUES ('2017-01-01', '1', '2017-02-15', '2017-02-15', '23:59:00', '', '1');
+INSERT INTO `schedule_sunat` VALUES ('2017-01-01', '2', '2017-02-16', '2017-02-16', '08:00:00', '', '1');
 
 -- ----------------------------
 -- Table structure for tax_igv
@@ -504,16 +502,16 @@ BEGIN
 	SET lc_time_names = 'es_VE';
 	SELECT
 	UPPER(DATE_FORMAT(ss.SchedulePeriod,'%M - %Y')) as Period,
-	(SELECT DATE_FORMAT(ss.ScheduleDueDate,'%d - %M') as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=0 AND s1.SchedulePeriod=ss.SchedulePeriod) as d0,
-	(SELECT DATE_FORMAT(ss.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=1 AND s1.SchedulePeriod=ss.SchedulePeriod) as d1,
-	(SELECT DATE_FORMAT(ss.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=2 AND s1.SchedulePeriod=ss.SchedulePeriod) as d2,
-	(SELECT DATE_FORMAT(ss.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=3 AND s1.SchedulePeriod=ss.SchedulePeriod) as d3,
-	(SELECT DATE_FORMAT(ss.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=4 AND s1.SchedulePeriod=ss.SchedulePeriod) as d4,
-	(SELECT DATE_FORMAT(ss.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=5 AND s1.SchedulePeriod=ss.SchedulePeriod) as d5,
-	(SELECT DATE_FORMAT(ss.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=6 AND s1.SchedulePeriod=ss.SchedulePeriod) as d6,
-	(SELECT DATE_FORMAT(ss.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=7 AND s1.SchedulePeriod=ss.SchedulePeriod) as d7,
-	(SELECT DATE_FORMAT(ss.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=8 AND s1.SchedulePeriod=ss.SchedulePeriod) as d8,
-	(SELECT DATE_FORMAT(ss.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=9 AND s1.SchedulePeriod=ss.SchedulePeriod) as d9
+	(SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M') as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=0 AND s1.SchedulePeriod=ss.SchedulePeriod) as d0,
+	(SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=1 AND s1.SchedulePeriod=ss.SchedulePeriod) as d1,
+	(SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=2 AND s1.SchedulePeriod=ss.SchedulePeriod) as d2,
+	(SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=3 AND s1.SchedulePeriod=ss.SchedulePeriod) as d3,
+	(SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=4 AND s1.SchedulePeriod=ss.SchedulePeriod) as d4,
+	(SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=5 AND s1.SchedulePeriod=ss.SchedulePeriod) as d5,
+	(SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=6 AND s1.SchedulePeriod=ss.SchedulePeriod) as d6,
+	(SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=7 AND s1.SchedulePeriod=ss.SchedulePeriod) as d7,
+	(SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=8 AND s1.SchedulePeriod=ss.SchedulePeriod) as d8,
+	(SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=9 AND s1.SchedulePeriod=ss.SchedulePeriod) as d9
 	FROM schedule_sunat ss
 	WHERE ss.SchedulePeriod LIKE CONCAT('%',_Period,'%') AND ss.ScheduleStatus=true
 	GROUP BY ss.SchedulePeriod;
