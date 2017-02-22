@@ -12,6 +12,10 @@ File Encoding         : 65001
 
 Date: 2017-02-21 00:54:09
 */
+DROP DATABASE IF EXISTS `db_ebenezer`;
+CREATE DATABASE IF NOT EXISTS `db_ebenezer` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `db_ebenezer`;
+
 
 SET FOREIGN_KEY_CHECKS=0;
 
@@ -564,6 +568,21 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_SetScheduleSunat`(IN `_period` D
 BEGIN
   INSERT INTO schedule_sunat(SchedulePeriod,ScheduleDigit,ScheduleDueDate,ScheduleProgramDate,ScheduleProgramTime,ScheduleStatus,UserId)
   VALUES (`_period`,`_digit`,`_duedate`,`_programdate`,`_programtime`,`_status`,`_user`); 
+END
+;;
+DELIMITER ;
+----
+-- ----------------------------
+-- Procedure structure for sp_GetScheduleDueDateAlarm
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_GetScheduleDueDateAlarm`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetScheduleDueDateAlarm`()
+BEGIN
+  DECLARE _schedule DATETIME;
+  SELECT _schedule INTO TIMESTAMP(ss.`ScheduleProgramDate`,ss.`ScheduleProgramTime`) AS Schedule FROM `schedule_sunat` ss ORDER BY Schedule ASC LIMIT 1
+  --SELECT DATEDIFF(SECOND, '2012-06-06 15:19:00', '2012-06-06 15:25:00') AS SECONDS
+  
 END
 ;;
 DELIMITER ;
