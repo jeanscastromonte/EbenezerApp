@@ -571,18 +571,17 @@ BEGIN
 END
 ;;
 DELIMITER ;
-----
+
 -- ----------------------------
--- Procedure structure for sp_GetScheduleDueDateAlarm
+-- Procedure structure for sp_GetScheduleAlert
 -- ----------------------------
-DROP PROCEDURE IF EXISTS `sp_GetScheduleDueDateAlarm`;
+DROP PROCEDURE IF EXISTS `sp_GetScheduleAlert`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetScheduleDueDateAlarm`()
-BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetScheduleAlert`(IN `_datetimenow` DATETIME)
+BEGIN 
   DECLARE _schedule DATETIME;
-  SELECT _schedule INTO TIMESTAMP(ss.`ScheduleProgramDate`,ss.`ScheduleProgramTime`) AS Schedule FROM `schedule_sunat` ss ORDER BY Schedule ASC LIMIT 1
-  --SELECT DATEDIFF(SECOND, '2012-06-06 15:19:00', '2012-06-06 15:25:00') AS SECONDS
-  
+  SELECT  TIMESTAMP(ss.ScheduleProgramDate,ss.ScheduleProgramTime) AS Schedule INTO _schedule FROM schedule_sunat ss ORDER BY Schedule ASC LIMIT 1;
+  SELECT _schedule AS Alarma;
 END
 ;;
 DELIMITER ;
