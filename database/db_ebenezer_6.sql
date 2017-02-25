@@ -506,7 +506,7 @@ BEGIN
   ss.ScheduleStatus,
   u.UserName  
 	FROM schedule_sunat ss
-  INNER JOIN User u ON u.UserId=ss.UserId
+  INNER JOIN user u ON u.UserId=ss.UserId
 	WHERE ss.SchedulePeriod LIKE (CASE WHEN _Period=0 THEN '%' ELSE _Period  END) AND ss.ScheduleStatus=true
 	ORDER BY ss.ScheduleDigit ASC;
 END
