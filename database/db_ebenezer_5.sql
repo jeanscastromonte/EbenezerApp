@@ -580,7 +580,7 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetScheduleAlert`(IN `_datetimenow` DATETIME)
 BEGIN 
   DECLARE _schedule DATETIME;
-  SELECT  TIMESTAMP(ss.ScheduleProgramDate,ss.ScheduleProgramTime) AS Schedule INTO _schedule FROM schedule_sunat ss ORDER BY Schedule ASC LIMIT 1;
+  SELECT  TIMESTAMP(ss.ScheduleProgramDate,ss.ScheduleProgramTime) AS ScheduleDatetime INTO _schedule FROM schedule_sunat ss ORDER BY ScheduleDatetime ASC LIMIT 1;
   SELECT _schedule AS Alarma;
 END
 ;;

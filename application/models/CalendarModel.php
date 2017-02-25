@@ -69,6 +69,30 @@ class CalendarModel extends CI_Model {
 		return $output;
     }
 /*************************************************************************/
+	public function get_schedule_alert()
+	{
+		$query=$this->db->query("CALL sp_GetScheduleAlert()");
+
+		if ($query->num_rows()==1)
+		{
+			$resp= $query->row();
+			return $resp;
+		}
+		else
+		{
+			return FALSE; 
+		}
+	}
+/*************************************************************************/
+	public function update_complete_schedule($data)
+	{
+		$period        = $data['period'];
+    	$digit     	   = $data['digit'];
+
+    	$query=$this->db->query("CALL sp_UpdateCompleteScheduleSunat('$period',$digit)");
+	}
+
+/*************************************************************************/
 }
 
 

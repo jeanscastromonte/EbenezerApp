@@ -19,7 +19,8 @@ $route['sunat-schedule'] 	= 'CalendarController/schedule_view';
 
 $route['get-schedule-sunat'] = 'CalendarController/get_schedule_sunat';
 $route['set-schedule-sunat'] = 'CalendarController/set_schedule_sunat';
-$route['get-notifications'] = 'CalendarController/get_notifications';
+$route['get-schedule-alert'] = 'CalendarController/get_schedule_alert';
+$route['update-complete-schedule'] = 'CalendarController/update_complete_schedule';
 
 $route['get-schedule-year-sunat'] = 'CalendarController/get_schedule_year_sunat';
 /*********************************************************************/

@@ -49,20 +49,45 @@ class CalendarController extends  MasterController{
 		echo json_encode($set_schedule_sunat);
 	}
 /****************************************************************************************************/
-	public function get_notifications()
+	public function get_schedule_alert()
 	{
-		$json 	  = file_get_contents('php://input');
-		$data 	  = json_decode($json,TRUE);	
+		// $json 	  = file_get_contents('php://input');
+		// $data 	  = json_decode($json,TRUE);	
 
-		$strStart =  date("h:i:s A");
-		$strEnd   = $data['time'];
-		$dteStart = new DateTime($strStart);
-		$dteEnd   = new DateTime($strEnd);
-		$dteDiff  = $dteStart->diff($dteEnd);
-		if($dteStart==$dteEnd){
-			echo json_encode("Exito");
-		}
+		// $strStart =  date("h:i:s A");
+		// $strEnd   = $data['time'];
+		// $dteStart = new DateTime($strStart);
+		// $dteEnd   = new DateTime($strEnd);
+		// $dteDiff  = $dteStart->diff($dteEnd);
+		// if($dteStart==$dteEnd){
+		// 	echo json_encode("Exito");
+		// }
 		//print $dteDiff->format("%H:%I:%S");
+
+		$get_schedule_alert = $this->CalendarModel->get_schedule_alert();
+
+		if($get_schedule_alert->AlertSeconds){
+		$output = array(
+			"Seconds" => $get_schedule_alert->AlertSeconds,
+			"Period" => $get_schedule_alert->_period,
+			"Digit" => $get_schedule_alert->_digit
+			);
+		
+		echo json_encode($output);
+		}
+	}
+/****************************************************************************************************/
+	public function update_complete_schedule()
+	{
+		$json 				= file_get_contents('php://input');
+		$data 				= json_decode($json,TRUE);		
+		$update_complete_schedule = $this->CalendarModel->update_complete_schedule($data);
+		
+		if($update_complete_schedule){
+
+			echo json_encode("Exito");
+
+		}
 	}
 /****************************************************************************************************/
 }

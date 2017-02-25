@@ -23,6 +23,16 @@ function InitUser()
     var $btn_callmodal_schedule =   $('#btn-callmodal-schedule');
     var $modal_message          =   $('#modal-message');
     var $form_schedule          =   $('#form-schedule');
+ 
+  fcn_schedule_alert();
+
+  // var myAudio = new Audio('assets/sound/announcement.mp3');
+  //   myAudio.play();
+  // setTimeout(function () {
+  //   var myAudio2 = new Audio('assets/sound/digito1.mp3');
+  //     myAudio2.play();
+  // },1000);
+   
 
   //***Button Call Modal***
     $btn_callmodal_schedule.on('click',function () {
@@ -61,9 +71,7 @@ function InitUser()
     });
 
   //***Init Datepicker***
-
-    fnc_period("MM/yyyy","months");
-       
+    fnc_period("MM/yyyy","months");      
 
     $txt_period2.datepicker( {
       format: "MM/yyyy",
@@ -73,7 +81,6 @@ function InitUser()
       autoclose: true,
       language: 'es'
     });
-
 
     $txt_duedate.datepicker({
       format: 'dd/mm/yyyy',
@@ -187,21 +194,6 @@ function fnc_datatable_schedule(_datatable)
       },
     ],
     "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-    // $('td:eq(2),td:eq(4),td:eq(5)', nRow).addClass( "text-left" );
-    // $('td:eq(2),td:eq(4),td:eq(5)', nRow).removeClass( "text-center" );
-      //alert(aData.ScheduleProgramTime);
- data=[];
- function_name(aData.ScheduleProgramTime);
-
-        // setInterval(function() {
-        // fnc_get_notification(aData.ScheduleDueDate);
-        // }, 1000);
-      // fnc_get_notification(aData.ScheduleProgramTime);
-    //ADD TOOLTIP NEW ELEMENT CREATED
-    // $('.btn-editmodal-user', nRow).tooltip({html: true, title: 'Editar usuario'});
-    // $('.btn-deletemodal-user', nRow).tooltip({html: true, title: 'Eliminar usuario'});
- 
-
     }
   });
 
@@ -369,6 +361,7 @@ function fnc_set_schedule_sunat()
           datatablexxx.ajax.reload(function (data) {
           $('#spinner-loading').hide();
           });
+          fcn_schedule_alert();
         break;
 
         case false:
@@ -388,66 +381,65 @@ function fnc_set_schedule_sunat()
   });
 }
 /*****************************************************************************************************************************************************************************/
-function fnc_notification8()
-{  
-    var settings = {    // sticky: true,
-    heading:"jean",
-    life:10000
-    }; 
-    $.notific8('zindex', 11500);
-    $.notific8("Notificación", settings);
+function fcn_schedule_alert() {
+  
+  $.getJSON("get-schedule-alert", function(data, status){
+
+        // alert("Segundos: " + data.Seconds 
+        //   + "\nPeriodo: " + data.Period
+        //   + "\nDigito: " + data.Digit);
+        if(data){
+        var miliseconds=data.Seconds*1000;
+
+        setTimeout(function () {
+          fnc_notification8(data.Period,data.Digit);
+          fnc_update_complete_schedule(data.Period,data.Digit)      
+        },miliseconds);
+
+        console.log(miliseconds);
+        }
+    });  
 }
 /*****************************************************************************************************************************************************************************/
-function fnc_get_notification(time)
+function fnc_notification8(period,digit)
 {
- // var time="04:29:00 PM";
-// console.log(new Date().toString("hh:mm tt"));
-  var now  = "04/09/2013 15:00:00";
-  var then = "02/09/2013 14:20:30";
+    var settings = {
+    heading:"DECLARACIÓN SUNAT",
+    life:10000
+    };
 
-  var ms = moment(now,"DD/MM/YYYY HH:mm:ss").diff(moment(then,"DD/MM/YYYY HH:mm:ss"));
-  var d = moment.duration(ms);
-  var s = Math.floor(d.asHours()) + moment.utc(ms).format(":mm:ss");
-  //console.log(s);
+    $.notific8('zindex', 11500);
+    $.notific8("Digito "+digit, settings);
+
+    
+    var myAudio = new Audio('assets/sound/announcement.mp3');
+    myAudio.play();
+
+    setTimeout(function () {
+      var myAudio2 = new Audio('assets/sound/digito'+digit+'.mp3');
+      myAudio2.play();
+    },1000);
+}
+/*****************************************************************************************************************************************************************************/
+function fnc_update_complete_schedule(period,digit) {
 
   var data={};    
-  data.time =  time;
-   $.ajax({
+  data.period = period;
+  data.digit  = digit;
+
+  $.ajax({
     type: "POST",
-    url: "get-notifications",
+    url: "update-complete-schedule",
     data: JSON.stringify(data),
     contentType: "application/json; charset=utf-8",
     dataType: "json",
-    async: true,    
+    async: true,   
     success: function (resp) 
     {
-      if(resp!=null){alert(resp);}
-    },
-    complete: function () 
-    {     
-    },
-    error: function(resp)
-    {     
-    }
-  });  
-  // setTimeout(function() {
-  
-  // }, 60000);
-}
-/*****************************************************************************************************************************************************************************/
- var data=[];
-function function_name(argument) {
-
-
- data.push(convertTo24Hour(argument));
- var mayor=data[0];
-
-  for (var i = 0;i<data.length;i++) {
-    
-    if (data[i]>mayor)
-    {
-      mayor=data[i];
-    }
-  }
-  console.log(data);
+      setTimeout(function () {
+        fcn_schedule_alert();
+      },1000);
+     
+    }    
+  });
 }
