@@ -93,6 +93,56 @@ class CalendarModel extends CI_Model {
 	}
 
 /*************************************************************************/
+	public function get_schedule_sunat_byperioddigit($data)
+	{
+		$period        = $data['period'];
+    	$digit     	   = $data['digit'];
+
+		$query=$this->db->query("CALL sp_GetScheduleSunatByPeriodDigit('$period',$digit)");
+
+		if ($query->num_rows()==1)
+		{
+			$resp= $query->row();
+			return $resp;
+		}
+		else
+		{
+			return FALSE; 
+		}
+	}
+/*************************************************************************/
+	public function update_schedule_sunat($data)
+    {
+
+    	$period        = $data['txt_period'];
+    	$digit     	   = $data['cbo_digit'];
+    	$duedate       = $data['txt_duedate'];
+    	$scheduleddate = $data['txt_scheduleddate'];
+    	$scheduletime  = $data['txt_scheduletime'];
+    	$status		   = $data['txt_status'];
+    	$iduser		   = $this->session->userdata('UserId');
+
+    	$query=$this->db->query("CALL sp_UpdateScheduleSunat('$period',$digit,'$duedate','$scheduleddate','$scheduletime',$status,$iduser)");
+
+    	if($query)
+		{
+			$output = array(
+			"status" => TRUE,
+			"message"=>"Se editó exitosamente",
+			"type"=>"success",
+			"icon"=>"check");			
+		}
+		else
+		{
+			$output = array(
+			"status" => FALSE,
+			"message"=>"ERROR, No se puede editar, Vuelva a intentarlo2.",
+			"type"=>"danger",
+			"icon"=>"warning");	
+		}		
+		return $output;
+    }
+/*************************************************************************/
 }
 
 

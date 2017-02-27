@@ -15,6 +15,9 @@ Date: 2017-02-24 19:35:45
 -- DROP DATABASE IF EXISTS `db_ebenezer`;
 -- CREATE DATABASE IF NOT EXISTS `db_ebenezer` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 -- USE `db_ebenezer`;
+DROP DATABASE IF EXISTS `db_ebenezer`;
+CREATE DATABASE IF NOT EXISTS `db_ebenezer` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `db_ebenezer`;
 
 SET FOREIGN_KEY_CHECKS=0;
 
@@ -507,7 +510,7 @@ BEGIN
   u.UserName  
 	FROM schedule_sunat ss
   INNER JOIN User u ON u.UserId=ss.UserId
-	WHERE ss.SchedulePeriod LIKE (CASE WHEN _Period=0 THEN '%' ELSE _Period  END) AND ss.ScheduleStatus=true
+	WHERE ss.SchedulePeriod LIKE (CASE WHEN _Period=0 THEN '' ELSE _Period  END) AND ss.ScheduleStatus=true
 	ORDER BY ss.ScheduleDigit ASC;
 END
 ;;
@@ -583,8 +586,22 @@ DROP PROCEDURE IF EXISTS `sp_SetScheduleSunat`;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_SetScheduleSunat`(IN `_period` DATE,IN `_digit` INT,IN `_duedate` DATE,IN `_programdate` DATE,IN `_programtime` TIME,IN `_status` BIT,IN `_user` INT)
 BEGIN
+
+  DECLARE _datetime DATETIME;
+  DECLARE _diffDatetime INT;
+  DECLARE _completestatus INT;
+
+  SELECT TIMESTAMP(_programdate,_programtime) INTO _datetime;
+  SELECT TIMESTAMPDIFF(SECOND, NOW(), _datetime) INTO _diffDatetime;
+
+  IF _diffDatetime > 0 THEN
+    SET _completestatus = 0;
+  ELSE
+    SET _completestatus = 1;
+  END IF;
+
   INSERT INTO schedule_sunat(SchedulePeriod,ScheduleDigit,ScheduleDueDate,ScheduleProgramDate,ScheduleProgramTime,ScheduleStatus,ScheduleCompleteStatus,UserId)
-  VALUES (`_period`,`_digit`,`_duedate`,`_programdate`,`_programtime`,`_status`,0,`_user`); 
+  VALUES (`_period`,`_digit`,`_duedate`,`_programdate`,`_programtime`,`_status`,_completestatus,`_user`); 
 END
 ;;
 DELIMITER ;
@@ -602,3 +619,57 @@ BEGIN
 END
 ;;
 DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for sp_GetScheduleSunatByPeriodDigit
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_GetScheduleSunatByPeriodDigit`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetScheduleSunatByPeriodDigit`(IN `_period` DATE,IN `_digit` INT)
+BEGIN
+
+  SELECT
+  DATE_FORMAT(ss.SchedulePeriod,'%m/%Y') as SchedulePeriod,
+  ss.ScheduleDigit,
+  DATE_FORMAT(ss.ScheduleDueDate,'%d/%m/%Y') as ScheduleDueDate,
+  DATE_FORMAT(ss.ScheduleProgramDate,'%d/%m/%Y') as ScheduleProgramDate,
+  TIME_FORMAT(ss.ScheduleProgramTime,'%h:%i %p') as ScheduleProgramTime,
+  ss.ScheduleStatus,
+  u.UserName  
+  FROM schedule_sunat ss
+  INNER JOIN User u ON u.UserId=ss.UserId
+  WHERE ss.SchedulePeriod=_period AND ss.ScheduleDigit=_digit AND ss.ScheduleStatus=true;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for sp_UpdateScheduleSunat
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_UpdateScheduleSunat`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_UpdateScheduleSunat`(IN `_period` DATE,IN `_digit` INT,IN `_duedate` DATE,IN `_programdate` DATE,IN `_programtime` TIME,IN `_status` BIT,IN `_user` INT)
+BEGIN
+
+  DECLARE _datetime DATETIME;
+  DECLARE _diffDatetime INT;
+  DECLARE _completestatus INT;
+
+  SELECT TIMESTAMP(_programdate,_programtime) INTO _datetime;
+  SELECT TIMESTAMPDIFF(SECOND, NOW(), _datetime) INTO _diffDatetime;
+
+  IF _diffDatetime > 0 THEN
+    SET _completestatus = 0;
+  ELSE
+    SET _completestatus = 1;
+  END IF;
+
+  UPDATE schedule_sunat
+  SET ScheduleCompleteStatus=_completestatus
+  WHERE SchedulePeriod=_period AND ScheduleDigit=_digit;
+  -- INSERT INTO schedule_sunat(SchedulePeriod,ScheduleDigit,ScheduleDueDate,ScheduleProgramDate,ScheduleProgramTime,ScheduleStatus,ScheduleCompleteStatus,UserId)
+  -- VALUES (`_period`,`_digit`,`_duedate`,`_programdate`,`_programtime`,`_status`,_completestatus,`_user`); 
+END
+;;
+DELIMITER ;
+
