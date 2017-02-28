@@ -90,4 +90,12 @@ class CalendarController extends  MasterController{
 		echo json_encode($update_schedule_sunat);
 	}
 /****************************************************************************************************/
+	public function delete_schedule_sunat()
+	{
+		$json 				= file_get_contents('php://input');
+		$data 				= json_decode($json,TRUE);		
+		$delete_schedule_sunat = $this->CalendarModel->delete_schedule_sunat($data);
+		echo json_encode($delete_schedule_sunat);
+	}
+/****************************************************************************************************/
 }

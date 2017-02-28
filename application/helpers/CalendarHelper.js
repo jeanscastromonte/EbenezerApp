@@ -13,7 +13,11 @@ $(document).ready(InitUser);
     var $modal_schedule         =   $('#modal-schedule');
     var $datatable_schedule     =   $('#datatable-schedule');
     var $datatable_schedule_year=   $('#datatable-schedule-year');
-    var flagnew_schedule;  
+    var $schedule_modaltitle    =   $('#modal-schedule').find('.modal-title'); 
+    var $modal_message          =   $('#modal-message');
+    var $btn_acceptdelete_schedule  =   $('#btn-acceptdelete-schedule');
+    var flagnew_schedule; 
+    var flagdelete_schedule     =   false; 
 
   //**Init Datatable***    
     var var_datatable           =   fnc_datatable_schedule($datatable_schedule);
@@ -22,21 +26,23 @@ function InitUser(){
 
   //***Private Variables***    
     var $btn_callmodal_schedule =   $('#btn-callmodal-schedule');
-    var $modal_message          =   $('#modal-message');
     var $form_schedule          =   $('#form-schedule');
 
   //***Alert schedule sunat***
-    fcn_schedule_alert();   
-
+    fcn_schedule_alert();
+    
   //***Button Call Modal***
     $btn_callmodal_schedule.on('click',function () {
       flagnew_schedule=true;
       fnc_modal_events();
       $modal_schedule.modal({"backdrop": "static","keyboard": false, "show": true});
       fnc_clear_form($form_schedule);
+      $schedule_modaltitle.text('Registrar Cronograma');     
     });
 
     $(document).on('click','.btn-editmodal-schedule',fnc_get_schedule_by_period_digit);
+    $(document).on('click','.btn-deletemodal-schedule',fnc_modaldelete_schedule);
+    $btn_acceptdelete_schedule.on('click',fnc_delete_schedule);
 
   //***Init Switch***
     fnc_switch_status($chck_status);
@@ -159,7 +165,7 @@ function fnc_datatable_schedule(_datatable) {
     "searching":false,
     "bLengthChange" : false,
     "language": {
-      "url": "http://cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
+      "url": "assets/language/Spanish.json"
     },
     "pageLength": 10,
     "aoColumns": [
@@ -167,24 +173,45 @@ function fnc_datatable_schedule(_datatable) {
       { "data":"ScheduleDueDate", "title": "Fecha Vencimiento" ,"sClass": "text-center"},
       { "data":"ScheduleProgramDate", "title": "Fecha Programada" ,"sClass": "text-center"},
       { "data":"ScheduleProgramTime", "title": "Hora Programada" ,"sClass": "text-center"},
-      { "data":"ScheduleStatus", "title": "Estado" ,"sClass": "text-center"},                  
+      { "data":"ScheduleCompleteStatus", "title": "Alerta" ,"sClass": "text-center"},      
+      { "data":"ScheduleStatus", "title": "Estado" ,"sClass": "text-center"},
       { "data":"UserName", "title": "Registrado" ,"sClass": "text-center"},                  
       { "data":null, "title": "Opciones",
       "mRender": function(data, type, full) {
           return '<a href="javascript:void(0);" class="btn btn-circle btn-icon-only blue btn-editmodal-schedule" data-digit="'+data['ScheduleDigit']+'" data-period="'+data['SchedulePeriod']+'"><i class="fa fa-edit"></i></a>'
-          +'<a href="javascript:void(0);" class="btn btn-circle btn-icon-only blue btn-deletemodal-schedule"><i class="fa fa-trash"></i></a>';
+          +'<a href="javascript:void(0);" class="btn btn-circle btn-icon-only blue btn-deletemodal-schedule" data-digit="'+data['ScheduleDigit']+'" data-period="'+data['SchedulePeriod']+'"><i class="fa fa-trash"></i></a>';
         }
       }
     ],
     "columnDefs" : [
       { targets : [4],
         render : function (data, type, row) {
-        return data == true ? '<span class="label bg-green-jungle">Activo</span>' : '<span class="label bg-red-intense">Inactivo</span>';
+        return data != true ? '<span class="label bg-green-jungle">En transcurso</span>' : '<span class="label bg-red-intense">Vencido</span>';
         }
       },
+      { targets : [5],
+        render : function (data, type, row) {
+        return data == true ? '<span class="label bg-green-jungle">Pendiente</span>' : '<span class="label bg-red-intense">Completado</span>';
+        }
+      }      
     ],
     "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-    }
+    },
+    dom: 'Bfrtip',
+    buttons: [
+            
+            {
+                extend: 'collection',
+                text: 'Export',
+                buttons: [
+                    'copy',
+                    'excel',
+                    'csv',
+                    'pdf',
+                    'print'
+                ]
+            }
+        ]
   });
 
   return datatable;
@@ -214,7 +241,7 @@ function fnc_datatable_scheduleYear(_datatable) {
     "searching":false,
     "bLengthChange" : false,
     "language": {
-      "url": "http://cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
+      "url": "assets/language/Spanish.json"
     },
     "pageLength": 10,
     "aoColumns": [
@@ -328,7 +355,6 @@ function fnc_set_schedule_sunat() {
   data.txt_scheduleddate  =  moment(scheduleddate).format('YYYY-MM-DD');
   data.txt_scheduletime   =  time;
   data.txt_status         =  $chck_status.bootstrapSwitch('state');
-
     
   var url_schedule_sunat = flagnew_schedule!=true?"update-schedule-sunat":"set-schedule-sunat";
 
@@ -345,21 +371,21 @@ function fnc_set_schedule_sunat() {
     },
     success: function (resp) 
     {
-      switch(resp.status)
-      {
-        case true:
-          $modal_schedule.modal('hide');
-          fnc_msj_alert(resp.type,resp.message,'',resp.icon,5);
-          var_datatable.ajax.reload(function (data) {
-          $('#spinner-loading').hide();
-          });
-          fcn_schedule_alert();
-        break;
+      if(resp){
+        switch(resp.status)
+        {
+          case true:
+            $txt_period.datepicker('setDate', period);            
+            $modal_schedule.modal('hide');
+            fnc_msj_alert(resp.type,resp.message,'',resp.icon,5);
+            fcn_schedule_alert();
+            break;
 
-        case false:
-         fnc_msj_alert(resp.type,resp.message,'.modal-msj-alert',resp.icon,5);
-         $('#spinner-loading').hide();
-        break;
+          case false:
+            fnc_msj_alert(resp.type,resp.message,'.modal-msj-alert',resp.icon,5);
+            $('#spinner-loading').hide();        
+            break;
+        }
       }
     },
     complete: function () 
@@ -374,7 +400,6 @@ function fnc_set_schedule_sunat() {
 }
 /*****************************************************************************************************************************************************************************/
 function fcn_schedule_alert() {
-  
   $.getJSON("get-schedule-alert", function(data, status){
 
     if(data){
@@ -384,8 +409,7 @@ function fcn_schedule_alert() {
         fnc_notification8_sunatalert(data.Period,data.Digit);
         fnc_update_complete_schedule(data.Period,data.Digit)      
       },miliseconds);
-
-      console.log(miliseconds);
+      //console.log(miliseconds);
     }
   });  
 }
@@ -435,12 +459,10 @@ function fnc_update_complete_schedule(period,digit) {
 /*****************************************************************************************************************************************************************************/
 function fnc_get_schedule_by_period_digit() {
    
-  flagnew_schedule=false; 
-  console.log(flagnew_schedule);
-  var period=$(this).attr('data-period');
+  flagnew_schedule=false;
 
   var data={};    
-  data.period  =  moment(period).format('YYYY-MM-DD');
+  data.period  =  moment($(this).attr('data-period')).format('YYYY-MM-DD');
   data.digit   =  $(this).attr('data-digit');  
 
   $.ajax({
@@ -451,32 +473,99 @@ function fnc_get_schedule_by_period_digit() {
     dataType: "json",
     async: true,
     beforeSend: function () 
-    {        
+    {
+      $('#spinner-loading').show();      
     },
     success: function (resp) 
     {
-      fnc_modal_events();
-      $modal_schedule.modal({"backdrop": "static","keyboard": false, "show": true});
+      if(resp){
 
-      $txt_period2.datepicker('setDate', resp.SchedulePeriod);
-      $cbo_digit.select2('val',resp.ScheduleDigit);      
-      $txt_duedate.datepicker('setDate', resp.ScheduleDueDate);
-      $txt_scheduleddate.datepicker('setDate', resp.ScheduleProgramDate);
-      $txt_scheduletime.timepicker('setTime', resp.ScheduleProgramTime);
-      $chck_status.bootstrapSwitch('state', resp.ScheduleStatus);
+        $schedule_modaltitle.text('Editar Cronograma');
+        $txt_period2.datepicker('setDate', ConvertDate(resp.SchedulePeriod));
+        $cbo_digit.select2('val',resp.ScheduleDigit);      
+        $txt_duedate.datepicker('setDate', resp.ScheduleDueDate);
+        $txt_scheduleddate.datepicker('setDate', resp.ScheduleProgramDate);
+        $txt_scheduletime.timepicker('setTime', resp.ScheduleProgramTime);
+        $chck_status.bootstrapSwitch('state', resp.ScheduleStatus==0?false:true);
 
-      $txt_period2.attr('disabled', 'disabled');
-      $cbo_digit.attr('disabled', 'disabled');
+        $txt_period2.attr('disabled', 'disabled');
+        $cbo_digit.attr('disabled', 'disabled');
 
-      // var period=isNaN($txt_period.datepicker('getDate'))?null:$txt_period.datepicker('getDate');
-      //fnc_clear_form($form_schedule);
+        fnc_modal_events();
+        $modal_schedule.modal({"backdrop": "static","keyboard": false, "show": true});
+        $('#spinner-loading').hide();
+
+      }     
     },
     complete: function () 
-    {     
+    {
     },
     error: function(resp)
     {
     }
   });
+}
+/*****************************************************************************************************************************************************************************/
+function fnc_modaldelete_schedule() {
+
+  flagdelete_schedule=true;
+  fnc_modal_events();
+  $modal_message.modal({"backdrop": "static","keyboard": false, "show": true});
+  var period  =  moment($(this).attr('data-period')).format('YYYY-MM-DD');
+  var digit   =  $(this).attr('data-digit');
+  $btn_acceptdelete_schedule.attr({'data-period':period,'data-digit':digit});
+}
+/*****************************************************************************************************************************************************************************/
+function fnc_delete_schedule(data) {
+
+  var data={};
+  data.period  =  moment($(this).attr('data-period')).format('YYYY-MM-DD');
+  data.digit   =  $(this).attr('data-digit');
+  console.log(data.period);
+  console.log(data.digit);
+
+  $.ajax({
+    type: "POST",
+    url: "delete-schedule-sunat",
+    data: JSON.stringify(data),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    async: true,
+    beforeSend: function () 
+    {
+    },
+    success: function (resp) 
+    {
+      if(resp){
+        switch(resp.status)
+        {
+          case true:
+            $txt_period.datepicker('setDate', ConvertDate(data.period));            
+            $modal_message.modal('hide');
+            fnc_msj_alert(resp.type,resp.message,'',resp.icon,5);
+            fcn_schedule_alert();
+            break;
+
+          case false:
+            fnc_msj_alert(resp.type,resp.message,'.modal-msj-alert',resp.icon,5);
+            $('#spinner-loading').hide();        
+            break;
+        }
+      }
+    },
+    complete: function () 
+    {
+    },
+    error: function(resp)
+    {
+    }
+  });
+}
+/*****************************************************************************************************************************************************************************/
+function ConvertDate(datetime) {
+  var str = datetime;
+  var p = str.split("-");
+  var date = new Date(p[0],p[1]-1,p[2]);
+  return date;
 }
 /*****************************************************************************************************************************************************************************/

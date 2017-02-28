@@ -25,4 +25,5 @@ $route['get-schedule-year-sunat'] = 'CalendarController/get_schedule_year_sunat'
 
 $route['get-schedule-sunat-byperioddigit'] = 'CalendarController/get_schedule_sunat_byperioddigit';
 $route['update-schedule-sunat'] = 'CalendarController/update_schedule_sunat';
+$route['delete-schedule-sunat'] = 'CalendarController/delete_schedule_sunat';
 /*********************************************************************/

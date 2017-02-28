@@ -501,16 +501,17 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetScheduleSunatByPeriod`(IN `_P
 BEGIN
 
   SELECT
-  DATE_FORMAT(ss.SchedulePeriod,'%d/%m/%Y') as SchedulePeriod,
+  ss.SchedulePeriod,
   ss.ScheduleDigit,
   DATE_FORMAT(ss.ScheduleDueDate,'%d/%m/%Y') as ScheduleDueDate,
   DATE_FORMAT(ss.ScheduleProgramDate,'%d/%m/%Y') as ScheduleProgramDate,
   TIME_FORMAT(ss.ScheduleProgramTime,'%h:%i %p') as ScheduleProgramTime,
   ss.ScheduleStatus,
+  ss.ScheduleCompleteStatus,
   u.UserName  
 	FROM schedule_sunat ss
   INNER JOIN User u ON u.UserId=ss.UserId
-	WHERE ss.SchedulePeriod LIKE (CASE WHEN _Period=0 THEN '' ELSE _Period  END) AND ss.ScheduleStatus=true
+	WHERE ss.SchedulePeriod LIKE (CASE WHEN _Period=0 THEN '' ELSE _Period  END)
 	ORDER BY ss.ScheduleDigit ASC;
 END
 ;;
@@ -537,7 +538,7 @@ BEGIN
 	(SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=8 AND s1.SchedulePeriod=ss.SchedulePeriod) as d8,
 	(SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=9 AND s1.SchedulePeriod=ss.SchedulePeriod) as d9
 	FROM schedule_sunat ss
-	WHERE ss.SchedulePeriod LIKE CONCAT('%',_Period,'%') AND ss.ScheduleStatus=true
+	WHERE ss.SchedulePeriod LIKE CONCAT('%',_Period,'%')
 	GROUP BY ss.SchedulePeriod;
 
 END
@@ -627,9 +628,8 @@ DROP PROCEDURE IF EXISTS `sp_GetScheduleSunatByPeriodDigit`;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetScheduleSunatByPeriodDigit`(IN `_period` DATE,IN `_digit` INT)
 BEGIN
-
   SELECT
-  DATE_FORMAT(ss.SchedulePeriod,'%m/%Y') as SchedulePeriod,
+  ss.SchedulePeriod,
   ss.ScheduleDigit,
   DATE_FORMAT(ss.ScheduleDueDate,'%d/%m/%Y') as ScheduleDueDate,
   DATE_FORMAT(ss.ScheduleProgramDate,'%d/%m/%Y') as ScheduleProgramDate,
@@ -638,7 +638,7 @@ BEGIN
   u.UserName  
   FROM schedule_sunat ss
   INNER JOIN User u ON u.UserId=ss.UserId
-  WHERE ss.SchedulePeriod=_period AND ss.ScheduleDigit=_digit AND ss.ScheduleStatus=true;
+  WHERE ss.SchedulePeriod=_period AND ss.ScheduleDigit=_digit;
 END
 ;;
 DELIMITER ;
@@ -665,10 +665,25 @@ BEGIN
   END IF;
 
   UPDATE schedule_sunat
-  SET ScheduleCompleteStatus=_completestatus
+  SET ScheduleDueDate=_duedate,
+  ScheduleProgramDate=_programdate,
+  ScheduleProgramTime=_programtime,
+  ScheduleStatus=_status,
+  ScheduleCompleteStatus=_completestatus,
+  UserId=_user
   WHERE SchedulePeriod=_period AND ScheduleDigit=_digit;
-  -- INSERT INTO schedule_sunat(SchedulePeriod,ScheduleDigit,ScheduleDueDate,ScheduleProgramDate,ScheduleProgramTime,ScheduleStatus,ScheduleCompleteStatus,UserId)
-  -- VALUES (`_period`,`_digit`,`_duedate`,`_programdate`,`_programtime`,`_status`,_completestatus,`_user`); 
+END
+;;
+DELIMITER ;
+-- ----------------------------
+-- Procedure structure for sp_DeleteScheduleSunat
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_DeleteScheduleSunat`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_DeleteScheduleSunat`(IN `_period` DATE,IN `_digit` INT)
+BEGIN
+  DELETE FROM schedule_sunat
+  WHERE SchedulePeriod=_period AND ScheduleDigit=_digit;
 END
 ;;
 DELIMITER ;

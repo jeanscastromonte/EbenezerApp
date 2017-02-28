@@ -62,7 +62,7 @@ class CalendarModel extends CI_Model {
 		{
 			$output = array(
 			"status" => FALSE,
-			"message"=>"ERROR, No se puede registrar, Vuelva a intentarlo2.",
+			"message"=>"ERROR, No se puede registrar, Vuelva a intentarlo.",
 			"type"=>"danger",
 			"icon"=>"warning");	
 		}		
@@ -119,7 +119,7 @@ class CalendarModel extends CI_Model {
     	$duedate       = $data['txt_duedate'];
     	$scheduleddate = $data['txt_scheduleddate'];
     	$scheduletime  = $data['txt_scheduletime'];
-    	$status		   = $data['txt_status'];
+    	$status		   = $data['txt_status']==true?1:0;
     	$iduser		   = $this->session->userdata('UserId');
 
     	$query=$this->db->query("CALL sp_UpdateScheduleSunat('$period',$digit,'$duedate','$scheduleddate','$scheduletime',$status,$iduser)");
@@ -136,7 +136,33 @@ class CalendarModel extends CI_Model {
 		{
 			$output = array(
 			"status" => FALSE,
-			"message"=>"ERROR, No se puede editar, Vuelva a intentarlo2.",
+			"message"=>"ERROR, No se puede editar, Vuelva a intentarlo.",
+			"type"=>"danger",
+			"icon"=>"warning");	
+		}		
+		return $output;
+    }
+/*************************************************************************/
+	public function delete_schedule_sunat($data)
+    {
+    	$period = $data['period'];
+    	$digit  = $data['digit'];    	
+
+    	$query=$this->db->query("CALL sp_DeleteScheduleSunat('$period',$digit)");
+
+    	if($query)
+		{
+			$output = array(
+			"status" => TRUE,
+			"message"=>"Se eliminó exitosamente",
+			"type"=>"success",
+			"icon"=>"check");			
+		}
+		else
+		{
+			$output = array(
+			"status" => FALSE,
+			"message"=>"ERROR, No se puede eliminar, Vuelva a intentarlo.",
 			"type"=>"danger",
 			"icon"=>"warning");	
 		}		
