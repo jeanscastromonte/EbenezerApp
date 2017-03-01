@@ -118,8 +118,8 @@ function fnc_form_validation(_form,_rules)
 /******************************************************************************************************************************************************************************/
 function fnc_switch_status(_selector)
 {
-   _selector.bootstrapSwitch({onText:'Activo',offText:'&nbsp;Inactivo&nbsp;',onColor: 'success',offColor:'danger',size: 'normal'});
-    $('.bootstrap-switch').css('width','150px');
+   _selector.bootstrapSwitch({onText:'Pendiente',offText:'&nbsp;Completado&nbsp;',onColor: 'success',offColor:'danger',size: 'normal'});
+    $('.bootstrap-switch').css('width','180px');
 }
 /******************************************************************************************************************************************************************************/
 function fnc_get_year() {

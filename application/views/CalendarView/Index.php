@@ -8,11 +8,7 @@
 		<li>
 			<i class="fa fa-home"></i>
 			<a href="javascritp:void(0);">Cronograma Sunat</a>
-			<!-- <i class="fa fa-angle-right"></i> -->
 		</li>
-		<!-- <li>
-			<a href="javascritp:void(0);">Registro de ventas</a>
-		</li> -->
 	</ul>
 </div>
 <!-- END PAGE HEADER-->
@@ -27,10 +23,6 @@
 					<i class="fa fa-users"></i>Cronograma Sunat
 				</div>
 				<div class="actions">
-					<!-- <a href="#" class="btn btn-default btn-sm">
-					<i class="fa fa-plus"></i> Add </a>
-					<a href="#" class="btn btn-default btn-sm">
-					<i class="fa fa-print"></i> Print </a> -->
 				</div>
 				<div class="tools">
 					<button type="button" class="btn btn-default tooltips" id="btn-callmodal-schedule" data-container="body" data-placement="top" data-original-title="Agregar Cronograma">
@@ -40,38 +32,63 @@
 			</div>
 			<div class="portlet-body">
 
-				<div class="col-md-3 row">
-					<div class="input-group group-design">
-						<span class="input-group-addon">
-							<i class="fa fa-calendar"></i>
-						</span>
-						<input class="form-control" placeholder="Periodo"  name="txtperiod" type="text">
-					</div> 
+				<div class="row">
+					<div class="col-md-3">
+						<div class="input-group group-design">
+							<span class="input-group-addon">
+								<i class="fa fa-calendar"></i>
+							</span>
+							<input class="form-control" placeholder="Periodo"  name="txtperiod" type="text">
+						</div> 
+					</div>
+
+					<div class="col-md-3" style="padding-top: 5px;">
+						<div class="input-icon">
+							<i class="fa"></i>
+							<input type="checkbox" checked id="chck-date-period">
+						</div>									
+					</div>
+
+					<div class="col-md-6">
+						<div class="pull-right">
+							<button class="btn green  btn-outline dropdown-toggle" data-toggle="dropdown">Tools
+								<i class="fa fa-angle-down"></i>
+							</button>
+							<ul class="dropdown-menu pull-right">
+								<li>
+									<a href="javascript:;"><i class="fa fa-print"></i> Imprimir </a>
+								</li>
+								<li>
+									<a href="javascript:;" id="download"><i class="fa fa-file-pdf-o"></i> Guardar en PDF </a>
+								</li>
+								<li>
+									<a href="javascript:;"><i class="fa fa-file-excel-o"></i> Exportar en Excel </a>
+								</li>
+							</ul>
+						</div>
+						<!-- <a href="javascript:;" class="btn btn-icon-only grey-cascade">
+							<i class="fa fa-print"></i>
+						</a> -->
+					</div>
+				</div>				
+
+				<div class="row">
+					<div class="col-md-12">
+						<!-- BEGIN TABLE SCHEDULE SUNAT -->
+						<table class="table table-striped table-bordered table-hover" id="datatable-schedule">					
+						</table>
+						<!-- END TABLE SCHEDULE SUNAT -->
+					</div>
 				</div>
 
-				<div class="col-md-3 row">					
-					<div class="input-icon right">
-						<i class="fa"></i>
-						<input type="checkbox" checked id="chck-date-period">
-					</div>									
+				<div class="row">
+					<div class="col-md-12">
+						<!-- BEGIN TABLE SCHEDULE SUNAT -->
+						<table class="table table-striped table-bordered table-hover" id="datatable-schedule-year">						
+						</table>
+						<!-- END TABLE SCHEDULE SUNAT -->
+					</div>
 				</div>
-
-				<!-- BEGIN SPINNER LOADING -->
-				<div class="text-center" id="spinner-loading" hidden="hidden">
-					<i class="fa fa-spinner fa-spin fa-3x color-spinner"></i>&nbsp;Cargando...
-				</div>
-				<!-- END SPINNER LOADING -->
-
-				<!-- BEGIN TABLE SCHEDULE SUNAT -->
-				<table class="table table-striped table-bordered table-hover" id="datatable-schedule">					
-				</table>
-				<!-- END TABLE SCHEDULE SUNAT -->
-
-				<!-- BEGIN TABLE SCHEDULE SUNAT -->
-				<table class="table table-striped table-bordered table-hover" id="datatable-schedule-year">						
-				</table>
-				<!-- END TABLE SCHEDULE SUNAT -->
-
 			</div>
 		</div>
 		<!-- END EXAMPLE TABLE PORTLET-->
@@ -187,12 +204,12 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-				<h4 class="modal-title">Modal Title</h4>
+				<h4 class="modal-title">Confirmación</h4>
 			</div>
-			<div class="modal-body"> Modal body goes here </div>
+			<div class="modal-body">¿Desea eliminar esta alerta?</div>
 			<div class="modal-footer">
-				<button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
-				<button type="button" class="btn green">Save changes</button>
+				<button type="button" data-dismiss="modal" class="btn default">Cancelar</button>
+				<button type="button" id="btn-acceptdelete-schedule" class="btn btn-primary">Aceptar</button>
 			</div>
 		</div>
 		<!-- /.modal-content -->
