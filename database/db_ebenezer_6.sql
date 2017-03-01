@@ -510,13 +510,8 @@ BEGIN
   ss.ScheduleCompleteStatus,
   u.UserName  
 	FROM schedule_sunat ss
-<<<<<<< HEAD
   INNER JOIN user u ON u.UserId=ss.UserId
-	WHERE ss.SchedulePeriod LIKE (CASE WHEN _Period=0 THEN '%' ELSE _Period  END) AND ss.ScheduleStatus=true
-=======
-  INNER JOIN User u ON u.UserId=ss.UserId
 	WHERE ss.SchedulePeriod LIKE (CASE WHEN _Period=0 THEN '' ELSE _Period  END)
->>>>>>> origin/master
 	ORDER BY ss.ScheduleDigit ASC;
 END
 ;;
@@ -642,7 +637,7 @@ BEGIN
   ss.ScheduleStatus,
   u.UserName  
   FROM schedule_sunat ss
-  INNER JOIN User u ON u.UserId=ss.UserId
+  INNER JOIN user u ON u.UserId=ss.UserId
   WHERE ss.SchedulePeriod=_period AND ss.ScheduleDigit=_digit;
 END
 ;;

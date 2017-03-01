@@ -1,173 +1,106 @@
--- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
---
--- Servidor: 127.0.0.1
--- Tiempo de generación: 24-01-2017 a las 23:27:41
--- Versión del servidor: 10.1.16-MariaDB
--- Versión de PHP: 7.0.9
+/*
+Navicat MySQL Data Transfer
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
+Source Server         : Localhost
+Source Server Version : 50505
+Source Host           : localhost:3306
+Source Database       : db_ebenezer
 
+Target Server Type    : MYSQL
+Target Server Version : 50505
+File Encoding         : 65001
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+Date: 2017-02-24 19:35:45
+*/
+-- DROP DATABASE IF EXISTS `db_ebenezer`;
+-- CREATE DATABASE IF NOT EXISTS `db_ebenezer` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+-- USE `db_ebenezer`;
+-- DROP DATABASE IF EXISTS `db_ebenezer`;
+-- CREATE DATABASE IF NOT EXISTS `db_ebenezer` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+-- USE `db_ebenezer`;
 
---
--- Base de datos: `db_ebenezer`
---
-DROP DATABASE IF EXISTS `db_ebenezer`;
-CREATE DATABASE IF NOT EXISTS `db_ebenezer` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `db_ebenezer`;
+SET FOREIGN_KEY_CHECKS=0;
 
-DELIMITER $$
---
--- Procedimientos
---
-DROP PROCEDURE IF EXISTS `sp_GetAllRoles`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetAllRoles` ()  BEGIN
-			SELECT
-			RoleId,
-			RoleName
-			FROM  role
-			WHERE RoleStatus=TRUE
-			ORDER BY RoleId ASC;
-END$$
-
-DROP PROCEDURE IF EXISTS `sp_GetAllUsers`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetAllUsers` ()  BEGIN
-			SELECT
-      u.UserId,
-			u.UserImage,
-			u.UserLoginName,
-			u.UserName,
-			u.UserLastName,
-			DATE_FORMAT(u.UserBirthdate,'%d/%m/%Y') as UserBirthdate,
-			u.UserTelephone,
-			u.UserEmail,
-			u.UserStatus,
-			r.RoleName
-			FROM `user` u
-			INNER JOIN role r ON r.RoleId=u.UserRoleId
-			ORDER BY u.UserLoginName ASC;
-END$$
-
-DROP PROCEDURE IF EXISTS `sp_GetMenuByRole`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetMenuByRole` (IN `_RoleId` INT)  BEGIN
-
-  SELECT ar.MenuId,m.ModuleMenuIdFather,m.ModuleMenuName,m.ModuleMenuLink,m.ModuleMenuLevel,m.ModuleMenuPosition,
-	m.ModuleMenuIcon
-	FROM assigned_roles ar
-	INNER JOIN role r ON r.RoleId=ar.RoleId
-	INNER JOIN module_menu m ON m.ModuleMenuId=ar.MenuId
-	WHERE r.RoleId=`_RoleId` AND r.RoleStatus=TRUE AND ar.Access=TRUE AND m.ModuleMenuStatus=TRUE AND m.ModuleMenuLevel=1
-	ORDER BY m.ModuleMenuPosition ASC;
-END$$
-
-DROP PROCEDURE IF EXISTS `sp_GetSubMenu`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetSubMenu` (IN `_RoleId` INT, IN `_MenuId` INT)  BEGIN
-
-  SELECT ar.MenuId,m.ModuleMenuIdFather,m.ModuleMenuName,m.ModuleMenuLink,m.ModuleMenuLevel,m.ModuleMenuPosition
-	FROM assigned_roles ar
-	INNER JOIN role r ON r.RoleId=ar.RoleId
-	INNER JOIN module_menu m ON m.ModuleMenuId=ar.MenuId
-	WHERE r.RoleId=`_RoleId` AND r.RoleStatus=TRUE AND ar.Access=TRUE AND m.ModuleMenuStatus=TRUE AND m.ModuleMenuIdFather=`_MenuId`
-	ORDER BY m.ModuleMenuPosition ASC;
-END$$
-
-DROP PROCEDURE IF EXISTS `sp_LoginUser`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_LoginUser` (IN `_UserLoginName` VARCHAR(10), IN `_UserLoginPassword` VARCHAR(20))  BEGIN
-
-  SELECT u.UserId,u.UserLoginName,u.UserName,u.UserImage,r.RoleId,r.RoleName FROM `user` u
-	INNER JOIN role r ON r.RoleId=u.UserRoleId
-	WHERE u.UserLoginName=`_UserLoginName` AND u.UserLoginPassword=`_UserLoginPassword`
-	AND u.UserStatus=TRUE AND r.RoleStatus=TRUE;
-
-END$$
-
-DELIMITER ;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `accounting_account`
---
-
+-- ----------------------------
+-- Table structure for accounting_account
+-- ----------------------------
 DROP TABLE IF EXISTS `accounting_account`;
 CREATE TABLE `accounting_account` (
-  `AccountingAccountId` int(11) NOT NULL,
+  `AccountingAccountId` int(11) NOT NULL AUTO_INCREMENT,
   `AccountingAccountCod` varchar(10) NOT NULL,
   `AccountingAccountDescription` text NOT NULL,
-  `AccountingAccountStatus` bit(1) NOT NULL
+  `AccountingAccountStatus` bit(1) NOT NULL,
+  PRIMARY KEY (`AccountingAccountId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
+-- ----------------------------
+-- Records of accounting_account
+-- ----------------------------
 
---
--- Estructura de tabla para la tabla `assigned_roles`
---
-
+-- ----------------------------
+-- Table structure for assigned_roles
+-- ----------------------------
 DROP TABLE IF EXISTS `assigned_roles`;
 CREATE TABLE `assigned_roles` (
   `MenuId` int(11) NOT NULL,
   `RoleId` int(11) NOT NULL,
-  `Access` bit(1) NOT NULL
+  `Access` bit(1) NOT NULL,
+  PRIMARY KEY (`MenuId`,`RoleId`),
+  KEY `fk_AssignedRoles_Role1_idx` (`RoleId`),
+  CONSTRAINT `fk_AssignedRoles_ModuleMenu1` FOREIGN KEY (`MenuId`) REFERENCES `module_menu` (`ModuleMenuId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_AssignedRoles_Role1` FOREIGN KEY (`RoleId`) REFERENCES `role` (`RoleId`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Volcado de datos para la tabla `assigned_roles`
---
+-- ----------------------------
+-- Records of assigned_roles
+-- ----------------------------
+INSERT INTO `assigned_roles` VALUES ('1', '1', '');
+INSERT INTO `assigned_roles` VALUES ('2', '1', '');
+INSERT INTO `assigned_roles` VALUES ('3', '1', '');
+INSERT INTO `assigned_roles` VALUES ('4', '1', '');
+INSERT INTO `assigned_roles` VALUES ('5', '1', '');
+INSERT INTO `assigned_roles` VALUES ('6', '1', '');
+INSERT INTO `assigned_roles` VALUES ('7', '1', '');
+INSERT INTO `assigned_roles` VALUES ('8', '1', '');
+INSERT INTO `assigned_roles` VALUES ('9', '1', '');
+INSERT INTO `assigned_roles` VALUES ('10', '1', '');
+INSERT INTO `assigned_roles` VALUES ('11', '1', '');
+INSERT INTO `assigned_roles` VALUES ('12', '1', '');
+INSERT INTO `assigned_roles` VALUES ('13', '1', '');
+INSERT INTO `assigned_roles` VALUES ('14', '1', '');
+INSERT INTO `assigned_roles` VALUES ('15', '1', '');
+INSERT INTO `assigned_roles` VALUES ('16', '1', '');
+INSERT INTO `assigned_roles` VALUES ('17', '1', '');
+INSERT INTO `assigned_roles` VALUES ('18', '1', '');
+INSERT INTO `assigned_roles` VALUES ('19', '1', '');
+INSERT INTO `assigned_roles` VALUES ('20', '1', '');
 
-INSERT INTO `assigned_roles` (`MenuId`, `RoleId`, `Access`) VALUES
-(1, 1, b'1'),
-(2, 1, b'1'),
-(3, 1, b'1'),
-(4, 1, b'1'),
-(5, 1, b'1'),
-(6, 1, b'1'),
-(7, 1, b'1'),
-(8, 1, b'1'),
-(9, 1, b'1'),
-(10, 1, b'1'),
-(11, 1, b'1'),
-(12, 1, b'1'),
-(13, 1, b'1'),
-(14, 1, b'1'),
-(15, 1, b'1'),
-(16, 1, b'1'),
-(17, 1, b'1'),
-(18, 1, b'1');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `customer`
---
-
+-- ----------------------------
+-- Table structure for customer
+-- ----------------------------
 DROP TABLE IF EXISTS `customer`;
 CREATE TABLE `customer` (
-  `CustomerId` int(11) NOT NULL,
+  `CustomerId` int(11) NOT NULL AUTO_INCREMENT,
   `CustomerName` text NOT NULL,
   `CustomerDocument` char(3) NOT NULL,
   `CustomerDocumentNumber` int(11) NOT NULL,
   `CustomerAddress` text,
   `CustomerTelephone` varchar(50) DEFAULT NULL,
   `CustomerEmail` varchar(50) DEFAULT NULL,
-  `CustomerStatus` bit(1) NOT NULL
+  `CustomerStatus` bit(1) NOT NULL,
+  PRIMARY KEY (`CustomerId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
+-- ----------------------------
+-- Records of customer
+-- ----------------------------
 
---
--- Estructura de tabla para la tabla `document`
---
-
+-- ----------------------------
+-- Table structure for document
+-- ----------------------------
 DROP TABLE IF EXISTS `document`;
 CREATE TABLE `document` (
-  `DocumentId` int(11) NOT NULL,
+  `DocumentId` int(11) NOT NULL AUTO_INCREMENT,
   `DocumentTypeId` int(11) NOT NULL,
   `OriginsId` int(11) NOT NULL,
   `DocumentTaxableId` int(11) NOT NULL,
@@ -183,90 +116,130 @@ CREATE TABLE `document` (
   `DocumentSerie` varchar(50) NOT NULL,
   `DocumentNumber` varchar(50) NOT NULL,
   `DocumentGlosa` text,
-  `DocumentStatus` bit(1) NOT NULL
+  `DocumentStatus` bit(1) NOT NULL,
+  PRIMARY KEY (`DocumentId`),
+  KEY `fk_Document_DocumentType1_idx` (`DocumentTypeId`),
+  KEY `fk_Document_Origins1_idx` (`OriginsId`),
+  KEY `fk_Document_DocumentTaxable1_idx` (`DocumentTaxableId`),
+  KEY `fk_Document_DocumentIgv1_idx` (`DocumentIgvId`),
+  KEY `fk_Document_DocumentTotalAmount1_idx` (`DocumentTotalAmountId`),
+  KEY `fk_Document_ThirdCompany1_idx` (`ThirdCompanyId`),
+  KEY `fk_Document_ExchangeRate1_idx` (`ExchangeRateId`),
+  KEY `fk_Document_Customer1_idx` (`CustomerId`),
+  KEY `fk_Document_TaxIgv1_idx` (`TaxIgvId`),
+  KEY `fk_Document_PaymentMethod1_idx` (`PaymentMethodId`),
+  KEY `fk_Document_User1_idx` (`UserId`),
+  CONSTRAINT `fk_Document_Customer1` FOREIGN KEY (`CustomerId`) REFERENCES `customer` (`CustomerId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Document_DocumentIgv1` FOREIGN KEY (`DocumentIgvId`) REFERENCES `document_igv` (`DocumentIgvId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Document_DocumentTaxable1` FOREIGN KEY (`DocumentTaxableId`) REFERENCES `document_taxable` (`DocumentTaxableId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Document_DocumentTotalAmount1` FOREIGN KEY (`DocumentTotalAmountId`) REFERENCES `document_totalamount` (`DocumentTotalAmountId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Document_DocumentType1` FOREIGN KEY (`DocumentTypeId`) REFERENCES `document_type` (`DocumentTypeId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Document_ExchangeRate1` FOREIGN KEY (`ExchangeRateId`) REFERENCES `exchange_rate` (`ExchangeRateId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Document_Origins1` FOREIGN KEY (`OriginsId`) REFERENCES `origins` (`OriginsId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Document_PaymentMethod1` FOREIGN KEY (`PaymentMethodId`) REFERENCES `payment_method` (`PaymentMethodId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Document_TaxIgv1` FOREIGN KEY (`TaxIgvId`) REFERENCES `tax_igv` (`TaxIgvId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Document_ThirdCompany1` FOREIGN KEY (`ThirdCompanyId`) REFERENCES `third_company` (`ThirdCompanyId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Document_User1` FOREIGN KEY (`UserId`) REFERENCES `user` (`UserId`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
+-- ----------------------------
+-- Records of document
+-- ----------------------------
 
---
--- Estructura de tabla para la tabla `document_igv`
---
-
+-- ----------------------------
+-- Table structure for document_igv
+-- ----------------------------
 DROP TABLE IF EXISTS `document_igv`;
 CREATE TABLE `document_igv` (
-  `DocumentIgvId` int(11) NOT NULL,
+  `DocumentIgvId` int(11) NOT NULL AUTO_INCREMENT,
   `AccountingAccountId` int(11) NOT NULL,
   `DocumentIgvValue` decimal(19,2) NOT NULL,
-  `DocumentIgvEquivalent` decimal(19,2) NOT NULL
+  `DocumentIgvEquivalent` decimal(19,2) NOT NULL,
+  PRIMARY KEY (`DocumentIgvId`),
+  KEY `fk_DocumentIgv_AccountingAccount1_idx` (`AccountingAccountId`),
+  CONSTRAINT `fk_DocumentIgv_AccountingAccount1` FOREIGN KEY (`AccountingAccountId`) REFERENCES `accounting_account` (`AccountingAccountId`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
+-- ----------------------------
+-- Records of document_igv
+-- ----------------------------
 
---
--- Estructura de tabla para la tabla `document_taxable`
---
-
+-- ----------------------------
+-- Table structure for document_taxable
+-- ----------------------------
 DROP TABLE IF EXISTS `document_taxable`;
 CREATE TABLE `document_taxable` (
-  `DocumentTaxableId` int(11) NOT NULL,
+  `DocumentTaxableId` int(11) NOT NULL AUTO_INCREMENT,
   `AccountingAccountId` int(11) NOT NULL,
   `DocumentTaxableValue` decimal(19,2) NOT NULL,
-  `DocumentTaxableEquivalent` decimal(19,2) NOT NULL
+  `DocumentTaxableEquivalent` decimal(19,2) NOT NULL,
+  PRIMARY KEY (`DocumentTaxableId`),
+  KEY `fk_DocumentTaxable_AccountingAccount1_idx` (`AccountingAccountId`),
+  CONSTRAINT `fk_DocumentTaxable_AccountingAccount1` FOREIGN KEY (`AccountingAccountId`) REFERENCES `accounting_account` (`AccountingAccountId`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
+-- ----------------------------
+-- Records of document_taxable
+-- ----------------------------
 
---
--- Estructura de tabla para la tabla `document_totalamount`
---
-
+-- ----------------------------
+-- Table structure for document_totalamount
+-- ----------------------------
 DROP TABLE IF EXISTS `document_totalamount`;
 CREATE TABLE `document_totalamount` (
-  `DocumentTotalAmountId` int(11) NOT NULL,
+  `DocumentTotalAmountId` int(11) NOT NULL AUTO_INCREMENT,
   `AccountingAccountId` int(11) NOT NULL,
   `DocumentTotalAmountValue` decimal(19,2) NOT NULL,
-  `DocumentTotalAmountEquivalent` decimal(19,2) NOT NULL
+  `DocumentTotalAmountEquivalent` decimal(19,2) NOT NULL,
+  PRIMARY KEY (`DocumentTotalAmountId`),
+  KEY `fk_DocumentTotalAmount_AccountingAccount1_idx` (`AccountingAccountId`),
+  CONSTRAINT `fk_DocumentTotalAmount_AccountingAccount1` FOREIGN KEY (`AccountingAccountId`) REFERENCES `accounting_account` (`AccountingAccountId`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
+-- ----------------------------
+-- Records of document_totalamount
+-- ----------------------------
 
---
--- Estructura de tabla para la tabla `document_type`
---
-
+-- ----------------------------
+-- Table structure for document_type
+-- ----------------------------
 DROP TABLE IF EXISTS `document_type`;
 CREATE TABLE `document_type` (
-  `DocumentTypeId` int(11) NOT NULL,
+  `DocumentTypeId` int(11) NOT NULL AUTO_INCREMENT,
   `DocumentTypeCode` char(2) NOT NULL,
   `DocumentTypeName` varchar(50) NOT NULL,
   `DocumentTypeDescription` text,
-  `DocumentTypeStatus` bit(1) NOT NULL
+  `DocumentTypeStatus` bit(1) NOT NULL,
+  PRIMARY KEY (`DocumentTypeId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
+-- ----------------------------
+-- Records of document_type
+-- ----------------------------
 
---
--- Estructura de tabla para la tabla `exchange_rate`
---
-
+-- ----------------------------
+-- Table structure for exchange_rate
+-- ----------------------------
 DROP TABLE IF EXISTS `exchange_rate`;
 CREATE TABLE `exchange_rate` (
-  `ExchangeRateId` int(11) NOT NULL,
+  `ExchangeRateId` int(11) NOT NULL AUTO_INCREMENT,
   `ExchangeRateDate` date NOT NULL,
   `ExchangeRateDollarSale` decimal(19,2) NOT NULL,
   `ExchangeRateDollarBuy` decimal(19,2) NOT NULL,
-  `ExchangeRateStatus` bit(1) NOT NULL
+  `ExchangeRateStatus` bit(1) NOT NULL,
+  PRIMARY KEY (`ExchangeRateId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
+-- ----------------------------
+-- Records of exchange_rate
+-- ----------------------------
 
---
--- Estructura de tabla para la tabla `module_menu`
---
-
+-- ----------------------------
+-- Table structure for module_menu
+-- ----------------------------
 DROP TABLE IF EXISTS `module_menu`;
 CREATE TABLE `module_menu` (
-  `ModuleMenuId` int(11) NOT NULL,
+  `ModuleMenuId` int(11) NOT NULL AUTO_INCREMENT,
   `ModuleMenuIdFather` int(11) DEFAULT NULL,
   `ModuleMenuName` varchar(150) NOT NULL,
   `ModuleMenuLink` varchar(150) DEFAULT NULL,
@@ -275,122 +248,145 @@ CREATE TABLE `module_menu` (
   `ModuleMenuButtonColor` varchar(7) DEFAULT NULL,
   `ModuleMenuInformation` varchar(150) DEFAULT NULL,
   `ModuleMenuPosition` int(11) DEFAULT NULL,
-  `ModuleMenuStatus` bit(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `ModuleMenuStatus` bit(1) NOT NULL,
+  PRIMARY KEY (`ModuleMenuId`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 
---
--- Volcado de datos para la tabla `module_menu`
---
+-- ----------------------------
+-- Records of module_menu
+-- ----------------------------
+INSERT INTO `module_menu` VALUES ('1', null, 'Cliente', 'javascript:void(0);', '1', 'icon-grid', null, null, '3', '');
+INSERT INTO `module_menu` VALUES ('2', '1', 'Registro de cliente', 'register-customer', '2', null, null, null, '1', '');
+INSERT INTO `module_menu` VALUES ('3', null, 'Usuario', 'javascript:void(0);', '1', 'icon-users', null, null, '4', '');
+INSERT INTO `module_menu` VALUES ('4', '3', 'Registro de usuario', 'register-user', '2', null, null, null, '1', '');
+INSERT INTO `module_menu` VALUES ('5', '3', 'Registro de rol', 'register-role', '2', null, null, null, '2', '');
+INSERT INTO `module_menu` VALUES ('6', '3', 'Registro de modulo', 'register-module', '2', null, null, null, '3', '');
+INSERT INTO `module_menu` VALUES ('7', '3', 'Asignacion de modulo', 'register-assignedmodule', '2', null, null, null, '4', '');
+INSERT INTO `module_menu` VALUES ('8', null, 'Informe contable', 'javascript:void(0);', '1', 'icon-book-open', null, null, '2', '');
+INSERT INTO `module_menu` VALUES ('9', '8', 'Registro de ventas', 'register-sale', '2', null, null, null, '1', '');
+INSERT INTO `module_menu` VALUES ('10', '8', 'Registro de compras', 'register-buy', '2', null, null, null, '2', '');
+INSERT INTO `module_menu` VALUES ('11', null, 'Mantenimiento', 'javascript:void(0);', '1', ' icon-wrench', null, null, '5', '');
+INSERT INTO `module_menu` VALUES ('12', '11', 'Tipo de documento', 'register-documenttype', '2', null, null, null, '1', '');
+INSERT INTO `module_menu` VALUES ('13', '11', 'Origenes', 'register-origin', '2', null, null, null, '2', '');
+INSERT INTO `module_menu` VALUES ('14', '11', 'Terceros', 'register-thirdcompany', '2', null, null, null, '3', '');
+INSERT INTO `module_menu` VALUES ('15', '11', 'Medios de pagos', 'register-paymentmethod', '2', null, null, null, '4', '');
+INSERT INTO `module_menu` VALUES ('16', '11', 'Impuesto IGV', 'register-taxigv', '2', null, null, null, '5', '');
+INSERT INTO `module_menu` VALUES ('17', '11', 'Tipo de cambio', 'register-exchangerate', '2', null, null, null, '6', '');
+INSERT INTO `module_menu` VALUES ('18', null, 'Dashboard', 'base_url()', '1', 'icon-home', null, null, '1', '');
+INSERT INTO `module_menu` VALUES ('19', null, 'Agenda', 'javascript:void(0);', '1', 'icon-calendar', null, null, '6', '');
+INSERT INTO `module_menu` VALUES ('20', '19', 'Cronograma Sunat', 'sunat-schedule', '2', null, null, null, '1', '');
 
-INSERT INTO `module_menu` (`ModuleMenuId`, `ModuleMenuIdFather`, `ModuleMenuName`, `ModuleMenuLink`, `ModuleMenuLevel`, `ModuleMenuIcon`, `ModuleMenuButtonColor`, `ModuleMenuInformation`, `ModuleMenuPosition`, `ModuleMenuStatus`) VALUES
-(1, NULL, 'Cliente', 'javascript:void(0);', 1, 'icon-grid', NULL, NULL, 3, b'1'),
-(2, 1, 'Registro de cliente', 'register-customer', 2, NULL, NULL, NULL, 1, b'1'),
-(3, NULL, 'Usuario', 'javascript:void(0);', 1, 'icon-users', NULL, NULL, 4, b'1'),
-(4, 3, 'Registro de usuario', 'register-user', 2, NULL, NULL, NULL, 1, b'1'),
-(5, 3, 'Registro de rol', 'register-role', 2, NULL, NULL, NULL, 2, b'1'),
-(6, 3, 'Registro de modulo', 'register-module', 2, NULL, NULL, NULL, 3, b'1'),
-(7, 3, 'Asignacion de modulo', 'register-assignedmodule', 2, NULL, NULL, NULL, 4, b'1'),
-(8, NULL, 'Informe contable', 'javascript:void(0);', 1, 'icon-book-open', NULL, NULL, 2, b'1'),
-(9, 8, 'Registro de ventas', 'register-sale', 2, NULL, NULL, NULL, 1, b'1'),
-(10, 8, 'Registro de compras', 'register-buy', 2, NULL, NULL, NULL, 2, b'1'),
-(11, NULL, 'Mantenimiento', 'javascript:void(0);', 1, ' icon-wrench', NULL, NULL, 5, b'1'),
-(12, 11, 'Tipo de documento', 'register-documenttype', 2, NULL, NULL, NULL, 1, b'1'),
-(13, 11, 'Origenes', 'register-origin', 2, NULL, NULL, NULL, 2, b'1'),
-(14, 11, 'Terceros', 'register-thirdcompany', 2, NULL, NULL, NULL, 3, b'1'),
-(15, 11, 'Medios de pagos', 'register-paymentmethod', 2, NULL, NULL, NULL, 4, b'1'),
-(16, 11, 'Impuesto IGV', 'register-taxigv', 2, NULL, NULL, NULL, 5, b'1'),
-(17, 11, 'Tipo de cambio', 'register-exchangerate', 2, NULL, NULL, NULL, 6, b'1'),
-(18, NULL, 'Dashboard', 'base_url()', 1, 'icon-home', NULL, NULL, 1, b'1');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `origins`
---
-
+-- ----------------------------
+-- Table structure for origins
+-- ----------------------------
 DROP TABLE IF EXISTS `origins`;
 CREATE TABLE `origins` (
-  `OriginsId` int(11) NOT NULL,
+  `OriginsId` int(11) NOT NULL AUTO_INCREMENT,
   `OriginsCode` char(2) NOT NULL,
   `OriginsName` varchar(50) NOT NULL,
-  `OriginsStatus` varchar(45) NOT NULL
+  `OriginsStatus` varchar(45) NOT NULL,
+  PRIMARY KEY (`OriginsId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
+-- ----------------------------
+-- Records of origins
+-- ----------------------------
 
---
--- Estructura de tabla para la tabla `payment_method`
---
-
+-- ----------------------------
+-- Table structure for payment_method
+-- ----------------------------
 DROP TABLE IF EXISTS `payment_method`;
 CREATE TABLE `payment_method` (
-  `PaymentMethodId` int(11) NOT NULL,
+  `PaymentMethodId` int(11) NOT NULL AUTO_INCREMENT,
   `PaymentMethodCode` varchar(10) NOT NULL,
   `PaymentMethodName` varchar(50) NOT NULL,
-  `PaymentMethodStatus` bit(1) NOT NULL
+  `PaymentMethodStatus` bit(1) NOT NULL,
+  PRIMARY KEY (`PaymentMethodId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
+-- ----------------------------
+-- Records of payment_method
+-- ----------------------------
 
---
--- Estructura de tabla para la tabla `role`
---
-
+-- ----------------------------
+-- Table structure for role
+-- ----------------------------
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role` (
-  `RoleId` int(11) NOT NULL,
+  `RoleId` int(11) NOT NULL AUTO_INCREMENT,
   `RoleName` varchar(50) NOT NULL,
-  `RoleStatus` bit(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `RoleStatus` bit(1) NOT NULL,
+  PRIMARY KEY (`RoleId`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
---
--- Volcado de datos para la tabla `role`
---
+-- ----------------------------
+-- Records of role
+-- ----------------------------
+INSERT INTO `role` VALUES ('1', 'ADMINISTRADOR', '');
 
-INSERT INTO `role` (`RoleId`, `RoleName`, `RoleStatus`) VALUES
-(1, 'ADMINISTRADOR', b'1');
+-- ----------------------------
+-- Table structure for schedule_sunat
+-- ----------------------------
+DROP TABLE IF EXISTS `schedule_sunat`;
+CREATE TABLE `schedule_sunat` (
+  `SchedulePeriod` date NOT NULL,
+  `ScheduleDigit` int(11) NOT NULL,
+  `ScheduleDueDate` date NOT NULL,
+  `ScheduleProgramDate` date NOT NULL,
+  `ScheduleProgramTime` time NOT NULL,
+  `ScheduleCompleteStatus` bit(1) NOT NULL,
+  `ScheduleStatus` bit(1) NOT NULL,
+  `UserId` int(11) NOT NULL,
+  PRIMARY KEY (`SchedulePeriod`,`ScheduleDigit`),
+  UNIQUE KEY `un_ScheduleDueDate` (`ScheduleDueDate`),
+  KEY `fk_UserId` (`UserId`),
+  CONSTRAINT `fk_UserId` FOREIGN KEY (`UserId`) REFERENCES `user` (`UserId`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
 
---
--- Estructura de tabla para la tabla `tax_igv`
---
 
+-- ----------------------------
+-- Table structure for tax_igv
+-- ----------------------------
 DROP TABLE IF EXISTS `tax_igv`;
 CREATE TABLE `tax_igv` (
-  `TaxIgvId` int(11) NOT NULL,
+  `TaxIgvId` int(11) NOT NULL AUTO_INCREMENT,
   `TaxIgvDate` date NOT NULL,
   `TaxIgvValue` decimal(19,2) NOT NULL,
-  `TaxIgvStatus` bit(1) NOT NULL
+  `TaxIgvStatus` bit(1) NOT NULL,
+  PRIMARY KEY (`TaxIgvId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
+-- ----------------------------
+-- Records of tax_igv
+-- ----------------------------
 
---
--- Estructura de tabla para la tabla `third_company`
---
-
+-- ----------------------------
+-- Table structure for third_company
+-- ----------------------------
 DROP TABLE IF EXISTS `third_company`;
 CREATE TABLE `third_company` (
-  `ThirdCompanyId` int(11) NOT NULL,
+  `ThirdCompanyId` int(11) NOT NULL AUTO_INCREMENT,
   `ThirdCompanyName` text NOT NULL,
   `ThirdCompanyType` bit(1) NOT NULL,
   `ThirdCompanyDocument` char(3) NOT NULL,
   `ThirdCompanyDocumentNumber` int(11) NOT NULL,
   `ThirdCompanyAddress` text,
   `ThirdCompanyTelephone` varchar(50) DEFAULT NULL,
-  `ThirdCompanyStatus` bit(1) NOT NULL
+  `ThirdCompanyStatus` bit(1) NOT NULL,
+  PRIMARY KEY (`ThirdCompanyId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
+-- ----------------------------
+-- Records of third_company
+-- ----------------------------
 
---
--- Estructura de tabla para la tabla `user`
---
-
+-- ----------------------------
+-- Table structure for user
+-- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  `UserId` int(11) NOT NULL,
+  `UserId` int(11) NOT NULL AUTO_INCREMENT,
   `UserRoleId` int(11) NOT NULL,
   `UserName` varchar(100) NOT NULL,
   `UserLastName` varchar(100) NOT NULL,
@@ -400,264 +396,295 @@ CREATE TABLE `user` (
   `UserTelephone` varchar(50) DEFAULT NULL,
   `UserEmail` varchar(100) DEFAULT NULL,
   `UserImage` blob,
-  `UserStatus` bit(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `UserStatus` bit(1) NOT NULL,
+  PRIMARY KEY (`UserId`),
+  UNIQUE KEY `Unique_UserLoginName` (`UserLoginName`),
+  KEY `fk_User_Role_idx` (`UserRoleId`),
+  CONSTRAINT `fk_User_Role` FOREIGN KEY (`UserRoleId`) REFERENCES `role` (`RoleId`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
---
--- Volcado de datos para la tabla `user`
---
+-- ----------------------------
+-- Records of user
+-- ----------------------------
+INSERT INTO `user` VALUES ('1', '1', 'Jean Carlos', 'Sánchez Castromonte', 'admin', '123', '1993-05-12', '943103555', 'jeanscastro7@gmial.com', null, '');
+INSERT INTO `user` VALUES ('2', '1', 'ejemplo', 'ejemplo', 'ejemplo', 'ejemplo', null, null, 'ejemplo', null, '\0');
 
-INSERT INTO `user` (`UserId`, `UserRoleId`, `UserName`, `UserLastName`, `UserLoginName`, `UserLoginPassword`, `UserBirthdate`, `UserTelephone`, `UserEmail`, `UserImage`, `UserStatus`) VALUES
-(1, 1, 'Jean Carlos', 'Sánchez Castromonte', 'admin', '123', '1993-05-12', '943103555', 'jeanscastro7@gmial.com', NULL, b'1'),
-(2, 1, 'ejemplo', 'ejemplo', 'ejemplo', 'ejemplo', NULL, NULL, 'ejemplo', NULL, b'0');
+-- ----------------------------
+-- Procedure structure for sp_GetAllRoles
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_GetAllRoles`;
+DELIMITER ;;
+CREATE DEFINER=`ramaferreteria`@`localhost` PROCEDURE `sp_GetAllRoles`()
+BEGIN
+      SELECT
+      RoleId,
+      RoleName
+      FROM  role
+      WHERE RoleStatus=TRUE
+      ORDER BY RoleId ASC;
+END
+;;
+DELIMITER ;
 
---
--- Índices para tablas volcadas
---
+-- ----------------------------
+-- Procedure structure for sp_GetAllUsers
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_GetAllUsers`;
+DELIMITER ;;
+CREATE DEFINER=`ramaferreteria`@`localhost` PROCEDURE `sp_GetAllUsers`()
+BEGIN
+      SELECT
+      u.UserId,
+      u.UserImage,
+      u.UserLoginName,
+      u.UserName,
+      u.UserLastName,
+      DATE_FORMAT(u.UserBirthdate,'%d/%m/%Y') as UserBirthdate,
+      u.UserTelephone,
+      u.UserEmail,
+      u.UserStatus,
+      r.RoleName
+      FROM `user` u
+      INNER JOIN role r ON r.RoleId=u.UserRoleId
+      ORDER BY u.UserLoginName ASC;
+END
+;;
+DELIMITER ;
 
---
--- Indices de la tabla `accounting_account`
---
-ALTER TABLE `accounting_account`
-  ADD PRIMARY KEY (`AccountingAccountId`);
+-- ----------------------------
+-- Procedure structure for sp_GetMenuByRole
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_GetMenuByRole`;
+DELIMITER ;;
+CREATE DEFINER=`ramaferreteria`@`localhost` PROCEDURE `sp_GetMenuByRole`(IN `_RoleId` INT)
+BEGIN
 
---
--- Indices de la tabla `assigned_roles`
---
-ALTER TABLE `assigned_roles`
-  ADD PRIMARY KEY (`MenuId`,`RoleId`),
-  ADD KEY `fk_AssignedRoles_Role1_idx` (`RoleId`);
+  SELECT ar.MenuId,m.ModuleMenuIdFather,m.ModuleMenuName,m.ModuleMenuLink,m.ModuleMenuLevel,m.ModuleMenuPosition,
+  m.ModuleMenuIcon
+  FROM assigned_roles ar
+  INNER JOIN role r ON r.RoleId=ar.RoleId
+  INNER JOIN module_menu m ON m.ModuleMenuId=ar.MenuId
+  WHERE r.RoleId=`_RoleId` AND r.RoleStatus=TRUE AND ar.Access=TRUE AND m.ModuleMenuStatus=TRUE AND m.ModuleMenuLevel=1
+  ORDER BY m.ModuleMenuPosition ASC;
+END
+;;
+DELIMITER ;
 
---
--- Indices de la tabla `customer`
---
-ALTER TABLE `customer`
-  ADD PRIMARY KEY (`CustomerId`);
+-- ----------------------------
+-- Procedure structure for sp_GetScheduleAlert
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_GetScheduleAlert`;
+DELIMITER ;;
+CREATE DEFINER=`ramaferreteria`@`localhost` PROCEDURE `sp_GetScheduleAlert`()
+BEGIN 
+  DECLARE _schedule DATETIME;
+  DECLARE _period DATE;
+  DECLARE _digit INT;
 
---
--- Indices de la tabla `document`
---
-ALTER TABLE `document`
-  ADD PRIMARY KEY (`DocumentId`),
-  ADD KEY `fk_Document_DocumentType1_idx` (`DocumentTypeId`),
-  ADD KEY `fk_Document_Origins1_idx` (`OriginsId`),
-  ADD KEY `fk_Document_DocumentTaxable1_idx` (`DocumentTaxableId`),
-  ADD KEY `fk_Document_DocumentIgv1_idx` (`DocumentIgvId`),
-  ADD KEY `fk_Document_DocumentTotalAmount1_idx` (`DocumentTotalAmountId`),
-  ADD KEY `fk_Document_ThirdCompany1_idx` (`ThirdCompanyId`),
-  ADD KEY `fk_Document_ExchangeRate1_idx` (`ExchangeRateId`),
-  ADD KEY `fk_Document_Customer1_idx` (`CustomerId`),
-  ADD KEY `fk_Document_TaxIgv1_idx` (`TaxIgvId`),
-  ADD KEY `fk_Document_PaymentMethod1_idx` (`PaymentMethodId`),
-  ADD KEY `fk_Document_User1_idx` (`UserId`);
+  SELECT TIMESTAMP(ss.ScheduleProgramDate,ss.ScheduleProgramTime) AS ScheduleDatetime,
+  ss.SchedulePeriod,ss.ScheduleDigit
+  INTO _schedule,_period,_digit
+  FROM schedule_sunat ss 
+  WHERE ss.ScheduleCompleteStatus=0 AND ss.ScheduleStatus=1 ORDER BY ScheduleDatetime ASC LIMIT 1;
 
---
--- Indices de la tabla `document_igv`
---
-ALTER TABLE `document_igv`
-  ADD PRIMARY KEY (`DocumentIgvId`),
-  ADD KEY `fk_DocumentIgv_AccountingAccount1_idx` (`AccountingAccountId`);
+  SELECT TIMESTAMPDIFF(SECOND, NOW(), _schedule) AS AlertSeconds,_period,_digit;
+END
+;;
+DELIMITER ;
 
---
--- Indices de la tabla `document_taxable`
---
-ALTER TABLE `document_taxable`
-  ADD PRIMARY KEY (`DocumentTaxableId`),
-  ADD KEY `fk_DocumentTaxable_AccountingAccount1_idx` (`AccountingAccountId`);
+-- ----------------------------
+-- Procedure structure for sp_GetScheduleSunatByPeriod
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_GetScheduleSunatByPeriod`;
+DELIMITER ;;
+CREATE DEFINER=`ramaferreteria`@`localhost` PROCEDURE `sp_GetScheduleSunatByPeriod`(IN `_Period`  DATE)
+BEGIN
 
---
--- Indices de la tabla `document_totalamount`
---
-ALTER TABLE `document_totalamount`
-  ADD PRIMARY KEY (`DocumentTotalAmountId`),
-  ADD KEY `fk_DocumentTotalAmount_AccountingAccount1_idx` (`AccountingAccountId`);
+  SELECT
+  ss.SchedulePeriod,
+  ss.ScheduleDigit,
+  DATE_FORMAT(ss.ScheduleDueDate,'%d/%m/%Y') as ScheduleDueDate,
+  DATE_FORMAT(ss.ScheduleProgramDate,'%d/%m/%Y') as ScheduleProgramDate,
+  TIME_FORMAT(ss.ScheduleProgramTime,'%h:%i %p') as ScheduleProgramTime,
+  ss.ScheduleStatus,
+  ss.ScheduleCompleteStatus,
+  u.UserName  
+  FROM schedule_sunat ss
+  INNER JOIN user u ON u.UserId=ss.UserId
+  WHERE ss.SchedulePeriod LIKE (CASE WHEN _Period=0 THEN '' ELSE _Period  END)
+  ORDER BY ss.ScheduleDigit ASC;
+END
+;;
+DELIMITER ;
 
---
--- Indices de la tabla `document_type`
---
-ALTER TABLE `document_type`
-  ADD PRIMARY KEY (`DocumentTypeId`);
+-- ----------------------------
+-- Procedure structure for sp_GetScheduleSunatByYear
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_GetScheduleSunatByYear`;
+DELIMITER ;;
+CREATE DEFINER=`ramaferreteria`@`localhost` PROCEDURE `sp_GetScheduleSunatByYear`(IN `_Period`  CHAR(4))
+BEGIN
+  SET lc_time_names = 'es_VE';
+  SELECT
+  UPPER(DATE_FORMAT(ss.SchedulePeriod,'%M - %Y')) as Period,
+  (SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M') as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=0 AND s1.SchedulePeriod=ss.SchedulePeriod) as d0,
+  (SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=1 AND s1.SchedulePeriod=ss.SchedulePeriod) as d1,
+  (SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=2 AND s1.SchedulePeriod=ss.SchedulePeriod) as d2,
+  (SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=3 AND s1.SchedulePeriod=ss.SchedulePeriod) as d3,
+  (SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=4 AND s1.SchedulePeriod=ss.SchedulePeriod) as d4,
+  (SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=5 AND s1.SchedulePeriod=ss.SchedulePeriod) as d5,
+  (SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=6 AND s1.SchedulePeriod=ss.SchedulePeriod) as d6,
+  (SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=7 AND s1.SchedulePeriod=ss.SchedulePeriod) as d7,
+  (SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=8 AND s1.SchedulePeriod=ss.SchedulePeriod) as d8,
+  (SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=9 AND s1.SchedulePeriod=ss.SchedulePeriod) as d9
+  FROM schedule_sunat ss
+  WHERE ss.SchedulePeriod LIKE CONCAT('%',_Period,'%')
+  GROUP BY ss.SchedulePeriod;
 
---
--- Indices de la tabla `exchange_rate`
---
-ALTER TABLE `exchange_rate`
-  ADD PRIMARY KEY (`ExchangeRateId`);
+END
+;;
+DELIMITER ;
 
---
--- Indices de la tabla `module_menu`
---
-ALTER TABLE `module_menu`
-  ADD PRIMARY KEY (`ModuleMenuId`);
+-- ----------------------------
+-- Procedure structure for sp_GetSubMenu
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_GetSubMenu`;
+DELIMITER ;;
+CREATE DEFINER=`ramaferreteria`@`localhost` PROCEDURE `sp_GetSubMenu`(IN `_RoleId` INT, IN `_MenuId` INT)
+BEGIN
 
---
--- Indices de la tabla `origins`
---
-ALTER TABLE `origins`
-  ADD PRIMARY KEY (`OriginsId`);
+  SELECT ar.MenuId,m.ModuleMenuIdFather,m.ModuleMenuName,m.ModuleMenuLink,m.ModuleMenuLevel,m.ModuleMenuPosition
+  FROM assigned_roles ar
+  INNER JOIN role r ON r.RoleId=ar.RoleId
+  INNER JOIN module_menu m ON m.ModuleMenuId=ar.MenuId
+  WHERE r.RoleId=`_RoleId` AND r.RoleStatus=TRUE AND ar.Access=TRUE AND m.ModuleMenuStatus=TRUE AND m.ModuleMenuIdFather=`_MenuId`
+  ORDER BY m.ModuleMenuPosition ASC;
+END
+;;
+DELIMITER ;
 
---
--- Indices de la tabla `payment_method`
---
-ALTER TABLE `payment_method`
-  ADD PRIMARY KEY (`PaymentMethodId`);
+-- ----------------------------
+-- Procedure structure for sp_LoginUser
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_LoginUser`;
+DELIMITER ;;
+CREATE DEFINER=`ramaferreteria`@`localhost` PROCEDURE `sp_LoginUser`(IN `_UserLoginName` VARCHAR(10), IN `_UserLoginPassword` VARCHAR(20))
+BEGIN
 
---
--- Indices de la tabla `role`
---
-ALTER TABLE `role`
-  ADD PRIMARY KEY (`RoleId`);
+  SELECT u.UserId,u.UserLoginName,u.UserName,u.UserImage,r.RoleId,r.RoleName FROM `user` u
+  INNER JOIN role r ON r.RoleId=u.UserRoleId
+  WHERE u.UserLoginName=`_UserLoginName` AND u.UserLoginPassword=`_UserLoginPassword`
+  AND u.UserStatus=TRUE AND r.RoleStatus=TRUE;
 
---
--- Indices de la tabla `tax_igv`
---
-ALTER TABLE `tax_igv`
-  ADD PRIMARY KEY (`TaxIgvId`);
+END
+;;
+DELIMITER ;
 
---
--- Indices de la tabla `third_company`
---
-ALTER TABLE `third_company`
-  ADD PRIMARY KEY (`ThirdCompanyId`);
+-- ----------------------------
+-- Procedure structure for sp_SetScheduleSunat
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_SetScheduleSunat`;
+DELIMITER ;;
+CREATE DEFINER=`ramaferreteria`@`localhost` PROCEDURE `sp_SetScheduleSunat`(IN `_period` DATE,IN `_digit` INT,IN `_duedate` DATE,IN `_programdate` DATE,IN `_programtime` TIME,IN `_status` BIT,IN `_user` INT)
+BEGIN
 
---
--- Indices de la tabla `user`
---
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`UserId`),
-  ADD UNIQUE KEY `Unique_UserLoginName` (`UserLoginName`),
-  ADD KEY `fk_User_Role_idx` (`UserRoleId`);
+  DECLARE _datetime DATETIME;
+  DECLARE _diffDatetime INT;
+  DECLARE _completestatus INT;
 
---
--- AUTO_INCREMENT de las tablas volcadas
---
+  SELECT TIMESTAMP(_programdate,_programtime) INTO _datetime;
+  SELECT TIMESTAMPDIFF(SECOND, NOW(), _datetime) INTO _diffDatetime;
 
---
--- AUTO_INCREMENT de la tabla `accounting_account`
---
-ALTER TABLE `accounting_account`
-  MODIFY `AccountingAccountId` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT de la tabla `customer`
---
-ALTER TABLE `customer`
-  MODIFY `CustomerId` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT de la tabla `document`
---
-ALTER TABLE `document`
-  MODIFY `DocumentId` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT de la tabla `document_igv`
---
-ALTER TABLE `document_igv`
-  MODIFY `DocumentIgvId` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT de la tabla `document_taxable`
---
-ALTER TABLE `document_taxable`
-  MODIFY `DocumentTaxableId` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT de la tabla `document_totalamount`
---
-ALTER TABLE `document_totalamount`
-  MODIFY `DocumentTotalAmountId` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT de la tabla `document_type`
---
-ALTER TABLE `document_type`
-  MODIFY `DocumentTypeId` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT de la tabla `exchange_rate`
---
-ALTER TABLE `exchange_rate`
-  MODIFY `ExchangeRateId` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT de la tabla `module_menu`
---
-ALTER TABLE `module_menu`
-  MODIFY `ModuleMenuId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
---
--- AUTO_INCREMENT de la tabla `origins`
---
-ALTER TABLE `origins`
-  MODIFY `OriginsId` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT de la tabla `payment_method`
---
-ALTER TABLE `payment_method`
-  MODIFY `PaymentMethodId` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT de la tabla `role`
---
-ALTER TABLE `role`
-  MODIFY `RoleId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT de la tabla `tax_igv`
---
-ALTER TABLE `tax_igv`
-  MODIFY `TaxIgvId` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT de la tabla `third_company`
---
-ALTER TABLE `third_company`
-  MODIFY `ThirdCompanyId` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT de la tabla `user`
---
-ALTER TABLE `user`
-  MODIFY `UserId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- Restricciones para tablas volcadas
---
+  IF _diffDatetime > 0 THEN
+    SET _completestatus = 0;
+  ELSE
+    SET _completestatus = 1;
+  END IF;
 
---
--- Filtros para la tabla `assigned_roles`
---
-ALTER TABLE `assigned_roles`
-  ADD CONSTRAINT `fk_AssignedRoles_ModuleMenu1` FOREIGN KEY (`MenuId`) REFERENCES `module_menu` (`ModuleMenuId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_AssignedRoles_Role1` FOREIGN KEY (`RoleId`) REFERENCES `role` (`RoleId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  INSERT INTO schedule_sunat(SchedulePeriod,ScheduleDigit,ScheduleDueDate,ScheduleProgramDate,ScheduleProgramTime,ScheduleStatus,ScheduleCompleteStatus,UserId)
+  VALUES (`_period`,`_digit`,`_duedate`,`_programdate`,`_programtime`,`_status`,_completestatus,`_user`); 
+END
+;;
+DELIMITER ;
 
---
--- Filtros para la tabla `document`
---
-ALTER TABLE `document`
-  ADD CONSTRAINT `fk_Document_Customer1` FOREIGN KEY (`CustomerId`) REFERENCES `customer` (`CustomerId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_Document_DocumentIgv1` FOREIGN KEY (`DocumentIgvId`) REFERENCES `document_igv` (`DocumentIgvId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_Document_DocumentTaxable1` FOREIGN KEY (`DocumentTaxableId`) REFERENCES `document_taxable` (`DocumentTaxableId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_Document_DocumentTotalAmount1` FOREIGN KEY (`DocumentTotalAmountId`) REFERENCES `document_totalamount` (`DocumentTotalAmountId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_Document_DocumentType1` FOREIGN KEY (`DocumentTypeId`) REFERENCES `document_type` (`DocumentTypeId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_Document_ExchangeRate1` FOREIGN KEY (`ExchangeRateId`) REFERENCES `exchange_rate` (`ExchangeRateId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_Document_Origins1` FOREIGN KEY (`OriginsId`) REFERENCES `origins` (`OriginsId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_Document_PaymentMethod1` FOREIGN KEY (`PaymentMethodId`) REFERENCES `payment_method` (`PaymentMethodId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_Document_TaxIgv1` FOREIGN KEY (`TaxIgvId`) REFERENCES `tax_igv` (`TaxIgvId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_Document_ThirdCompany1` FOREIGN KEY (`ThirdCompanyId`) REFERENCES `third_company` (`ThirdCompanyId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_Document_User1` FOREIGN KEY (`UserId`) REFERENCES `user` (`UserId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+-- ----------------------------
+-- Procedure structure for sp_UpdateCompleteScheduleSunat
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_UpdateCompleteScheduleSunat`;
+DELIMITER ;;
+CREATE DEFINER=`ramaferreteria`@`localhost` PROCEDURE `sp_UpdateCompleteScheduleSunat`(IN `_period` DATE,IN `_digit` INT)
+BEGIN
+  UPDATE schedule_sunat
+  SET ScheduleCompleteStatus=1
+  WHERE SchedulePeriod=_period AND ScheduleDigit=_digit;
+END
+;;
+DELIMITER ;
 
---
--- Filtros para la tabla `document_igv`
---
-ALTER TABLE `document_igv`
-  ADD CONSTRAINT `fk_DocumentIgv_AccountingAccount1` FOREIGN KEY (`AccountingAccountId`) REFERENCES `accounting_account` (`AccountingAccountId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+-- ----------------------------
+-- Procedure structure for sp_GetScheduleSunatByPeriodDigit
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_GetScheduleSunatByPeriodDigit`;
+DELIMITER ;;
+CREATE DEFINER=`ramaferreteria`@`localhost` PROCEDURE `sp_GetScheduleSunatByPeriodDigit`(IN `_period` DATE,IN `_digit` INT)
+BEGIN
+  SELECT
+  ss.SchedulePeriod,
+  ss.ScheduleDigit,
+  DATE_FORMAT(ss.ScheduleDueDate,'%d/%m/%Y') as ScheduleDueDate,
+  DATE_FORMAT(ss.ScheduleProgramDate,'%d/%m/%Y') as ScheduleProgramDate,
+  TIME_FORMAT(ss.ScheduleProgramTime,'%h:%i %p') as ScheduleProgramTime,
+  ss.ScheduleStatus,
+  u.UserName  
+  FROM schedule_sunat ss
+  INNER JOIN user u ON u.UserId=ss.UserId
+  WHERE ss.SchedulePeriod=_period AND ss.ScheduleDigit=_digit;
+END
+;;
+DELIMITER ;
 
---
--- Filtros para la tabla `document_taxable`
---
-ALTER TABLE `document_taxable`
-  ADD CONSTRAINT `fk_DocumentTaxable_AccountingAccount1` FOREIGN KEY (`AccountingAccountId`) REFERENCES `accounting_account` (`AccountingAccountId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+-- ----------------------------
+-- Procedure structure for sp_UpdateScheduleSunat
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_UpdateScheduleSunat`;
+DELIMITER ;;
+CREATE DEFINER=`ramaferreteria`@`localhost` PROCEDURE `sp_UpdateScheduleSunat`(IN `_period` DATE,IN `_digit` INT,IN `_duedate` DATE,IN `_programdate` DATE,IN `_programtime` TIME,IN `_status` BIT,IN `_user` INT)
+BEGIN
 
---
--- Filtros para la tabla `document_totalamount`
---
-ALTER TABLE `document_totalamount`
-  ADD CONSTRAINT `fk_DocumentTotalAmount_AccountingAccount1` FOREIGN KEY (`AccountingAccountId`) REFERENCES `accounting_account` (`AccountingAccountId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  DECLARE _datetime DATETIME;
+  DECLARE _diffDatetime INT;
+  DECLARE _completestatus INT;
 
---
--- Filtros para la tabla `user`
---
-ALTER TABLE `user`
-  ADD CONSTRAINT `fk_User_Role` FOREIGN KEY (`UserRoleId`) REFERENCES `role` (`RoleId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  SELECT TIMESTAMP(_programdate,_programtime) INTO _datetime;
+  SELECT TIMESTAMPDIFF(SECOND, NOW(), _datetime) INTO _diffDatetime;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+  IF _diffDatetime > 0 THEN
+    SET _completestatus = 0;
+  ELSE
+    SET _completestatus = 1;
+  END IF;
+
+  UPDATE schedule_sunat
+  SET ScheduleDueDate=_duedate,
+  ScheduleProgramDate=_programdate,
+  ScheduleProgramTime=_programtime,
+  ScheduleStatus=_status,
+  ScheduleCompleteStatus=_completestatus,
+  UserId=_user
+  WHERE SchedulePeriod=_period AND ScheduleDigit=_digit;
+END
+;;
+DELIMITER ;
+-- ----------------------------
+-- Procedure structure for sp_DeleteScheduleSunat
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_DeleteScheduleSunat`;
+DELIMITER ;;
+CREATE DEFINER=`ramaferreteria`@`localhost` PROCEDURE `sp_DeleteScheduleSunat`(IN `_period` DATE,IN `_digit` INT)
+BEGIN
+  DELETE FROM schedule_sunat
+  WHERE SchedulePeriod=_period AND ScheduleDigit=_digit;
+END
+;;
+DELIMITER ;
+
