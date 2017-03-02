@@ -17,7 +17,7 @@ $(document).ready(InitUser);
     var $modal_message          =   $('#modal-message');
     var $btn_acceptdelete_schedule  =   $('#btn-acceptdelete-schedule');
     var flagnew_schedule; 
-    var flagdelete_schedule     =   false; 
+    var flagdelete_schedule     =   false;
 
   //**Init Datatable***    
     var var_datatable           =   fnc_datatable_schedule($datatable_schedule);
@@ -30,7 +30,7 @@ function InitUser(){
 
   //***Alert schedule sunat***
     fcn_schedule_alert();
-    
+
   //***Button Call Modal***
     $btn_callmodal_schedule.on('click',function () {
       flagnew_schedule=true;
@@ -375,10 +375,12 @@ function fnc_set_schedule_sunat() {
         switch(resp.status)
         {
           case true:
-            $txt_period.datepicker('setDate', period);            
+            $txt_period.datepicker('setDate', period);
             $modal_schedule.modal('hide');
             fnc_msj_alert(resp.type,resp.message,'',resp.icon,5);
+            $(document).find('.jquery-notific8-close').trigger('click');            
             fcn_schedule_alert();
+
             break;
 
           case false:
@@ -401,24 +403,30 @@ function fnc_set_schedule_sunat() {
 /*****************************************************************************************************************************************************************************/
 function fcn_schedule_alert() {
   $.getJSON("get-schedule-alert", function(data, status){
-
     if(data){
       var miliseconds=data.Seconds*1000;
-
-      setTimeout(function () {
-        fnc_notification8_sunatalert(data.Period,data.Digit);
-        fnc_update_complete_schedule(data.Period,data.Digit)      
+      setTimeout(function(){
+        //fnc_update_complete_schedule(data.Period,data.Digit);
+        fnc_notification8_sunatalert(data.Life,data.Period,data.Digit);
+        // $txt_period.datepicker('setDate', ConvertDate(data.Period));
       },miliseconds);
-      //console.log(miliseconds);
+      // console.log(miliseconds);
+      // console.log(data.Life);
     }
-  });  
+  });
 }
 /*****************************************************************************************************************************************************************************/
-function fnc_notification8_sunatalert(period,digit) {
+function fnc_notification8_sunatalert(life,period,digit) {
+
+    var mslife=life*1000;
 
     var settings = {
-    heading:"DECLARACIÓN SUNAT",
-    life:10000
+      heading:"DECLARACIÓN SUNAT",
+      life:mslife,
+      theme: 'ruby',
+      sticky: false,
+      horizontalEdge: 'bottom',
+      verticalEdge: 'right'
     };
 
     $.notific8('zindex', 11500);
@@ -432,6 +440,13 @@ function fnc_notification8_sunatalert(period,digit) {
       var myAudio2 = new Audio('assets/sound/digito'+digit+'.mp3');
       myAudio2.play();
     },1000);
+
+    console.log(mslife);
+    $('.jquery-notific8-notification').addClass('parpadea');
+
+    setTimeout(function(){
+       fnc_update_complete_schedule(period,digit)
+    },mslife);
 }
 /*****************************************************************************************************************************************************************************/
 function fnc_update_complete_schedule(period,digit) {
@@ -449,10 +464,10 @@ function fnc_update_complete_schedule(period,digit) {
     async: true,   
     success: function (resp) 
     {
-      setTimeout(function () {
-        fcn_schedule_alert();
-      },1000);
-     
+      if(resp){
+        //fnc_notification8_sunatalert(resp.LifeAlert,data.digit);
+        setTimeout(fcn_schedule_alert,1000);
+      }
     }    
   });
 }
@@ -569,3 +584,17 @@ function ConvertDate(datetime) {
   return date;
 }
 /*****************************************************************************************************************************************************************************/
+// function notific8() {
+
+//   var params = {
+//     heading: 'Hola',
+//     life: 10000,
+//     theme: 'ruby',
+//     sticky: true,
+//     horizontalEdge: 'bottom',
+//     verticalEdge: 'right'  },
+//   text = 'hola';
+
+//   // show notification
+//   $.notific8(text, params);
+// }

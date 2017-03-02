@@ -479,15 +479,17 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetScheduleAlert`()
 BEGIN 
   DECLARE _schedule DATETIME;
 	DECLARE _period DATE;
-	DECLARE _digit INT;
+  DECLARE _digit INT;
+	DECLARE _life INT;
 
   SELECT TIMESTAMP(ss.ScheduleProgramDate,ss.ScheduleProgramTime) AS ScheduleDatetime,
-	ss.SchedulePeriod,ss.ScheduleDigit
-	INTO _schedule,_period,_digit
+	ss.SchedulePeriod,ss.ScheduleDigit,
+  TIMESTAMPDIFF(SECOND, NOW(),TIMESTAMP(DATE_ADD(ss.ScheduleProgramDate, INTERVAL 1 DAY),'00:00:00')) AS LifeAlert
+	INTO _schedule,_period,_digit,_life
 	FROM schedule_sunat ss 
 	WHERE ss.ScheduleCompleteStatus=0 AND ss.ScheduleStatus=1 ORDER BY ScheduleDatetime ASC LIMIT 1;
 
-	SELECT TIMESTAMPDIFF(SECOND, NOW(), _schedule) AS AlertSeconds,_period,_digit;
+	SELECT TIMESTAMPDIFF(SECOND, NOW(), _schedule) AS AlertSeconds,_period,_digit,_life;
 END
 ;;
 DELIMITER ;
@@ -617,6 +619,11 @@ BEGIN
   UPDATE schedule_sunat
 	SET ScheduleCompleteStatus=1
 	WHERE SchedulePeriod=_period AND ScheduleDigit=_digit;
+
+  SELECT TIMESTAMPDIFF(SECOND, NOW(),TIMESTAMP(DATE_ADD(ss.ScheduleProgramDate, INTERVAL 1 DAY),'00:00:00')) AS LifeAlert
+  FROM schedule_sunat ss
+  WHERE ss.SchedulePeriod=_period AND ss.ScheduleDigit=_digit;
+
 END
 ;;
 DELIMITER ;

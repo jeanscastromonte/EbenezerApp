@@ -56,9 +56,9 @@ class CalendarController extends  MasterController{
 		if($get_schedule_alert->AlertSeconds){
 			$output = array(
 			"Seconds" => $get_schedule_alert->AlertSeconds,
-			"Period" => $get_schedule_alert->_period,
-			"Digit" => $get_schedule_alert->_digit
-			);		
+			"Period"  => $get_schedule_alert->_period,
+			"Digit"   => $get_schedule_alert->_digit,
+			"Life"    => $get_schedule_alert->_life);		
 			echo json_encode($output);
 		}
 	}
@@ -70,7 +70,7 @@ class CalendarController extends  MasterController{
 		$update_complete_schedule = $this->CalendarModel->update_complete_schedule($data);
 		
 		if($update_complete_schedule){
-			echo json_encode("Exito");
+			echo json_encode($update_complete_schedule);
 		}
 	}
 /****************************************************************************************************/

@@ -90,6 +90,16 @@ class CalendarModel extends CI_Model {
     	$digit     	   = $data['digit'];
 
     	$query=$this->db->query("CALL sp_UpdateCompleteScheduleSunat('$period',$digit)");
+    	
+    	if ($query->num_rows()==1)
+		{
+			$resp= $query->row();
+			return $resp;
+		}
+		else
+		{
+			return FALSE; 
+		}
 	}
 
 /*************************************************************************/

@@ -13,6 +13,12 @@
 </div>
 <!-- END PAGE HEADER-->
 
+<!-- <div class="jquery-notific8-container top right" style="z-index: 11500;margin-top:60px;">
+	<div class="jquery-notific8-notification teal parpadea" id="jquery-notific8-notification-1" style="display: block;background-color: #e60000;">
+		<div class="jquery-notific8-message">Inspired by Windows 8 notifications</div>
+	</div>
+</div> -->
+
 <!-- BEGIN PAGE CONTENT-->
 <div class="row">
 	<div class="col-md-12">
@@ -49,7 +55,7 @@
 						</div>									
 					</div>
 
-					<div class="col-md-6">
+					<!-- <div class="col-md-6">
 						<div class="pull-right">
 							<button class="btn green  btn-outline dropdown-toggle" data-toggle="dropdown">Tools
 								<i class="fa fa-angle-down"></i>
@@ -66,10 +72,10 @@
 								</li>
 							</ul>
 						</div>
-						<!-- <a href="javascript:;" class="btn btn-icon-only grey-cascade">
+						<a href="javascript:;" class="btn btn-icon-only grey-cascade">
 							<i class="fa fa-print"></i>
-						</a> -->
-					</div>
+						</a> 
+					</div> -->
 				</div>				
 
 				<div class="row">
