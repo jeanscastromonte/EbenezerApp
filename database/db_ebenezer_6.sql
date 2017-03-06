@@ -10,14 +10,8 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2017-02-24 19:35:45
+Date: 2017-03-06 01:11:40
 */
--- DROP DATABASE IF EXISTS `db_ebenezer`;
--- CREATE DATABASE IF NOT EXISTS `db_ebenezer` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
--- USE `db_ebenezer`;
-DROP DATABASE IF EXISTS `db_ebenezer`;
-CREATE DATABASE IF NOT EXISTS `db_ebenezer` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `db_ebenezer`;
 
 SET FOREIGN_KEY_CHECKS=0;
 
@@ -343,7 +337,10 @@ CREATE TABLE `schedule_sunat` (
   CONSTRAINT `fk_UserId` FOREIGN KEY (`UserId`) REFERENCES `user` (`UserId`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-
+-- ----------------------------
+-- Records of schedule_sunat
+-- ----------------------------
+INSERT INTO `schedule_sunat` VALUES ('2017-01-01', '0', '2017-03-04', '2017-03-04', '12:54:00', '\0', '', '1');
 
 -- ----------------------------
 -- Table structure for tax_igv
@@ -397,17 +394,32 @@ CREATE TABLE `user` (
   `UserEmail` varchar(100) DEFAULT NULL,
   `UserImage` blob,
   `UserStatus` bit(1) NOT NULL,
+  `UserRegisterUserId` int(11) NOT NULL,
   PRIMARY KEY (`UserId`),
   UNIQUE KEY `Unique_UserLoginName` (`UserLoginName`),
   KEY `fk_User_Role_idx` (`UserRoleId`),
   CONSTRAINT `fk_User_Role` FOREIGN KEY (`UserRoleId`) REFERENCES `role` (`RoleId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', '1', 'Jean Carlos', 'Sánchez Castromonte', 'admin', '123', '1993-05-12', '943103555', 'jeanscastro7@gmial.com', null, '');
-INSERT INTO `user` VALUES ('2', '1', 'ejemplo', 'ejemplo', 'ejemplo', 'ejemplo', null, null, 'ejemplo', null, '\0');
+INSERT INTO `user` VALUES ('1', '1', 'Jean Carlos', 'Sánchez Castromonte', 'admin', '123', '1993-05-12', '943103555', 'jeanscastro7@gmial.com', null, '', '0');
+INSERT INTO `user` VALUES ('2', '1', 'ejemplo', 'ejemplo', 'ejemplo', 'ejemplo', null, null, 'ejemplo', null, '\0', '0');
+INSERT INTO `user` VALUES ('3', '1', 'a', 'a', 'a', 'aaaa', '2017-03-01', 'a', 'a', null, '', '1');
+
+-- ----------------------------
+-- Procedure structure for sp_DeleteScheduleSunat
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_DeleteScheduleSunat`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_DeleteScheduleSunat`(IN `_period` DATE,IN `_digit` INT)
+BEGIN
+  DELETE FROM schedule_sunat
+  WHERE SchedulePeriod=_period AND ScheduleDigit=_digit;
+END
+;;
+DELIMITER ;
 
 -- ----------------------------
 -- Procedure structure for sp_GetAllRoles
@@ -416,12 +428,12 @@ DROP PROCEDURE IF EXISTS `sp_GetAllRoles`;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetAllRoles`()
 BEGIN
-			SELECT
-			RoleId,
-			RoleName
-			FROM  role
-			WHERE RoleStatus=TRUE
-			ORDER BY RoleId ASC;
+      SELECT
+      RoleId,
+      RoleName
+      FROM  role
+      WHERE RoleStatus=TRUE
+      ORDER BY RoleId ASC;
 END
 ;;
 DELIMITER ;
@@ -433,20 +445,20 @@ DROP PROCEDURE IF EXISTS `sp_GetAllUsers`;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetAllUsers`()
 BEGIN
-			SELECT
+      SELECT
       u.UserId,
-			u.UserImage,
-			u.UserLoginName,
-			u.UserName,
-			u.UserLastName,
-			DATE_FORMAT(u.UserBirthdate,'%d/%m/%Y') as UserBirthdate,
-			u.UserTelephone,
-			u.UserEmail,
-			u.UserStatus,
-			r.RoleName
-			FROM `user` u
-			INNER JOIN role r ON r.RoleId=u.UserRoleId
-			ORDER BY u.UserLoginName ASC;
+      u.UserImage,
+      u.UserLoginName,
+      u.UserName,
+      u.UserLastName,
+      DATE_FORMAT(u.UserBirthdate,'%d/%m/%Y') as UserBirthdate,
+      u.UserTelephone,
+      u.UserEmail,
+      u.UserStatus,
+      r.RoleName
+      FROM `user` u
+      INNER JOIN role r ON r.RoleId=u.UserRoleId
+      ORDER BY u.UserLoginName ASC;
 END
 ;;
 DELIMITER ;
@@ -460,12 +472,12 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetMenuByRole`(IN `_RoleId` INT)
 BEGIN
 
   SELECT ar.MenuId,m.ModuleMenuIdFather,m.ModuleMenuName,m.ModuleMenuLink,m.ModuleMenuLevel,m.ModuleMenuPosition,
-	m.ModuleMenuIcon
-	FROM assigned_roles ar
-	INNER JOIN role r ON r.RoleId=ar.RoleId
-	INNER JOIN module_menu m ON m.ModuleMenuId=ar.MenuId
-	WHERE r.RoleId=`_RoleId` AND r.RoleStatus=TRUE AND ar.Access=TRUE AND m.ModuleMenuStatus=TRUE AND m.ModuleMenuLevel=1
-	ORDER BY m.ModuleMenuPosition ASC;
+  m.ModuleMenuIcon
+  FROM assigned_roles ar
+  INNER JOIN role r ON r.RoleId=ar.RoleId
+  INNER JOIN module_menu m ON m.ModuleMenuId=ar.MenuId
+  WHERE r.RoleId=`_RoleId` AND r.RoleStatus=TRUE AND ar.Access=TRUE AND m.ModuleMenuStatus=TRUE AND m.ModuleMenuLevel=1
+  ORDER BY m.ModuleMenuPosition ASC;
 END
 ;;
 DELIMITER ;
@@ -478,18 +490,18 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetScheduleAlert`()
 BEGIN 
   DECLARE _schedule DATETIME;
-	DECLARE _period DATE;
+  DECLARE _period DATE;
   DECLARE _digit INT;
-	DECLARE _life INT;
+  DECLARE _life INT;
 
   SELECT TIMESTAMP(ss.ScheduleProgramDate,ss.ScheduleProgramTime) AS ScheduleDatetime,
-	ss.SchedulePeriod,ss.ScheduleDigit,
+  ss.SchedulePeriod,ss.ScheduleDigit,
   TIMESTAMPDIFF(SECOND, NOW(),TIMESTAMP(DATE_ADD(ss.ScheduleProgramDate, INTERVAL 1 DAY),'00:00:00')) AS LifeAlert
-	INTO _schedule,_period,_digit,_life
-	FROM schedule_sunat ss 
-	WHERE ss.ScheduleCompleteStatus=0 AND ss.ScheduleStatus=1 ORDER BY ScheduleDatetime ASC LIMIT 1;
+  INTO _schedule,_period,_digit,_life
+  FROM schedule_sunat ss 
+  WHERE ss.ScheduleCompleteStatus=0 AND ss.ScheduleStatus=1 ORDER BY ScheduleDatetime ASC LIMIT 1;
 
-	SELECT TIMESTAMPDIFF(SECOND, NOW(), _schedule) AS AlertSeconds,_period,_digit,_life;
+  SELECT TIMESTAMPDIFF(SECOND, NOW(), _schedule) AS AlertSeconds,_period,_digit,_life;
 END
 ;;
 DELIMITER ;
@@ -511,10 +523,32 @@ BEGIN
   ss.ScheduleStatus,
   ss.ScheduleCompleteStatus,
   u.UserName  
-	FROM schedule_sunat ss
+  FROM schedule_sunat ss
   INNER JOIN user u ON u.UserId=ss.UserId
-	WHERE ss.SchedulePeriod LIKE (CASE WHEN _Period=0 THEN '' ELSE _Period  END)
-	ORDER BY ss.ScheduleDigit ASC;
+  WHERE ss.SchedulePeriod LIKE (CASE WHEN _Period=0 THEN '' ELSE _Period  END)
+  ORDER BY ss.ScheduleDigit ASC;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for sp_GetScheduleSunatByPeriodDigit
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_GetScheduleSunatByPeriodDigit`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetScheduleSunatByPeriodDigit`(IN `_period` DATE,IN `_digit` INT)
+BEGIN
+  SELECT
+  ss.SchedulePeriod,
+  ss.ScheduleDigit,
+  DATE_FORMAT(ss.ScheduleDueDate,'%d/%m/%Y') as ScheduleDueDate,
+  DATE_FORMAT(ss.ScheduleProgramDate,'%d/%m/%Y') as ScheduleProgramDate,
+  TIME_FORMAT(ss.ScheduleProgramTime,'%h:%i %p') as ScheduleProgramTime,
+  ss.ScheduleStatus,
+  u.UserName  
+  FROM schedule_sunat ss
+  INNER JOIN user u ON u.UserId=ss.UserId
+  WHERE ss.SchedulePeriod=_period AND ss.ScheduleDigit=_digit;
 END
 ;;
 DELIMITER ;
@@ -526,22 +560,22 @@ DROP PROCEDURE IF EXISTS `sp_GetScheduleSunatByYear`;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetScheduleSunatByYear`(IN `_Period`  CHAR(4))
 BEGIN
-	SET lc_time_names = 'es_VE';
-	SELECT
-	UPPER(DATE_FORMAT(ss.SchedulePeriod,'%M - %Y')) as Period,
-	(SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M') as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=0 AND s1.SchedulePeriod=ss.SchedulePeriod) as d0,
-	(SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=1 AND s1.SchedulePeriod=ss.SchedulePeriod) as d1,
-	(SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=2 AND s1.SchedulePeriod=ss.SchedulePeriod) as d2,
-	(SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=3 AND s1.SchedulePeriod=ss.SchedulePeriod) as d3,
-	(SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=4 AND s1.SchedulePeriod=ss.SchedulePeriod) as d4,
-	(SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=5 AND s1.SchedulePeriod=ss.SchedulePeriod) as d5,
-	(SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=6 AND s1.SchedulePeriod=ss.SchedulePeriod) as d6,
-	(SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=7 AND s1.SchedulePeriod=ss.SchedulePeriod) as d7,
-	(SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=8 AND s1.SchedulePeriod=ss.SchedulePeriod) as d8,
-	(SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=9 AND s1.SchedulePeriod=ss.SchedulePeriod) as d9
-	FROM schedule_sunat ss
-	WHERE ss.SchedulePeriod LIKE CONCAT('%',_Period,'%')
-	GROUP BY ss.SchedulePeriod;
+  SET lc_time_names = 'es_VE';
+  SELECT
+  UPPER(DATE_FORMAT(ss.SchedulePeriod,'%M - %Y')) as Period,
+  (SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M') as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=0 AND s1.SchedulePeriod=ss.SchedulePeriod) as d0,
+  (SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=1 AND s1.SchedulePeriod=ss.SchedulePeriod) as d1,
+  (SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=2 AND s1.SchedulePeriod=ss.SchedulePeriod) as d2,
+  (SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=3 AND s1.SchedulePeriod=ss.SchedulePeriod) as d3,
+  (SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=4 AND s1.SchedulePeriod=ss.SchedulePeriod) as d4,
+  (SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=5 AND s1.SchedulePeriod=ss.SchedulePeriod) as d5,
+  (SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=6 AND s1.SchedulePeriod=ss.SchedulePeriod) as d6,
+  (SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=7 AND s1.SchedulePeriod=ss.SchedulePeriod) as d7,
+  (SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=8 AND s1.SchedulePeriod=ss.SchedulePeriod) as d8,
+  (SELECT DATE_FORMAT(s1.ScheduleDueDate,'%d - %M')  as ScheduleDueDate from schedule_sunat s1 WHERE s1.ScheduleDigit=9 AND s1.SchedulePeriod=ss.SchedulePeriod) as d9
+  FROM schedule_sunat ss
+  WHERE ss.SchedulePeriod LIKE CONCAT('%',_Period,'%')
+  GROUP BY ss.SchedulePeriod;
 
 END
 ;;
@@ -556,11 +590,24 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetSubMenu`(IN `_RoleId` INT, IN
 BEGIN
 
   SELECT ar.MenuId,m.ModuleMenuIdFather,m.ModuleMenuName,m.ModuleMenuLink,m.ModuleMenuLevel,m.ModuleMenuPosition
-	FROM assigned_roles ar
-	INNER JOIN role r ON r.RoleId=ar.RoleId
-	INNER JOIN module_menu m ON m.ModuleMenuId=ar.MenuId
-	WHERE r.RoleId=`_RoleId` AND r.RoleStatus=TRUE AND ar.Access=TRUE AND m.ModuleMenuStatus=TRUE AND m.ModuleMenuIdFather=`_MenuId`
-	ORDER BY m.ModuleMenuPosition ASC;
+  FROM assigned_roles ar
+  INNER JOIN role r ON r.RoleId=ar.RoleId
+  INNER JOIN module_menu m ON m.ModuleMenuId=ar.MenuId
+  WHERE r.RoleId=`_RoleId` AND r.RoleStatus=TRUE AND ar.Access=TRUE AND m.ModuleMenuStatus=TRUE AND m.ModuleMenuIdFather=`_MenuId`
+  ORDER BY m.ModuleMenuPosition ASC;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for sp_InsertUser
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_InsertUser`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_InsertUser`(IN `_roleid` INT,IN `_user` VARCHAR(10),IN `_password` VARCHAR(20),IN `_name` VARCHAR(100),IN `_lastname` VARCHAR(100),IN `_birthday` DATE,IN `_telephone` VARCHAR(50),IN `_email` VARCHAR(100),IN `_status` BIT,IN `_userid` INT)
+BEGIN
+  INSERT INTO `user`(UserRoleId,UserName,UserLastName,UserLoginName,UserLoginPassword,UserBirthdate,UserTelephone,UserEmail,UserStatus,UserRegisterUserId)
+  VALUES (_roleid,_name,_lastname,_user,_password,_birthday,_telephone,_email,_status,_userid); 
 END
 ;;
 DELIMITER ;
@@ -574,9 +621,9 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_LoginUser`(IN `_UserLoginName` V
 BEGIN
 
   SELECT u.UserId,u.UserLoginName,u.UserName,u.UserImage,r.RoleId,r.RoleName FROM `user` u
-	INNER JOIN role r ON r.RoleId=u.UserRoleId
-	WHERE u.UserLoginName=`_UserLoginName` AND u.UserLoginPassword=`_UserLoginPassword`
-	AND u.UserStatus=TRUE AND r.RoleStatus=TRUE;
+  INNER JOIN role r ON r.RoleId=u.UserRoleId
+  WHERE u.UserLoginName=`_UserLoginName` AND u.UserLoginPassword=`_UserLoginPassword`
+  AND u.UserStatus=TRUE AND r.RoleStatus=TRUE;
 
 END
 ;;
@@ -617,35 +664,13 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_UpdateCompleteScheduleSunat`(IN `_period` DATE,IN `_digit` INT)
 BEGIN
   UPDATE schedule_sunat
-	SET ScheduleCompleteStatus=1
-	WHERE SchedulePeriod=_period AND ScheduleDigit=_digit;
+  SET ScheduleCompleteStatus=1
+  WHERE SchedulePeriod=_period AND ScheduleDigit=_digit;
 
   SELECT TIMESTAMPDIFF(SECOND, NOW(),TIMESTAMP(DATE_ADD(ss.ScheduleProgramDate, INTERVAL 1 DAY),'00:00:00')) AS LifeAlert
   FROM schedule_sunat ss
   WHERE ss.SchedulePeriod=_period AND ss.ScheduleDigit=_digit;
 
-END
-;;
-DELIMITER ;
-
--- ----------------------------
--- Procedure structure for sp_GetScheduleSunatByPeriodDigit
--- ----------------------------
-DROP PROCEDURE IF EXISTS `sp_GetScheduleSunatByPeriodDigit`;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetScheduleSunatByPeriodDigit`(IN `_period` DATE,IN `_digit` INT)
-BEGIN
-  SELECT
-  ss.SchedulePeriod,
-  ss.ScheduleDigit,
-  DATE_FORMAT(ss.ScheduleDueDate,'%d/%m/%Y') as ScheduleDueDate,
-  DATE_FORMAT(ss.ScheduleProgramDate,'%d/%m/%Y') as ScheduleProgramDate,
-  TIME_FORMAT(ss.ScheduleProgramTime,'%h:%i %p') as ScheduleProgramTime,
-  ss.ScheduleStatus,
-  u.UserName  
-  FROM schedule_sunat ss
-  INNER JOIN user u ON u.UserId=ss.UserId
-  WHERE ss.SchedulePeriod=_period AND ss.ScheduleDigit=_digit;
 END
 ;;
 DELIMITER ;
@@ -682,16 +707,3 @@ BEGIN
 END
 ;;
 DELIMITER ;
--- ----------------------------
--- Procedure structure for sp_DeleteScheduleSunat
--- ----------------------------
-DROP PROCEDURE IF EXISTS `sp_DeleteScheduleSunat`;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_DeleteScheduleSunat`(IN `_period` DATE,IN `_digit` INT)
-BEGIN
-  DELETE FROM schedule_sunat
-  WHERE SchedulePeriod=_period AND ScheduleDigit=_digit;
-END
-;;
-DELIMITER ;
-
