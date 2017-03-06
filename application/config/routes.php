@@ -14,6 +14,8 @@ $route['register-user'] 	= 'UserController/user_view';
 
 $route['get-all-users'] 	= 'UserController/get_all_users';
 $route['get-all-roles'] 	= 'UserController/get_all_roles';
+$route['get-user-by-userid'] 	= 'UserController/get_user_by_userid';
+$route['insert-user'] 		= 'UserController/insert_user';
 /*********************************************************************/
 $route['sunat-schedule'] 	= 'CalendarController/schedule_view';
 

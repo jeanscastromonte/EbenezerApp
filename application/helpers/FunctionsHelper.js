@@ -1,5 +1,13 @@
 
 /******************************************************************************************************************************************************************************/
+$(document).ready(InitPage);
+
+function InitPage() {
+
+  //***Alert schedule sunat***
+    fcn_schedule_alert();
+}
+/******************************************************************************************************************************************************************************/
 function fnc_clear_input () 
 {
     $('input[type="text"],input[type="password"],input[type="email"],textarea').val('');
@@ -73,48 +81,6 @@ function fnc_modal_initposition()
 {
   $('.modal-dialog').css({'left': $('.modal').data('originalLeft'), 'top': $('.modal').data('origionalTop')});
 }
-
-/******************************************************************************************************************************************************************************/
-function fnc_form_validation(_form,_rules)
-{
-  var error2 = $('.alert-danger', _form);
-  var success2 = $('.alert-success', _form);
-
-  _form.validate({
-    errorElement: 'span', 
-    errorClass: 'help-block help-block-error', 
-    focusInvalid: false, 
-    ignore: "",
-    rules: _rules,
-
-    invalidHandler: function (event, validator) {              
-      success2.hide();
-      error2.show();
-      Metronic.scrollTo(error2, -200);
-    },
-    errorPlacement: function (error, element) { 
-      var icon = $(element).parent('.input-icon').children('i');
-      icon.removeClass('fa-check').addClass("fa-warning");  
-      icon.attr("data-original-title", error.text()).tooltip({'container': 'body'});
-    },
-    highlight: function (element) { 
-      $(element)
-      .closest('.form-group').removeClass("has-success").addClass('has-error');
-    },
-    unhighlight: function (element) {
-    },
-    success: function (label, element) {
-      var icon = $(element).parent('.input-icon').children('i');
-      $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
-      icon.removeClass("fa-warning").addClass("fa-check");
-    },
-    submitHandler: function (form) {
-      success2.show();
-      error2.hide();
-      //alert("Hola"+form[0].txtscheduleddate);
-    }
-  });
-}
 /******************************************************************************************************************************************************************************/
 function fnc_switch_status(_selector)
 {
@@ -146,7 +112,7 @@ function fnc_format_time(_timepicker)
  var time   = fnc_two_digit(hour)+":"+fnc_two_digit(minute)+":00";
   return time;
 }
-
+/******************************************************************************************************************************************************************************/
 function convertTo24Hour(time) {
     var hours = parseInt(time.substr(0, 2));
     if(time.indexOf('AM') != -1 && hours == 12) {
@@ -164,6 +130,13 @@ function fnc_two_digit(_number)
   return twodigit;
 }
 /*****************************************************************************************************************************************************************************/
+function ConvertDate(datetime) {
+  var str = datetime;
+  var p = str.split("-");
+  var date = new Date(p[0],p[1]-1,p[2]);
+  return date;
+}
+/*****************************************************************************************************************************************************************************/
 function fnc_msj_alert(_type,_message,_container,_icon,_seconds)
 {
   Metronic.alert({
@@ -176,6 +149,85 @@ function fnc_msj_alert(_type,_message,_container,_icon,_seconds)
     focus: true, // auto scroll to the alert after shown
     closeInSeconds: _seconds, // auto close after defined seconds
     icon:_icon // put icon before the message
+  });
+}
+/******************************************************************************************************************************************************************************/
+/******************************************************************************************************************************************************************************/
+/******************************************************************************************************************************************************************************/
+/******************************************************************************************************************************************************************************/
+/******************************************************************************************************************************************************************************/
+/******************************************************************************************************************************************************************************/
+/******************************************************************************************************************************************************************************/
+/*****************************************************************************************************************************************************************************/
+function fcn_schedule_alert() {
+  $.getJSON("get-schedule-alert", function(data, status){
+    if(data){
+      var miliseconds=data.Seconds*1000;
+      setTimeout(function(){
+        //fnc_update_complete_schedule(data.Period,data.Digit);
+        fnc_notification8_sunatalert(data.Life,data.Period,data.Digit);
+        // $txt_period.datepicker('setDate', ConvertDate(data.Period));
+      },miliseconds);
+      // console.log(miliseconds);
+      // console.log(data.Life);
+    }
+  });
+}
+/*****************************************************************************************************************************************************************************/
+function fnc_notification8_sunatalert(life,period,digit) {
+
+  var mslife=life*1000;
+
+  if(mslife>0){
+
+    var settings = {
+      heading:"DECLARACIÓN SUNAT",
+      life:mslife,
+      theme: 'ruby',
+      sticky: false,
+      horizontalEdge: 'bottom',
+      verticalEdge: 'right'
+    };
+
+    $.notific8('zindex', 11500);
+    $.notific8("Digito "+digit, settings);
+
+    var myAudio = new Audio('assets/sound/announcement.mp3');
+    myAudio.play();
+
+    setTimeout(function () {
+      var myAudio2 = new Audio('assets/sound/digito'+digit+'.mp3');
+      myAudio2.play();
+    },1000);
+
+    $('.jquery-notific8-notification').addClass('blinking');   
+  }
+  setTimeout(function(){
+    fnc_update_complete_schedule(period,digit);
+  },mslife);
+  console.log(mslife);
+}
+/*****************************************************************************************************************************************************************************/
+function fnc_update_complete_schedule(period,digit) {
+
+  var data={};    
+  data.period = period;
+  data.digit  = digit;
+
+  $.ajax({
+    type: "POST",
+    url: "update-complete-schedule",
+    data: JSON.stringify(data),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    async: true,   
+    success: function (resp) 
+    {
+      if(resp){
+        //fnc_notification8_sunatalert(resp.LifeAlert,data.digit);
+        setTimeout(fcn_schedule_alert,1000);
+      }
+    }    
   });
 }
 /******************************************************************************************************************************************************************************/

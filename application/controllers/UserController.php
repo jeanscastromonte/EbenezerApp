@@ -66,38 +66,26 @@ class UserController extends  MasterController{
 /****************************************************************************************************/
 	public function get_all_users()
 	{
-		$list = $this->UserModel->get_all_users();
-		// $data = array();
-		// $no = 0;
-		// foreach ($list as $user) {
-		// 	$no++;
-		// 	$row = array();
-		// 	$row[] = $no;			
-		// 	$row[] = $user->UserImage;
-		// 	$row[] = $user->UserLoginName;
-		// 	$row[] = $user->RoleName;
-		// 	$row[] = $user->UserName;
-		// 	$row[] = $user->UserLastName;
-		// 	$row[] = $user->UserBirthdate;
-		// 	$row[] = $user->UserTelephone;
-		// 	$row[] = $user->UserEmail;
-		// 	$row[] = $user->UserStatus;			
-
-		// 	$data[] = $row;
-		// }
-		//$output = array("Data" => $data);
+		$list = $this->UserModel->get_all_users();	
 		$output = array("Data" => $list);
 		echo json_encode($output);
 	}
-
-	// public function get_all_users1()
-	// {                   
-	// 	$get_all_users=$this->UserModel->get_all_users();
-		
-	// 	 $output = array("Data" => $get_all_users);
-	// 	//$output['Data']   =  $get_all_users[0];
-	// 	echo json_encode($output);
-	// }
+/****************************************************************************************************/
+	public function insert_user()
+	{
+		$json =	file_get_contents('php://input');
+		$data =	json_decode($json,TRUE);
+		$output=$this->UserModel->insert_user($data);
+		echo json_encode($output);
+	}
+/****************************************************************************************************/
+	public function get_user_by_userid()
+	{
+		$json =	file_get_contents('php://input');
+		$data =	json_decode($json,TRUE);
+		$output=$this->UserModel->get_user_by_userid($data);
+		echo json_encode($output);
+	}
 /****************************************************************************************************/
 	public function get_all_roles()
 	{                   

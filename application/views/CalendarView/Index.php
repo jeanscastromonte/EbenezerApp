@@ -13,12 +13,6 @@
 </div>
 <!-- END PAGE HEADER-->
 
-<!-- <div class="jquery-notific8-container top right" style="z-index: 11500;margin-top:60px;">
-	<div class="jquery-notific8-notification teal parpadea" id="jquery-notific8-notification-1" style="display: block;background-color: #e60000;">
-		<div class="jquery-notific8-message">Inspired by Windows 8 notifications</div>
-	</div>
-</div> -->
-
 <!-- BEGIN PAGE CONTENT-->
 <div class="row">
 	<div class="col-md-12">
@@ -169,17 +163,7 @@
 										<input type="text" class="form-control" name="txtscheduledtime"/>
 									</div>
 								</div>
-							</div>							
-							<!-- 
-							<div class="form-group">
-								<div class="text-left col-md-5"><label class="control-label">Frecuencia:</label></div>
-								<div class="col-md-7">
-									<div class="input-icon right">
-										<i class="fa"></i>
-										<input type="text" class="form-control" name="txtfrecuency"/>
-									</div>
-								</div>
-							</div> -->
+							</div>
 							<div class="form-body">
 								<div class="form-group">
 									<div class="text-left col-md-5"><label class="control-label">Estado:</label></div>

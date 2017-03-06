@@ -8,9 +8,6 @@
 			<a href="javascritp:void(0);">Registro de usuarios</a>
 			<!-- <i class="fa fa-angle-right"></i> -->
 		</li>
-		<!-- <li>
-			<a href="javascritp:void(0);">Registro de ventas</a>
-		</li> -->
 	</ul>
 </div>
 
@@ -26,18 +23,16 @@
 					<i class="fa fa-users"></i>Usuarios
 				</div>
 				<div class="tools">
+					<button type="button" class="btn btn-default tooltips" id="btn-callmodal-user" data-container="body" data-placement="top" data-original-title="Agregar Cronograma">
+					<i class="fa fa-plus"></i>&nbsp;&nbsp;Agregar
+					</button>
 				</div>
 			</div>
 			<div class="portlet-body">
-				<div>
-					<button type="button" class="btn btn-circle btn-primary tooltips" id="btn-callmodal-user" data-container="body" data-placement="top" data-original-title="Agregar usuario">
-						<i class="fa fa-plus"></i>&nbsp;&nbsp;Agregar
-					</button>
-
-				</div>
-				<div class="text-center" id="spinner-loading" hidden="hidden">
+				<!-- <div class="text-center" id="spinner-loading" hidden="hidden">
 					<i class="fa fa-spinner fa-spin fa-3x color-spinner"></i>&nbsp;Cargando...
-				</div>
+				</div> -->
+
 				<table class="table table-striped table-bordered table-hover" id="datatable-user">					
 				</table>	
 			</div>
@@ -159,8 +154,6 @@
 										<div class="input-icon right">
 											<i class="fa"></i>
 											<input type="checkbox" checked id="chck-status">
-											
-											<!-- <input class="make-switch" data-on-text="&nbsp;Activo&nbsp;" data-off-text="&nbsp;Inactivo&nbsp;" type="checkbox"> -->
 										</div>
 									</div>
 								</div>

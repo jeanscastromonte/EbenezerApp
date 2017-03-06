@@ -26,10 +26,7 @@ function InitUser(){
 
   //***Private Variables***    
     var $btn_callmodal_schedule =   $('#btn-callmodal-schedule');
-    var $form_schedule          =   $('#form-schedule');
-
-  //***Alert schedule sunat***
-    fcn_schedule_alert();
+    var $form_schedule          =   $('#form-schedule');  
 
   //***Button Call Modal***
     $btn_callmodal_schedule.on('click',function () {
@@ -401,77 +398,6 @@ function fnc_set_schedule_sunat() {
   });
 }
 /*****************************************************************************************************************************************************************************/
-function fcn_schedule_alert() {
-  $.getJSON("get-schedule-alert", function(data, status){
-    if(data){
-      var miliseconds=data.Seconds*1000;
-      setTimeout(function(){
-        //fnc_update_complete_schedule(data.Period,data.Digit);
-        fnc_notification8_sunatalert(data.Life,data.Period,data.Digit);
-        // $txt_period.datepicker('setDate', ConvertDate(data.Period));
-      },miliseconds);
-      // console.log(miliseconds);
-      // console.log(data.Life);
-    }
-  });
-}
-/*****************************************************************************************************************************************************************************/
-function fnc_notification8_sunatalert(life,period,digit) {
-
-    var mslife=life*1000;
-
-    var settings = {
-      heading:"DECLARACIÓN SUNAT",
-      life:mslife,
-      theme: 'ruby',
-      sticky: false,
-      horizontalEdge: 'bottom',
-      verticalEdge: 'right'
-    };
-
-    $.notific8('zindex', 11500);
-    $.notific8("Digito "+digit, settings);
-
-    
-    var myAudio = new Audio('assets/sound/announcement.mp3');
-    myAudio.play();
-
-    setTimeout(function () {
-      var myAudio2 = new Audio('assets/sound/digito'+digit+'.mp3');
-      myAudio2.play();
-    },1000);
-
-    console.log(mslife);
-    $('.jquery-notific8-notification').addClass('parpadea');
-
-    setTimeout(function(){
-       fnc_update_complete_schedule(period,digit)
-    },mslife);
-}
-/*****************************************************************************************************************************************************************************/
-function fnc_update_complete_schedule(period,digit) {
-
-  var data={};    
-  data.period = period;
-  data.digit  = digit;
-
-  $.ajax({
-    type: "POST",
-    url: "update-complete-schedule",
-    data: JSON.stringify(data),
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    async: true,   
-    success: function (resp) 
-    {
-      if(resp){
-        //fnc_notification8_sunatalert(resp.LifeAlert,data.digit);
-        setTimeout(fcn_schedule_alert,1000);
-      }
-    }    
-  });
-}
-/*****************************************************************************************************************************************************************************/
 function fnc_get_schedule_by_period_digit() {
    
   flagnew_schedule=false;
@@ -577,24 +503,5 @@ function fnc_delete_schedule(data) {
   });
 }
 /*****************************************************************************************************************************************************************************/
-function ConvertDate(datetime) {
-  var str = datetime;
-  var p = str.split("-");
-  var date = new Date(p[0],p[1]-1,p[2]);
-  return date;
-}
+
 /*****************************************************************************************************************************************************************************/
-// function notific8() {
-
-//   var params = {
-//     heading: 'Hola',
-//     life: 10000,
-//     theme: 'ruby',
-//     sticky: true,
-//     horizontalEdge: 'bottom',
-//     verticalEdge: 'right'  },
-//   text = 'hola';
-
-//   // show notification
-//   $.notific8(text, params);
-// }
