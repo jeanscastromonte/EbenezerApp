@@ -1,15 +1,16 @@
 /*****************************************************************************************************************************************************************************/
-$(document).ready(InitUser);
+$(document).ready(InitCustomer);
 
   //***Public Attributes***
-    var $cbo_role        =   $('#cbo-role');
-    var $modal_user      =   $('#modal-user');
-    var $user_modaltitle =   $modal_user.find('.modal-title');
-    var $form_user       =   $('#form-user');    
+    var $cbo_digit        =   $('#cbo-digit');
+    var $cbo_customer_status        =   $('#cbo-customer-status');
+    var $modal_customer      =   $('#modal-customer');
+    var $customer_modaltitle =   $modal_customer.find('.modal-title');
+    var $form_customer       =   $('#form-customer');    
     var $chck_status     =   $('#chck-status');
-    var flagnew_user     =   false; 
+    var flagnew_customer     =   false; 
 
-    var $txtuser        = $('[name=txtuser]');
+    var $txtcustomer        = $('[name=txtcustomer]');
     var $txtpassword    = $('[name=txtpassword]');
     var $txtname        = $('[name=txtname]');
     var $txtlastname    = $('[name=txtlastname]');
@@ -18,48 +19,57 @@ $(document).ready(InitUser);
     var $txtemail       = $('[name=txtemail]');
     var datatable;
 /******************************************************************************************************************************************************************************/
-function InitUser()
+function InitCustomer()
 {
     //***Private variables**
-    var $datatable_user       =   $('#datatable-user');   
-    var $btn_callmodal_user   =   $('#btn-callmodal-user');    
+    var $datatable_customer       =   $('#datatable-customer');   
+    var $btn_callmodal_customer   =   $('#btn-callmodal-customer');    
    
-    //***Call Modal User*** 
-    $btn_callmodal_user.on('click',function () {
+    //***Call Modal customer*** 
+    $btn_callmodal_customer.on('click',function () {
 
       fnc_modal_events();
-      $modal_user.modal({"backdrop": "static","keyboard": false, "show": true});
-      fnc_clear_form($form_user);
-      $user_modaltitle.text('Registrar Usuario');
-      flagnew_user=true;    
+      $modal_customer.modal({"backdrop": "static","keyboard": false, "show": true});
+      fnc_clear_form($form_customer);
+      $customer_modaltitle.text('Registrar Usuario');
+      flagnew_customer=true;    
     });
 
-    $(document).on('click','.btn-editmodal-user',fnc_get_user);
-    // $(document).on('click','.btn-deletemodal-user',fnc_modaldelete_user);
+    $(document).on('click','.btn-editmodal-customer',fnc_get_customer);
+    // $(document).on('click','.btn-deletemodal-customer',fnc_modaldelete_customer);
     // $btn_acceptdelete_schedule.on('click',fnc_delete_schedule);
 
-    //***Init Datatable users***
-    datatable=fnc_datatable_user($datatable_user);
+    //***Init Datatable customers***
+    datatable=fnc_datatable_customer($datatable_customer);
+    $datatable_customer.find('thead').css({'background-color':'#67809F','color':'white'});
+    $datatable_customer.find('tbody').css({'font-weight':'bold'});
 
-    //***Validation form user***
-    fnc_validation_user($form_user);
+    //***Validation form customer***
+    fnc_validation_customer($form_customer);
 
-    //***Select2 roles***
-    fnc_select2_roles($cbo_role)
-    
-    //***Switch Status user***
-    $chck_status.bootstrapSwitch({onText:'Activo',offText:'&nbsp;Inactivo&nbsp;',onColor: 'success',offColor:'danger',size: 'normal'});
-    $('.bootstrap-switch').css('width','150px');
+    //***Select2 Digit***
+      fnc_select2( $cbo_digit,"Seleccione dígito...");
+      fnc_fill_options_digits($cbo_digit);
+
+      fnc_select2($cbo_customer_status,"Seleccione Estado...");   
+      $cbo_customer_status.append('<option value="">Activos</option>'
+        +'<option value="">Suspendidos Temp.</option>'
+        +'<option value="">De baja</option>'
+        +'<option value="">Retirados</option>'
+        +'<option value="">Todos</option>');
+    //***Switch Status customer***
+    // $chck_status.bootstrapSwitch({onText:'Activo',offText:'&nbsp;Inactivo&nbsp;',onColor: 'success',offColor:'danger',size: 'normal'});
+    // $('.bootstrap-switch').css('width','150px');
       
-    $txtbirthday.datepicker({
-      format: 'dd/mm/yyyy',
-      pickTime: false,
-      autoclose: true,
-      language: 'es'
-    });
+    // $txtbirthday.datepicker({
+    //   format: 'dd/mm/yyyy',
+    //   pickTime: false,
+    //   autoclose: true,
+    //   language: 'es'
+    // });
 }
 /*****************************************************************************************************************************************************************************/
-function fnc_datatable_user(_datatable)
+function fnc_datatable_customer(_datatable)
 {
 
     $('#spinner-loading').show();  
@@ -68,9 +78,9 @@ function fnc_datatable_user(_datatable)
              {
                 "dataSrc": "Data",
                 "type"   : "POST",
-                "url"    : "get-all-users",
+                "url"    : "get-all-customer",
                 "data"   : function( d ) {
-                  d.cliente_id= 0;
+                  d.option= 0;
                 },
                 complete: function () 
                 {
@@ -82,38 +92,39 @@ function fnc_datatable_user(_datatable)
                 "url": "assets/language/Spanish.json"
               },
             "aoColumns": [
-                    { "data":"UserId", "title": "Nro" ,"sClass": "text-center"},    
-                    { "data":"UserImage", "title": "Foto" ,"sClass": "text-center"},
-                    { "data":"UserLoginName", "title": "Usuario" ,"sClass": "text-center"},
-                    { "data":"RoleName", "title": "Rol" ,"sClass": "text-center"},
-                    { "data":"UserName", "title": "Nombre(s)" ,"sClass": "text-center"},
-                    { "data":"UserLastName", "title": "Apellido(s)" ,"sClass": "text-center"},
-                    { "data":"UserBirthdate", "title": "Fecha de Nacimiento","sClass": "text-center"},
-                    { "data":"UserTelephone", "title": "Teléfono","sClass": "text-center"},
-                    { "data":"UserEmail", "title": "E-mail","sClass": "text-center"},
-                    { "data":"UserStatus", "title": "Estado","sClass": "text-center"},                    
+                    { "data":"id", "title": "Nº" ,"sClass": "text-center"},    
+                    { "data":"nombre", "title": "Nombre o Razón Social" ,"sClass": "text-center"},
+                    { "data":"ruc", "title": "R.U.C." ,"sClass": "text-center"},
+                    { "data":"usuariosol", "title": "Usuario SOL" ,"sClass": "text-center"},
+                    { "data":"clavesol", "title": "Clave SOL" ,"sClass": "text-center"},
+                    { "data":"tipoempresa", "title": "Tipo de Empresa" ,"sClass": "text-center"},
+                    { "data":"regtrib", "title": "Régimen Tributario","sClass": "text-center"},
+                    { "data":"regtt", "title": "Régimen Trib.","sClass": "text-center"},
+                    { "data":"reglab", "title": "Régimen Laboral","sClass": "text-center"},
+                    { "data":"telefono", "title": "Teléfono","sClass": "text-center"},                    
+                    { "data":"estado", "title": "Estado","sClass": "text-center"},                    
                     {//Column de botones
                       "title": "Opciones","data":null,
                         "mRender": function(data, type, full) {
-                            return '<a href="javascript:void(0);" class="btn btn-circle btn-icon-only blue btn-editmodal-user" data-id="'+data['UserId']+'"><i class="fa fa-edit"></i></a>'
-                                  +'<a href="javascript:void(0);" class="btn btn-circle btn-icon-only blue btn-deletemodal-user" data-id="'+data['UserId']+'"><i class="fa fa-trash"></i></a>';
+                            return '<a href="javascript:void(0);" class="btn btn-circle btn-icon-only blue btn-editmodal-customer" data-id="'+data['customerId']+'"><i class="fa fa-edit"></i></a>'
+                                  +'<a href="javascript:void(0);" class="btn btn-circle btn-icon-only blue btn-deletemodal-customer" data-id="'+data['customerId']+'"><i class="fa fa-trash"></i></a>';
                         }
                     }
                 ],
-            "columnDefs" : [
-                        { targets : [9],
-                          render : function (data, type, row) {
-                             return data == true ? '<span class="label bg-green-jungle">Activo</span>' : '<span class="label bg-red-intense">Inactivo</span>';
-                          }
-                        },
-                ],
+            // "columnDefs" : [
+            //             { targets : [10],
+            //               render : function (data, type, row) {
+            //                  return data == true ? '<span class="label bg-green-jungle">Activo</span>' : '<span class="label bg-red-intense">Inactivo</span>';
+            //               }
+            //             },
+            //     ],
                 "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-                  $('td:eq(2),td:eq(4),td:eq(5)', nRow).addClass( "text-left" );
-                  $('td:eq(2),td:eq(4),td:eq(5)', nRow).removeClass( "text-center" );
+                  // $('td:eq(2),td:eq(4),td:eq(5)', nRow).addClass( "text-left" );
+                  // $('td:eq(2),td:eq(4),td:eq(5)', nRow).removeClass( "text-center" );
 
                   //ADD TOOLTIP NEW ELEMENT CREATED
-                  $('.btn-editmodal-user', nRow).tooltip({html: true, title: 'Editar usuario'});
-                  $('.btn-deletemodal-user', nRow).tooltip({html: true, title: 'Eliminar usuario'});
+                  $('.btn-editmodal-customer', nRow).tooltip({html: true, title: 'Editar Cliente'});
+                  $('.btn-deletemodal-customer', nRow).tooltip({html: true, title: 'Eliminar Cliente'});
                 }
         });
   return datatable;
@@ -142,7 +153,7 @@ function fnc_clear_form(_form) {
   $cbo_role.select2('val','');
 }
 /*****************************************************************************************************************************************************************************/
-function fnc_validation_user(_form) {
+function fnc_validation_customer(_form) {
 
   var error2 = $('.alert-danger', _form);
   var success2 = $('.alert-success', _form);
@@ -153,7 +164,7 @@ function fnc_validation_user(_form) {
     focusInvalid: false, 
     ignore: "",
     rules: {
-      txtuser: {
+      txtcustomer: {
         required: true
       },
       txtpassword: {
@@ -189,18 +200,18 @@ function fnc_validation_user(_form) {
       icon.removeClass("fa-warning").addClass("fa-check");
     },
     submitHandler: function (form) {      
-      fnc_insert_user ();
+      fnc_insert_customer ();
       error2.hide();
     }
   });
 }
 /*****************************************************************************************************************************************************************************/
-function fnc_insert_user() {
+function fnc_insert_customer() {
 
   var birthday = $txtbirthday.datepicker('getDate');
   var data={};    
   data.cbo_role     =  $cbo_role.select2('val');
-  data.txt_user     =  $txtuser.val();
+  data.txt_customer     =  $txtcustomer.val();
   data.txt_password =  $txtpassword.val();
   data.txt_name     =  $txtname.val();
   data.txt_lastname =  $txtlastname.val();
@@ -209,11 +220,11 @@ function fnc_insert_user() {
   data.txt_email    =  $txtemail.val();
   data.chck_status  =  $chck_status.bootstrapSwitch('state');
     
-  var url_user = flagnew_user!=true?"update-user":"insert-user";
+  var url_customer = flagnew_customer!=true?"update-customer":"insert-customer";
 
   $.ajax({
     type: "POST",
-    url: url_user,
+    url: url_customer,
     data: JSON.stringify(data),
     contentType: "application/json; charset=utf-8",
     dataType: "json",
@@ -228,7 +239,7 @@ function fnc_insert_user() {
         switch(resp.status)
         {
           case true:
-            $modal_user.modal('hide');
+            $modal_customer.modal('hide');
             fnc_msj_alert(resp.type,resp.message,'',resp.icon,5);
             datatable.ajax.reload();
             $('#spinner-loading').hide();
@@ -252,15 +263,15 @@ function fnc_insert_user() {
   });
 }
 /*****************************************************************************************************************************************************************************/
-function fnc_get_user() {
+function fnc_get_customer() {
 
-  flagnew_user=false;
+  flagnew_customer=false;
   var data={};
-  data.userid   =  $(this).attr('data-id');
+  data.customerid   =  $(this).attr('data-id');
 
   $.ajax({
     type: "POST",
-    url: "get-user-by-userid",
+    url: "get-customer-by-customerid",
     data: JSON.stringify(data),
     contentType: "application/json; charset=utf-8",
     dataType: "json",

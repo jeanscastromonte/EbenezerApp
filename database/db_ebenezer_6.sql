@@ -15,9 +15,9 @@ Date: 2017-03-06 01:11:40
 
 SET FOREIGN_KEY_CHECKS=0;
 
--- ----------------------------
+-- -----------------------------
 -- Table structure for accounting_account
--- ----------------------------
+-- ---------------------------------
 DROP TABLE IF EXISTS `accounting_account`;
 CREATE TABLE `accounting_account` (
   `AccountingAccountId` int(11) NOT NULL AUTO_INCREMENT,

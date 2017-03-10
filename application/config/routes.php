@@ -29,3 +29,6 @@ $route['get-schedule-sunat-byperioddigit'] = 'CalendarController/get_schedule_su
 $route['update-schedule-sunat'] = 'CalendarController/update_schedule_sunat';
 $route['delete-schedule-sunat'] = 'CalendarController/delete_schedule_sunat';
 /*********************************************************************/
+$route['register-customer'] 	= 'CustomerController/customer_view';
+$route['get-all-customer'] 	= 'CustomerController/get_all_customer';
+/*********************************************************************/

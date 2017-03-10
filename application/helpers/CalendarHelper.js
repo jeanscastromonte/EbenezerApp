@@ -109,7 +109,7 @@ function InitUser(){
 
   //***Init Select2***
     fnc_select2( $cbo_digit,"Seleccione dígito...");
-    fnc_fill_options_digits();
+    fnc_fill_options_digits($cbo_digit);
  
   //***Init Validation Form***
     var rules = {"txtduedate": {"minlength": 10, "maxlength": 10, "required": true }, "txtscheduleddate": {"minlength": 10, "maxlength": 10, "required": true }};
@@ -310,15 +310,6 @@ function fnc_validation_schedule(_form) {
       error2.hide();
     }
   });
-}
-/*****************************************************************************************************************************************************************************/
-function fnc_fill_options_digits() {
-
-  var options="";  
-  for (var i =0;i<10;i++)  {
-   options+='<option value="'+i+'">'+i+'</option>';
-  }
- $cbo_digit.append(options);
 }
 /*****************************************************************************************************************************************************************************/
 function fnc_clear_form(_form) {
