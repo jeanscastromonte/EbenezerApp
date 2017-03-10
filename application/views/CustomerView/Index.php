@@ -102,7 +102,7 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<div class="text-left col-md-3"><label class="control-label">Usuario:</label></div>
+									<div class="text-left col-md-3"><label class="control-label">Nombre:</label></div>
 									<div class="col-md-9">
 										<div class="input-icon right">
 											<i class="fa"></i>
@@ -111,7 +111,7 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<div class="text-left col-md-3"><label class="control-label">Contraseña:</label></div>
+									<div class="text-left col-md-3"><label class="control-label">R.U.C:</label></div>
 									<div class="col-md-9">
 										<div class="input-icon right">
 											<i class="fa"></i>
@@ -120,7 +120,7 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<div class="text-left col-md-3"><label class="control-label">Nombre(s):</label></div>
+									<div class="text-left col-md-3"><label class="control-label">Usuario SOL:</label></div>
 									<div class="col-md-9">
 										<div class="input-icon right">
 											<i class="fa"></i>
@@ -129,7 +129,7 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<div class="text-left col-md-3"><label class="control-label">Apellidos:</label></div>
+									<div class="text-left col-md-3"><label class="control-label">Clave SOL:</label></div>
 									<div class="col-md-9">
 										<div class="input-icon right">
 											<i class="fa"></i>
@@ -142,7 +142,7 @@
 						<div class="col-md-6">
 							<div class="form-body">
 								<div class="form-group">
-									<div class="text-left col-md-3"><label class="control-label">Fecha Nac:</label></div>
+									<div class="text-left col-md-3"><label class="control-label">Estado:</label></div>
 									<div class="col-md-9">
 										<div class="input-icon right">
 											<i class="fa"></i>
@@ -151,7 +151,7 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<div class="text-left col-md-3"><label class="control-label">Teléfono:</label></div>
+									<div class="text-left col-md-3"><label class="control-label">Régimen Tributario:</label></div>
 									<div class="col-md-9">
 										<div class="input-icon right">
 											<i class="fa"></i>
