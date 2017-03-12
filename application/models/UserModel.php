@@ -110,7 +110,8 @@ class UserModel extends CI_Model {
 /*************************************************************************/
 	public function get_user_by_userid($data)
 	{
-		$query=$this->db->query("CALL sp_LoginUser('$user','$password')");
+		$userid=$data['userid'];
+		$query=$this->db->query("CALL sp_GetUserByUserId($userid)");
 
 		if ($query->num_rows()==1)
 		{
@@ -124,6 +125,41 @@ class UserModel extends CI_Model {
 			return FALSE; 
 		}
 	}
+/*************************************************************************/
+	public function update_user($data)
+    {
+    	$userid        = $data['userid'];
+    	$roleid        = $data['cbo_role'];
+    	$user     	   = $data['txt_user'];
+    	$password      = $data['txt_password'];
+    	$name 		   = $data['txt_name'];
+    	$lastname      = $data['txt_lastname'];
+    	$birthday	   = $data['txt_birthday'];
+    	$telephone	   = $data['txt_telephone'];
+    	$email		   = $data['txt_email'];
+    	$status		   = $data['chck_status'];
+    	$respuserid    = $this->session->userdata('UserId');
+
+    	$query=$this->db->query("CALL sp_UpdateUser($userid,$roleid,'$user','$password','$name','$lastname','$birthday','$telephone','$email',$status,$respuserid)");
+
+    	if($query)
+		{
+			$output = array(
+			"status" => TRUE,
+			"message"=>"Se editó exitosamente",
+			"type"=>"success",
+			"icon"=>"check");			
+		}
+		else
+		{
+			$output = array(
+			"status" => FALSE,
+			"message"=>"ERROR, No se puede editar, Vuelva a intentarlo.",
+			"type"=>"danger",
+			"icon"=>"warning");	
+		}		
+		return $output;
+    }
 /*************************************************************************/
 	public function get_all_roles()
 	{

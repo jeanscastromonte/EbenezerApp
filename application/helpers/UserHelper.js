@@ -17,6 +17,7 @@ $(document).ready(InitUser);
     var $txttelephone   = $('[name=txttelephone]');
     var $txtemail       = $('[name=txtemail]');
     var datatable;
+    var userid=0;
 /******************************************************************************************************************************************************************************/
 function InitUser()
 {
@@ -31,7 +32,8 @@ function InitUser()
       $modal_user.modal({"backdrop": "static","keyboard": false, "show": true});
       fnc_clear_form($form_user);
       $user_modaltitle.text('Registrar Usuario');
-      flagnew_user=true;    
+      flagnew_user=true;
+      userid=0;    
     });
 
     $(document).on('click','.btn-editmodal-user',fnc_get_user);
@@ -189,13 +191,13 @@ function fnc_validation_user(_form) {
       icon.removeClass("fa-warning").addClass("fa-check");
     },
     submitHandler: function (form) {      
-      fnc_insert_user ();
+      fnc_set_user ();
       error2.hide();
     }
   });
 }
 /*****************************************************************************************************************************************************************************/
-function fnc_insert_user() {
+function fnc_set_user() {
 
   var birthday = $txtbirthday.datepicker('getDate');
   var data={};    
@@ -204,13 +206,13 @@ function fnc_insert_user() {
   data.txt_password =  $txtpassword.val();
   data.txt_name     =  $txtname.val();
   data.txt_lastname =  $txtlastname.val();
-  data.txt_birthday =  moment(birthday).format('YYYY-MM-DD');
+  data.txt_birthday =  $txtbirthday.val()==''?'':moment(birthday).format('YYYY-MM-DD');
   data.txt_telephone=  $txttelephone.val();
   data.txt_email    =  $txtemail.val();
-  data.chck_status  =  $chck_status.bootstrapSwitch('state');
+  data.chck_status  =  $chck_status.bootstrapSwitch('state')==true?1:0;
+  data.userid       =  userid;
     
   var url_user = flagnew_user!=true?"update-user":"insert-user";
-
   $.ajax({
     type: "POST",
     url: url_user,
@@ -273,20 +275,22 @@ function fnc_get_user() {
     {
       if(resp){
 
-        // $schedule_modaltitle.text('Editar Cronograma');
-        // $txt_period2.datepicker('setDate', ConvertDate(resp.SchedulePeriod));
-        // $cbo_digit.select2('val',resp.ScheduleDigit);      
-        // $txt_duedate.datepicker('setDate', resp.ScheduleDueDate);
-        // $txt_scheduleddate.datepicker('setDate', resp.ScheduleProgramDate);
-        // $txt_scheduletime.timepicker('setTime', resp.ScheduleProgramTime);
-        // $chck_status.bootstrapSwitch('state', resp.ScheduleStatus==0?false:true);
+        $user_modaltitle.text('Editar Usuario');
 
-        // $txt_period2.attr('disabled', 'disabled');
-        // $cbo_digit.attr('disabled', 'disabled');
+        $cbo_role.select2('val',resp.RoleId);
+        $txtuser.val(resp.UserLoginName);
+        $txtpassword.val(resp.UserLoginPassword);
+        $txtname.val(resp.UserName);
+        $txtlastname.val(resp.UserLastName);
+        $txtbirthday.datepicker('setDate', resp.UserBirthdate);
+        $txttelephone.val(resp.UserTelephone);
+        $txtemail.val(resp.UserEmail);
+        $chck_status.bootstrapSwitch('state',resp.UserStatus==0?false:true);
 
-        // fnc_modal_events();
-        // $modal_schedule.modal({"backdrop": "static","keyboard": false, "show": true});
-        // $('#spinner-loading').hide();
+        fnc_modal_events();
+        $modal_user.modal({"backdrop": "static","keyboard": false, "show": true});
+        $('#spinner-loading').hide();
+        userid=resp.UserId;
 
       }     
     },

@@ -52,6 +52,7 @@
 					<h4 class="modal-title">Registrar Usuario</h4>
 				</div>
 				<div class="modal-body">
+					<div class="modal-msj-alert"></div>
 					<div class="alertform alert alert-danger display-hide">
 					<button class="close" data-close="alert"></button>
 					Usted tiene algunos errores. Por favor, compruebe a continuación.
