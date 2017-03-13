@@ -95,6 +95,14 @@ class UserController extends  MasterController{
 		echo json_encode($output);
 	}
 /****************************************************************************************************/
+	public function delete_user()
+	{
+		$json =	file_get_contents('php://input');
+		$data =	json_decode($json,TRUE);
+		$output=$this->UserModel->delete_user($data);
+		echo json_encode($output);
+	}
+/****************************************************************************************************/
 	public function get_all_roles()
 	{                   
 		$get_all_roles=$this->UserModel->get_all_roles();

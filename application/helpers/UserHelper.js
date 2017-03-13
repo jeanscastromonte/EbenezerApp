@@ -18,9 +18,12 @@ $(document).ready(InitUser);
     var $txtemail       = $('[name=txtemail]');
     var datatable;
     var userid=0;
+    var $modal_user_message    = $('#modal-user-message');    
+    var $btn_acceptdelete_user = $('#btn-acceptdelete-user');
+
 /******************************************************************************************************************************************************************************/
-function InitUser()
-{
+function InitUser(){
+
     //***Private variables**
     var $datatable_user       =   $('#datatable-user');   
     var $btn_callmodal_user   =   $('#btn-callmodal-user');    
@@ -37,8 +40,8 @@ function InitUser()
     });
 
     $(document).on('click','.btn-editmodal-user',fnc_get_user);
-    // $(document).on('click','.btn-deletemodal-user',fnc_modaldelete_user);
-    // $btn_acceptdelete_schedule.on('click',fnc_delete_schedule);
+    $(document).on('click','.btn-deletemodal-user',fnc_modaldelete_user);
+    $btn_acceptdelete_user.on('click',fnc_delete_user);
 
     //***Init Datatable users***
     datatable=fnc_datatable_user($datatable_user);
@@ -61,10 +64,9 @@ function InitUser()
     });
 }
 /*****************************************************************************************************************************************************************************/
-function fnc_datatable_user(_datatable)
-{
+function fnc_datatable_user(_datatable){
 
-    $('#spinner-loading').show();  
+  $('#spinner-loading').show();  
   var datatable= _datatable.DataTable({
             "ajax":
              {
@@ -98,7 +100,7 @@ function fnc_datatable_user(_datatable)
                       "title": "Opciones","data":null,
                         "mRender": function(data, type, full) {
                             return '<a href="javascript:void(0);" class="btn btn-circle btn-icon-only blue btn-editmodal-user" data-id="'+data['UserId']+'"><i class="fa fa-edit"></i></a>'
-                                  +'<a href="javascript:void(0);" class="btn btn-circle btn-icon-only blue btn-deletemodal-user" data-id="'+data['UserId']+'"><i class="fa fa-trash"></i></a>';
+                                  +'<a href="javascript:void(0);" class="btn btn-circle btn-icon-only blue btn-deletemodal-user" data-id="'+data['UserId']+'" data-name="'+data['UserLoginName']+'"><i class="fa fa-trash"></i></a>';
                         }
                     }
                 ],
@@ -121,8 +123,7 @@ function fnc_datatable_user(_datatable)
   return datatable;
 }
 /*****************************************************************************************************************************************************************************/
-function fnc_select2_roles(_cbo)
-{
+function fnc_select2_roles(_cbo){
     $.getJSON("get-all-roles", function (data){ 
         _cbo.html('<option></option>');
         for (var i = 0; i<data.length;i++) 
@@ -293,6 +294,60 @@ function fnc_get_user() {
         userid=resp.UserId;
 
       }     
+    },
+    complete: function () 
+    {
+    },
+    error: function(resp)
+    {
+    }
+  });
+}
+/*****************************************************************************************************************************************************************************/
+function fnc_modaldelete_user() {
+
+  fnc_modal_events();
+  $modal_user_message.modal({"backdrop": "static","keyboard": false, "show": true});
+  var userid   =  $(this).attr('data-id');
+  var username =  $(this).attr('data-name');
+  $('#span-user-name').text(username);
+  $btn_acceptdelete_user.attr({'data-id':userid});
+}
+/*****************************************************************************************************************************************************************************/
+function fnc_delete_user() {
+
+  var data={};
+  data.userid   =  $(this).attr('data-id');
+  console.log(data.userid);
+
+  $.ajax({
+    type: "POST",
+    url: "delete-user",
+    data: JSON.stringify(data),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    async: true,
+    beforeSend: function () 
+    {
+    },
+    success: function (resp) 
+    {
+      if(resp){
+        switch(resp.status)
+        {
+          case true:        
+            $modal_user_message.modal('hide');
+            fnc_msj_alert(resp.type,resp.message,'',resp.icon,5);
+            datatable.ajax.reload();
+            $('#spinner-loading').hide();
+            break;
+
+          case false:
+            fnc_msj_alert(resp.type,resp.message,'.modal-msj-alert',resp.icon,5);
+            $('#spinner-loading').hide();        
+            break;
+        }
+      }
     },
     complete: function () 
     {

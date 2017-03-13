@@ -189,7 +189,7 @@
 <!-- END MODAL SCHEDULE-->
 
 <!-- BEGIN MODAL MESSAGE-->
-<div id="modal-message" class="modal fade bs-modal-sm" id="small" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="modal-message" class="modal fade bs-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog modal-sm">
 		<div class="modal-content">
 			<div class="modal-header">

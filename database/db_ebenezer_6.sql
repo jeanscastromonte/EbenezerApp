@@ -12,6 +12,9 @@ File Encoding         : 65001
 
 Date: 2017-03-12 09:53:17
 */
+DROP DATABASE IF EXISTS `db_ebenezer`;
+CREATE DATABASE IF NOT EXISTS `db_ebenezer` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `db_ebenezer`;
 
 SET FOREIGN_KEY_CHECKS=0;
 
@@ -1075,6 +1078,18 @@ BEGIN
 			UserStatus=_status,
 			UserRegisterUserId=_respuserid
 	WHERE UserId=_userid;
+END
+;;
+DELIMITER ;
+-- ----------------------------
+-- Procedure structure for sp_DeleteUser
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_DeleteUser`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_DeleteUser`(IN `_userid` INT)
+BEGIN
+  DELETE FROM `user`
+  WHERE UserId=`_userid`;
 END
 ;;
 DELIMITER ;

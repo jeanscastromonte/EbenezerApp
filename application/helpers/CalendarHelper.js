@@ -16,11 +16,10 @@ $(document).ready(InitUser);
     var $schedule_modaltitle    =   $('#modal-schedule').find('.modal-title'); 
     var $modal_message          =   $('#modal-message');
     var $btn_acceptdelete_schedule  =   $('#btn-acceptdelete-schedule');
-    var flagnew_schedule; 
-    var flagdelete_schedule     =   false;
+    var flagnew_schedule;
 
   //**Init Datatable***    
-    var var_datatable           =   fnc_datatable_schedule($datatable_schedule);
+    var var_datatable = fnc_datatable_schedule($datatable_schedule);
 /******************************************************************************************************************************************************************************/
 function InitUser(){
 
@@ -440,7 +439,6 @@ function fnc_get_schedule_by_period_digit() {
 /*****************************************************************************************************************************************************************************/
 function fnc_modaldelete_schedule() {
 
-  flagdelete_schedule=true;
   fnc_modal_events();
   $modal_message.modal({"backdrop": "static","keyboard": false, "show": true});
   var period  =  moment($(this).attr('data-period')).format('YYYY-MM-DD');
@@ -448,7 +446,7 @@ function fnc_modaldelete_schedule() {
   $btn_acceptdelete_schedule.attr({'data-period':period,'data-digit':digit});
 }
 /*****************************************************************************************************************************************************************************/
-function fnc_delete_schedule(data) {
+function fnc_delete_schedule() {
 
   var data={};
   data.period  =  moment($(this).attr('data-period')).format('YYYY-MM-DD');
@@ -493,6 +491,4 @@ function fnc_delete_schedule(data) {
     }
   });
 }
-/*****************************************************************************************************************************************************************************/
-
 /*****************************************************************************************************************************************************************************/

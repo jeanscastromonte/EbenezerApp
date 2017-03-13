@@ -171,3 +171,23 @@
 	</div>
 </div>
 <!-- END MODAL USER-->
+
+<!-- BEGIN MODAL MESSAGE-->
+<div id="modal-user-message" class="modal fade bs-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+				<h4 class="modal-title">Confirmación</h4>
+			</div>
+			<div class="modal-body">¿Desea eliminar al  usuario (<b><span id="span-user-name"></span></b>)?</div>
+			<div class="modal-footer">
+				<button type="button" data-dismiss="modal" class="btn default">Cancelar</button>
+				<button type="button" id="btn-acceptdelete-user" class="btn btn-primary">Aceptar</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- END MODAL MESSAGE-->

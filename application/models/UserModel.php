@@ -161,6 +161,30 @@ class UserModel extends CI_Model {
 		return $output;
     }
 /*************************************************************************/
+	public function delete_user($data)
+    {
+    	$userid = $data['userid'];
+    	$query=$this->db->query("CALL sp_DeleteUser($userid)");
+
+    	if($query)
+		{
+			$output = array(
+			"status" => TRUE,
+			"message"=>"Se eliminó exitosamente",
+			"type"=>"success",
+			"icon"=>"check");			
+		}
+		else
+		{
+			$output = array(
+			"status" => FALSE,
+			"message"=>"ERROR, No se puede eliminar, Vuelva a intentarlo.",
+			"type"=>"danger",
+			"icon"=>"warning");	
+		}		
+		return $output;
+    }
+/*************************************************************************/
 	public function get_all_roles()
 	{
 

@@ -21,6 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	$route['get-user-by-userid']= 'UserController/get_user_by_userid';
 	$route['insert-user'] 		= 'UserController/insert_user';
 	$route['update-user'] 		= 'UserController/update_user';
+	$route['delete-user'] 		= 'UserController/delete_user';
 # End Region
 /*********************************************************************/
 # Region "Schedule Sunat"
