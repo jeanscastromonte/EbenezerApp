@@ -73,9 +73,26 @@ class UserModel extends CI_Model {
 		} 
 	}
 /*************************************************************************/
+	public function get_user_by_userid($data)
+	{
+		$userid=$data['userid'];
+		$query=$this->db->query("CALL sp_GetUserByUserId($userid)");
+
+		if ($query->num_rows()==1)
+		{
+			$resp= $query->row();
+			// $query->next_result();
+			// $query->free_result();
+			return $resp;
+		}
+		else
+		{
+			return FALSE; 
+		}
+	}
+/*************************************************************************/
 	public function insert_user($data)
     {
-
     	$roleid        = $data['cbo_role'];
     	$user     	   = $data['txt_user'];
     	$password      = $data['txt_password'];
@@ -85,9 +102,9 @@ class UserModel extends CI_Model {
     	$telephone	   = $data['txt_telephone'];
     	$email		   = $data['txt_email'];
     	$status		   = $data['chck_status'];
-    	$userid		   = $this->session->userdata('UserId');
+    	$respuserid	   = $this->session->userdata('UserId');
 
-    	$query=$this->db->query("CALL sp_InsertUser($roleid,'$user','$password','$name','$lastname','$birthday','$telephone','$email',$status,$userid)");
+    	$query=$this->db->query("CALL sp_InsertUser($roleid,'$user','$password','$name','$lastname','$birthday','$telephone','$email',$status,$respuserid)");
 
     	if($query)
 		{
@@ -107,24 +124,6 @@ class UserModel extends CI_Model {
 		}		
 		return $output;
     }
-/*************************************************************************/
-	public function get_user_by_userid($data)
-	{
-		$userid=$data['userid'];
-		$query=$this->db->query("CALL sp_GetUserByUserId($userid)");
-
-		if ($query->num_rows()==1)
-		{
-			$resp= $query->row();
-			// $query->next_result();
-			// $query->free_result();
-			return $resp;
-		}
-		else
-		{
-			return FALSE; 
-		}
-	}
 /*************************************************************************/
 	public function update_user($data)
     {
@@ -185,23 +184,6 @@ class UserModel extends CI_Model {
 		return $output;
     }
 /*************************************************************************/
-	public function get_all_roles()
-	{
-
-		$query=$this->db->query("CALL sp_GetAllRoles()");
-
-		if ($query->num_rows()>0)
-		{
-			$resp= $query->result();
-			// $query->next_result();
-			// $query->free_result();
-			return $resp;
-		}
-		else
-		{
-			return FALSE;
-		} 
-	}
 }
 
 

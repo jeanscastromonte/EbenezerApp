@@ -1,70 +1,53 @@
 /*****************************************************************************************************************************************************************************/
-$(document).ready(InitUser);
+$(document).ready(Initrole);
 
   //***Public Attributes***
-    var $cbo_role        =   $('#cbo-role');
-    var $modal_user      =   $('#modal-user');
-    var $user_modaltitle =   $modal_user.find('.modal-title');
-    var $form_user       =   $('#form-user');    
+    var $modal_role      =   $('#modal-role');
+    var $role_modaltitle =   $modal_role.find('.modal-title');
+    var $form_role       =   $('#form-role');    
     var $chck_status     =   $('#chck-status');
-    var flagnew_user     =   false; 
+    var flagnew_role     =   false; 
 
-    var $txtuser        = $('[name=txtuser]');
-    var $txtpassword    = $('[name=txtpassword]');
-    var $txtname        = $('[name=txtname]');
-    var $txtlastname    = $('[name=txtlastname]');
-    var $txtbirthday    = $('[name=txtbirthday]');
-    var $txttelephone   = $('[name=txttelephone]');
-    var $txtemail       = $('[name=txtemail]');
+    var $txtrole        = $('[name=txtrole]');
     var datatable;
-    var userid=0;
-    var $modal_user_message    = $('#modal-user-message');    
-    var $btn_acceptdelete_user = $('#btn-acceptdelete-user');
+    var roleid=0;
+    var $modal_role_message    = $('#modal-role-message');    
+    var $btn_acceptdelete_role = $('#btn-acceptdelete-role');
 
 /******************************************************************************************************************************************************************************/
-function InitUser(){
+function Initrole(){
 
     //***Private variables**
-    var $datatable_user       =   $('#datatable-user');   
-    var $btn_callmodal_user   =   $('#btn-callmodal-user');    
+    var $datatable_role       =   $('#datatable-role');   
+    var $btn_callmodal_role   =   $('#btn-callmodal-role');    
    
-    //***Call Modal User*** 
-    $btn_callmodal_user.on('click',function () {
+    //***Call Modal role*** 
+    $btn_callmodal_role.on('click',function () {
 
       fnc_modal_events();
-      $modal_user.modal({"backdrop": "static","keyboard": false, "show": true});
-      fnc_clear_form($form_user);
-      $user_modaltitle.text('Registrar Usuario');
-      flagnew_user=true;
-      userid=0;    
+      $modal_role.modal({"backdrop": "static","keyboard": false, "show": true});
+      fnc_clear_form($form_role);
+      $role_modaltitle.text('Registrar rol');
+      flagnew_role=true;
+      roleid=0;    
     });
 
-    $(document).on('click','.btn-editmodal-user',fnc_get_user);
-    $(document).on('click','.btn-deletemodal-user',fnc_modaldelete_user);
-    $btn_acceptdelete_user.on('click',fnc_delete_user);
+    $(document).on('click','.btn-editmodal-role',fnc_get_role);
+    $(document).on('click','.btn-deletemodal-role',fnc_modaldelete_role);
+    $btn_acceptdelete_role.on('click',fnc_delete_role);
 
-    //***Init Datatable users***
-    datatable=fnc_datatable_user($datatable_user);
+    //***Init Datatable roles***
+    datatable=fnc_datatable_role($datatable_role);
 
-    //***Validation form user***
-    fnc_validation_user($form_user);
-
-    //***Select2 roles***
-    fnc_select2_roles($cbo_role)
+    //***Validation form role***
+    fnc_validation_role($form_role);
     
-    //***Switch Status user***
+    //***Switch Status role***
     $chck_status.bootstrapSwitch({onText:'Activo',offText:'&nbsp;Inactivo&nbsp;',onColor: 'success',offColor:'danger',size: 'normal'});
-    $('.bootstrap-switch').css('width','150px');
-      
-    $txtbirthday.datepicker({
-      format: 'dd/mm/yyyy',
-      pickTime: false,
-      autoclose: true,
-      language: 'es'
-    });
+    $('.bootstrap-switch').css('width','150px');    
 }
 /*****************************************************************************************************************************************************************************/
-function fnc_datatable_user(_datatable){
+function fnc_datatable_role(_datatable){
 
   $('#spinner-loading').show();  
   var datatable= _datatable.DataTable({
@@ -72,9 +55,9 @@ function fnc_datatable_user(_datatable){
              {
                 "dataSrc": "Data",
                 "type"   : "POST",
-                "url"    : "get-all-users",
+                "url"    : "get-all-roles",
                 "data"   : function( d ) {
-                  d.user_id= 0;
+                  d.role_id= 0;
                 },
                 complete: function () 
                 {
@@ -86,66 +69,40 @@ function fnc_datatable_user(_datatable){
                 "url": "assets/language/Spanish.json"
               },
             "aoColumns": [
-                    { "data":"UserId", "title": "Nro" ,"sClass": "text-center"},    
-                    { "data":"UserImage", "title": "Foto" ,"sClass": "text-center"},
-                    { "data":"UserLoginName", "title": "Usuario" ,"sClass": "text-center"},
+                    { "data":"RoleId", "title": "Rol ID" ,"sClass": "text-center"},
                     { "data":"RoleName", "title": "Rol" ,"sClass": "text-center"},
-                    { "data":"UserName", "title": "Nombre(s)" ,"sClass": "text-center"},
-                    { "data":"UserLastName", "title": "Apellido(s)" ,"sClass": "text-center"},
-                    { "data":"UserBirthdate", "title": "Fecha de Nacimiento","sClass": "text-center"},
-                    { "data":"UserTelephone", "title": "Teléfono","sClass": "text-center"},
-                    { "data":"UserEmail", "title": "E-mail","sClass": "text-center"},
-                    { "data":"UserStatus", "title": "Estado","sClass": "text-center"},                    
+                    { "data":"RoleStatus", "title": "Estado" ,"sClass": "text-center"},
                     {//Column de botones
                       "title": "Opciones","data":null,
                         "mRender": function(data, type, full) {
-                            return '<a href="javascript:void(0);" class="btn btn-circle btn-icon-only blue btn-editmodal-user" data-id="'+data['UserId']+'"><i class="fa fa-edit"></i></a>'
-                                  +'<a href="javascript:void(0);" class="btn btn-circle btn-icon-only blue btn-deletemodal-user" data-id="'+data['UserId']+'" data-name="'+data['UserLoginName']+'"><i class="fa fa-trash"></i></a>';
+                            return '<a href="javascript:void(0);" class="btn btn-circle btn-icon-only blue btn-editmodal-role" data-id="'+data['RoleId']+'"><i class="fa fa-edit"></i></a>'
+                                  +'<a href="javascript:void(0);" class="btn btn-circle btn-icon-only blue btn-deletemodal-role" data-id="'+data['RoleId']+'" data-name="'+data['RoleName']+'"><i class="fa fa-trash"></i></a>';
                         }
                     }
                 ],
             "columnDefs" : [
-                        { targets : [9],
+                        { targets : [2],
                           render : function (data, type, row) {
                              return data == true ? '<span class="label bg-green-jungle">Activo</span>' : '<span class="label bg-red-intense">Inactivo</span>';
                           }
                         },
                 ],
                 "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-                  $('td:eq(2),td:eq(4),td:eq(5)', nRow).addClass( "text-left" );
-                  $('td:eq(2),td:eq(4),td:eq(5)', nRow).removeClass( "text-center" );
 
                   //ADD TOOLTIP NEW ELEMENT CREATED
-                  $('.btn-editmodal-user', nRow).tooltip({html: true, title: 'Editar usuario'});
-                  $('.btn-deletemodal-user', nRow).tooltip({html: true, title: 'Eliminar usuario'});
+                  $('.btn-editmodal-role', nRow).tooltip({html: true, title: 'Editar rol'});
+                  $('.btn-deletemodal-role', nRow).tooltip({html: true, title: 'Eliminar rol'});
                 }
         });
   return datatable;
 }
 /*****************************************************************************************************************************************************************************/
-function fnc_select2_roles(_cbo){
-    $.getJSON("get-all-roles", function (data){ 
-        _cbo.html('<option></option>');
-        for (var i = 0; i<data.Data.length;i++) 
-        {
-            _cbo.append('<option value="'+data.Data[i].RoleId+'">'+data.Data[i].RoleName+'</option>');                   
-        }
-    });
-     _cbo.select2({
-        placeholder: "Seleccione...",
-        allowClear: true,
-        formatNoMatches: function () { return "No se encontraron resultados"; },        
-    });
-}
-/*****************************************************************************************************************************************************************************/
 function fnc_clear_form(_form) {
 
-  _form.trigger("reset");  
-  $txtbirthday.datepicker('setDate', null);
-  $cbo_role.select2('val','');
+  _form.trigger("reset");
 }
 /*****************************************************************************************************************************************************************************/
-function fnc_validation_user(_form) {
+function fnc_validation_role(_form) {
 
   var error2 = $('.alert-danger', _form);
   var success2 = $('.alert-success', _form);
@@ -156,17 +113,7 @@ function fnc_validation_user(_form) {
     focusInvalid: false, 
     ignore: "",
     rules: {
-      txtuser: {
-        required: true
-      },
-      txtpassword: {
-        minlength: 4,       
-        required: true
-      },
-      txtname: {
-        required: true
-      },
-      txtlastname: {
+      txtrole: {
         required: true
       }
     },
@@ -192,31 +139,23 @@ function fnc_validation_user(_form) {
       icon.removeClass("fa-warning").addClass("fa-check");
     },
     submitHandler: function (form) {      
-      fnc_set_user ();
+      fnc_set_role ();
       error2.hide();
     }
   });
 }
 /*****************************************************************************************************************************************************************************/
-function fnc_set_user() {
-
-  var birthday = $txtbirthday.datepicker('getDate');
-  var data={};    
-  data.cbo_role     =  $cbo_role.select2('val');
-  data.txt_user     =  $txtuser.val();
-  data.txt_password =  $txtpassword.val();
-  data.txt_name     =  $txtname.val();
-  data.txt_lastname =  $txtlastname.val();
-  data.txt_birthday =  $txtbirthday.val()==''?'':moment(birthday).format('YYYY-MM-DD');
-  data.txt_telephone=  $txttelephone.val();
-  data.txt_email    =  $txtemail.val();
+function fnc_set_role() {
+  
+  var data={};
+  data.txt_rolename =  $txtrole.val();
   data.chck_status  =  $chck_status.bootstrapSwitch('state')==true?1:0;
-  data.userid       =  userid;
+  data.roleid       =  roleid;
     
-  var url_user = flagnew_user!=true?"update-user":"insert-user";
+  var url_role = flagnew_role!=true?"update-role":"insert-role";
   $.ajax({
     type: "POST",
-    url: url_user,
+    url: url_role,
     data: JSON.stringify(data),
     contentType: "application/json; charset=utf-8",
     dataType: "json",
@@ -231,7 +170,7 @@ function fnc_set_user() {
         switch(resp.status)
         {
           case true:
-            $modal_user.modal('hide');
+            $modal_role.modal('hide');
             fnc_msj_alert(resp.type,resp.message,'',resp.icon,5);
             datatable.ajax.reload();
             $('#spinner-loading').hide();
@@ -255,15 +194,15 @@ function fnc_set_user() {
   });
 }
 /*****************************************************************************************************************************************************************************/
-function fnc_get_user() {
+function fnc_get_role() {
 
-  flagnew_user=false;
+  flagnew_role=false;
   var data={};
-  data.userid   =  $(this).attr('data-id');
+  data.roleid   =  $(this).attr('data-id');
 
   $.ajax({
     type: "POST",
-    url: "get-user-by-userid",
+    url: "get-role-by-roleid",
     data: JSON.stringify(data),
     contentType: "application/json; charset=utf-8",
     dataType: "json",
@@ -276,22 +215,15 @@ function fnc_get_user() {
     {
       if(resp){
 
-        $user_modaltitle.text('Editar Usuario');
+        $role_modaltitle.text('Editar rol');
 
-        $cbo_role.select2('val',resp.RoleId);
-        $txtuser.val(resp.UserLoginName);
-        $txtpassword.val(resp.UserLoginPassword);
-        $txtname.val(resp.UserName);
-        $txtlastname.val(resp.UserLastName);
-        $txtbirthday.datepicker('setDate', resp.UserBirthdate);
-        $txttelephone.val(resp.UserTelephone);
-        $txtemail.val(resp.UserEmail);
-        $chck_status.bootstrapSwitch('state',resp.UserStatus==0?false:true);
+        $txtrole.val(resp.RoleName);
+        $chck_status.bootstrapSwitch('state',resp.RoleStatus==0?false:true);
 
         fnc_modal_events();
-        $modal_user.modal({"backdrop": "static","keyboard": false, "show": true});
+        $modal_role.modal({"backdrop": "static","keyboard": false, "show": true});
         $('#spinner-loading').hide();
-        userid=resp.UserId;
+        roleid=resp.RoleId;
 
       }     
     },
@@ -304,25 +236,25 @@ function fnc_get_user() {
   });
 }
 /*****************************************************************************************************************************************************************************/
-function fnc_modaldelete_user() {
+function fnc_modaldelete_role() {
 
   fnc_modal_events();
-  $modal_user_message.modal({"backdrop": "static","keyboard": false, "show": true});
-  var userid   =  $(this).attr('data-id');
-  var username =  $(this).attr('data-name');
-  $('#span-user-name').text(username);
-  $btn_acceptdelete_user.attr({'data-id':userid});
+  $modal_role_message.modal({"backdrop": "static","keyboard": false, "show": true});
+  var roleid   =  $(this).attr('data-id');
+  var rolename =  $(this).attr('data-name');
+  $('#span-role-name').text(rolename);
+  $btn_acceptdelete_role.attr({'data-id':roleid});
 }
 /*****************************************************************************************************************************************************************************/
-function fnc_delete_user() {
+function fnc_delete_role() {
 
   var data={};
-  data.userid   =  $(this).attr('data-id');
-  console.log(data.userid);
+  data.roleid   =  $(this).attr('data-id');
+  console.log(data.roleid);
 
   $.ajax({
     type: "POST",
-    url: "delete-user",
+    url: "delete-role",
     data: JSON.stringify(data),
     contentType: "application/json; charset=utf-8",
     dataType: "json",
@@ -336,7 +268,7 @@ function fnc_delete_user() {
         switch(resp.status)
         {
           case true:        
-            $modal_user_message.modal('hide');
+            $modal_role_message.modal('hide');
             fnc_msj_alert(resp.type,resp.message,'',resp.icon,5);
             datatable.ajax.reload();
             $('#spinner-loading').hide();

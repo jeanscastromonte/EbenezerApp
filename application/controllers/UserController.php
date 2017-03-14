@@ -71,14 +71,6 @@ class UserController extends  MasterController{
 		echo json_encode($output);
 	}
 /****************************************************************************************************/
-	public function insert_user()
-	{
-		$json =	file_get_contents('php://input');
-		$data =	json_decode($json,TRUE);
-		$output=$this->UserModel->insert_user($data);
-		echo json_encode($output);
-	}
-/****************************************************************************************************/
 	public function get_user_by_userid()
 	{
 		$json =	file_get_contents('php://input');
@@ -86,6 +78,14 @@ class UserController extends  MasterController{
 		$output=$this->UserModel->get_user_by_userid($data);
 		echo json_encode($output);
 	}
+/****************************************************************************************************/
+	public function insert_user()
+	{
+		$json =	file_get_contents('php://input');
+		$data =	json_decode($json,TRUE);
+		$output=$this->UserModel->insert_user($data);
+		echo json_encode($output);
+	}	
 /****************************************************************************************************/
 	public function update_user()
 	{
@@ -101,12 +101,6 @@ class UserController extends  MasterController{
 		$data =	json_decode($json,TRUE);
 		$output=$this->UserModel->delete_user($data);
 		echo json_encode($output);
-	}
-/****************************************************************************************************/
-	public function get_all_roles()
-	{                   
-		$get_all_roles=$this->UserModel->get_all_roles();
-		echo json_encode($get_all_roles);
 	}
 /****************************************************************************************************/
 }

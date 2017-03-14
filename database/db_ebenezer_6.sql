@@ -743,6 +743,25 @@ END
 DELIMITER ;
 
 -- ----------------------------
+-- Procedure structure for sp_GetRolesActive
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_GetRolesActive`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetRolesActive`()
+BEGIN
+      SELECT
+      RoleId,
+      RoleName,
+      RoleStatus
+      FROM  role
+      WHERE RoleStatus=TRUE
+      ORDER BY RoleId ASC;
+END
+;;
+DELIMITER ;
+
+
+-- ----------------------------
 -- Procedure structure for sp_GetAllRoles
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `sp_GetAllRoles`;
@@ -751,9 +770,9 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetAllRoles`()
 BEGIN
       SELECT
       RoleId,
-      RoleName
+      RoleName,
+      RoleStatus
       FROM  role
-      WHERE RoleStatus=TRUE
       ORDER BY RoleId ASC;
 END
 ;;
@@ -1090,6 +1109,64 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_DeleteUser`(IN `_userid` INT)
 BEGIN
   DELETE FROM `user`
   WHERE UserId=`_userid`;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for sp_GetRoleByRoleId
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_GetRoleByRoleId`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetRoleByRoleId`(IN `_roleid` INT)
+BEGIN
+  SELECT
+  r.RoleId,
+  r.RoleName,
+  r.RoleStatus
+  FROM  role r
+  WHERE r.RoleId=_roleid
+  ORDER BY r.RoleId ASC;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for sp_InsertRole
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_InsertRole`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_InsertRole`(IN `_rolename` VARCHAR(10),IN `_status` BIT)
+BEGIN 
+  INSERT INTO `role`(RoleName,RoleStatus) VALUES(_rolename,_status);
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for sp_UpdateRole
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_UpdateRole`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_UpdateRole`(IN `_roleid` INT,IN `_rolename` VARCHAR(50),IN `_status` BIT)
+BEGIN 
+  UPDATE `role`
+  SET RoleName=_rolename,
+      RoleStatus=_status
+  WHERE RoleId=_roleid;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for sp_DeleteRole
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_DeleteRole`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_DeleteRole`(IN `_roleid` INT)
+BEGIN
+  DELETE FROM `role`
+  WHERE RoleId=`_roleid`;
 END
 ;;
 DELIMITER ;

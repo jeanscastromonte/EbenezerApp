@@ -33,58 +33,60 @@ class MasterController extends CI_Controller {
 	public function get_menu($MenuId_active)
 	{
 		$role_id	=	$this->session->userdata('UserRolId');
-		$get_menu 	= 	$this->UserModel->get_menu($role_id);		
+		$get_menu 	= 	$this->UserModel->get_menu($role_id);
 
-		$menu='';
-		foreach($get_menu as $row)
-        {        	
-			$sub_menu='';			
-			$MenuId=$row->MenuId;			
-			$ModuleMenuName=$row->ModuleMenuName;
-			$ModuleMenuLink=$row->ModuleMenuLink;
-			$ModuleMenuIcon=$row->ModuleMenuIcon;
+		if (isset($get_menu))
+		{
+			$menu='';
+			foreach($get_menu as $row)
+	        {
+				$sub_menu='';			
+				$MenuId=$row->MenuId;			
+				$ModuleMenuName=$row->ModuleMenuName;
+				$ModuleMenuLink=$row->ModuleMenuLink;
+				$ModuleMenuIcon=$row->ModuleMenuIcon;
 
-			switch($ModuleMenuLink)
-			{
-				case 'javascript:void(0);':
-				$get_submenu = 	$this->UserModel->get_submenu($role_id,$MenuId);
-				if($get_submenu==TRUE)
-				{				
-					foreach($get_submenu as $row2)
-		        	{
-						$MenuId2=$row2->MenuId;					
-						$ModuleMenuName2=$row2->ModuleMenuName;
-						$ModuleMenuLink2=$row2->ModuleMenuLink;
-					
-					$sub_menu.='<li><a href="'.$ModuleMenuLink2.'"><i class="icon-basket"></i><span class="title"> '.$ModuleMenuName2.'</span>
-					<span class="arrow "></span></a></li>';						
+				switch($ModuleMenuLink)
+				{
+					case 'javascript:void(0);':
+					$get_submenu = 	$this->UserModel->get_submenu($role_id,$MenuId);
+					if($get_submenu==TRUE)
+					{				
+						foreach($get_submenu as $row2)
+			        	{
+							$MenuId2=$row2->MenuId;					
+							$ModuleMenuName2=$row2->ModuleMenuName;
+							$ModuleMenuLink2=$row2->ModuleMenuLink;
+						
+						$sub_menu.='<li><a href="'.$ModuleMenuLink2.'"><i class="icon-basket"></i><span class="title"> '.$ModuleMenuName2.'</span>
+						<span class="arrow "></span></a></li>';						
+						}
+
 					}
+					break;
 
+					case 'base_url()':
+					$ModuleMenuLink=base_url();
+					break;
 				}
-				break;
-
-				case 'base_url()':
-				$ModuleMenuLink=base_url();
-				break;
-			}
-			
-			if ($MenuId==$MenuId_active)
-			{
-				$active_menu="active";
-			}
-			else
-			{
-				$active_menu="";
-			}
-			
-			$menu.='<li class="'.$active_menu.'">
-			<a class="module-menu" href="'.$ModuleMenuLink.'">
-			<i class="'.$ModuleMenuIcon.'"></i>
-			<span class="title"> '.$ModuleMenuName.'</span>
-			<span class="arrow "></span></a><ul class="sub-menu">'.$sub_menu.'</ul></li>';
-
-        }
-		return $menu;					
+				
+				if ($MenuId==$MenuId_active)
+				{
+					$active_menu="active";
+				}
+				else
+				{
+					$active_menu="";
+				}
+				
+				$menu.='<li class="'.$active_menu.'">
+				<a class="module-menu" href="'.$ModuleMenuLink.'">
+				<i class="'.$ModuleMenuIcon.'"></i>
+				<span class="title"> '.$ModuleMenuName.'</span>
+				<span class="arrow "></span></a><ul class="sub-menu">'.$sub_menu.'</ul></li>';
+	        }
+			return $menu;
+		}
 	}
 /****************************************************************************************************/
 	public function get_information_user()

@@ -13,15 +13,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*********************************************************************/
 # Region "Sale"
 	$route['register-sale'] 	= 'SaleController/sale_view';
+# End Region
 /*********************************************************************/
 # Region "User"
 	$route['register-user'] 	= 'UserController/user_view';
-	$route['get-all-users'] 	= 'UserController/get_all_users';
-	$route['get-all-roles'] 	= 'UserController/get_all_roles';
+	$route['get-all-users'] 	= 'UserController/get_all_users';	
 	$route['get-user-by-userid']= 'UserController/get_user_by_userid';
 	$route['insert-user'] 		= 'UserController/insert_user';
 	$route['update-user'] 		= 'UserController/update_user';
 	$route['delete-user'] 		= 'UserController/delete_user';
+# End Region
+/*********************************************************************/
+# Region "Role"
+	$route['register-role'] 	= 'RoleController/role_view';
+	$route['get-all-roles'] 	= 'RoleController/get_all_roles';
+	$route['get-role-by-roleid']= 'RoleController/get_role_by_roleid';
+	$route['insert-role'] 		= 'RoleController/insert_role';
+	$route['update-role'] 		= 'RoleController/update_role';
+	$route['delete-role'] 		= 'RoleController/delete_role';
 # End Region
 /*********************************************************************/
 # Region "Schedule Sunat"
