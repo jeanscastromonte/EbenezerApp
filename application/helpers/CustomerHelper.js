@@ -2,21 +2,25 @@
 $(document).ready(InitCustomer);
 
   //***Public Attributes***
-    var $cbo_digit        =   $('#cbo-digit');
-    var $cbo_customer_status        =   $('#cbo-customer-status');
+    var $cbo_digit           =   $('#cbo-digit');
+    var $cbo_customer_status =   $('#cbo-customer-status');
     var $modal_customer      =   $('#modal-customer');
     var $customer_modaltitle =   $modal_customer.find('.modal-title');
     var $form_customer       =   $('#form-customer');    
-    var $chck_status     =   $('#chck-status');
+    var $chck_status         =   $('#chck-status');
     var flagnew_customer     =   false; 
 
-    var $txtcustomer        = $('[name=txtcustomer]');
-    var $txtpassword    = $('[name=txtpassword]');
-    var $txtname        = $('[name=txtname]');
-    var $txtlastname    = $('[name=txtlastname]');
-    var $txtbirthday    = $('[name=txtbirthday]');
-    var $txttelephone   = $('[name=txttelephone]');
+    var $txtcustomer    = $('[name=txtcustomer]');
+    var $txtruc         = $('[name=txtruc]');
+    var $txtusersol     = $('[name=txtusersol]');
+    var $txtpasswordsol = $('[name=txtpasswordsol]');
+    var $txtaddress     = $('[name=txtaddress]');
+    var $txtphone       = $('[name=txtphone]');
     var $txtemail       = $('[name=txtemail]');
+    var $txtregtrib     = $('[name=txtregtrib]');
+    var $txtreg4ta      = $('[name=txtreg4ta]');
+    var $txtreglab      = $('[name=txtreglab]');
+    var $txtstartdate   = $('[name=txtstartdate]');
     var datatable;
 /******************************************************************************************************************************************************************************/
 function InitCustomer()
@@ -52,11 +56,15 @@ function InitCustomer()
       fnc_fill_options_digits($cbo_digit);
 
       fnc_select2($cbo_customer_status,"Seleccione Estado...");   
-      $cbo_customer_status.append('<option value="">Activos</option>'
-        +'<option value="">Suspendidos Temp.</option>'
-        +'<option value="">De baja</option>'
-        +'<option value="">Retirados</option>'
-        +'<option value="">Todos</option>');
+      $cbo_customer_status.append('<option value="1">Activos</option>'
+        +'<option value="2">Suspendidos Temp.</option>'
+        +'<option value="3">De baja</option>'
+        +'<option value="4">Retirados</option>'
+        +'<option value="5">Todos</option>');
+
+    $cbo_digit.on('change',function(){
+      $cbo_customer_status.select2('val',1);
+    });
     //***Switch Status customer***
     // $chck_status.bootstrapSwitch({onText:'Activo',offText:'&nbsp;Inactivo&nbsp;',onColor: 'success',offColor:'danger',size: 'normal'});
     // $('.bootstrap-switch').css('width','150px');
@@ -167,14 +175,25 @@ function fnc_validation_customer(_form) {
       txtcustomer: {
         required: true
       },
-      txtpassword: {
-        minlength: 4,       
+      txtruc: {       
         required: true
       },
-      txtname: {
+      txtusersol: {
         required: true
       },
-      txtlastname: {
+      txtpasswordsol: {
+        required: true
+      },
+      txtregtrib: {
+        required: true
+      },
+      txtreg4ta: {
+        required: true
+      },
+      txtreglab: {
+        required: true
+      },
+      txtstartdate: {
         required: true
       }
     },
@@ -209,16 +228,19 @@ function fnc_validation_customer(_form) {
 function fnc_insert_customer() {
 
   var birthday = $txtbirthday.datepicker('getDate');
-  var data={};    
-  data.cbo_role     =  $cbo_role.select2('val');
-  data.txt_customer     =  $txtcustomer.val();
-  data.txt_password =  $txtpassword.val();
-  data.txt_name     =  $txtname.val();
-  data.txt_lastname =  $txtlastname.val();
-  data.txt_birthday =  moment(birthday).format('YYYY-MM-DD');
-  data.txt_telephone=  $txttelephone.val();
-  data.txt_email    =  $txtemail.val();
-  data.chck_status  =  $chck_status.bootstrapSwitch('state');
+  var data={};
+  data.txtcustomer    =  $txtcustomer.val();
+  data.txtruc         =  $txtruc.val();
+  data.txtusersol     =  $txtusersol.val();
+  data.txtpasswordsol =  $txtpasswordsol.val();
+  data.txtaddress     =  $txtaddress.val();
+  data.txtphone       =  $txtphone.val();
+  data.txtemail       =  $txtemail.val();
+  data.txtregtrib     =  $txtregtrib.val();
+  data.txtreg4ta      =  $txtreg4ta.val();
+  data.txtreglab      =  $txtreglab.val();
+  data.txtstartdate   =  $txtstartdate.val();
+  data.chck_status    =  $chck_status.bootstrapSwitch('state');
     
   var url_customer = flagnew_customer!=true?"update-customer":"insert-customer";
 

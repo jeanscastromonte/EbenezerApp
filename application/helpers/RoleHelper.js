@@ -4,8 +4,7 @@ $(document).ready(Initrole);
   //***Public Attributes***
     var $modal_role      =   $('#modal-role');
     var $role_modaltitle =   $modal_role.find('.modal-title');
-    var $form_role       =   $('#form-role');    
-    var $chck_status     =   $('#chck-status');
+    var $form_role       =   $('#form-role');
     var flagnew_role     =   false; 
 
     var $txtrole        = $('[name=txtrole]');
@@ -40,11 +39,7 @@ function Initrole(){
     datatable=fnc_datatable_role($datatable_role);
 
     //***Validation form role***
-    fnc_validation_role($form_role);
-    
-    //***Switch Status role***
-    $chck_status.bootstrapSwitch({onText:'Activo',offText:'&nbsp;Inactivo&nbsp;',onColor: 'success',offColor:'danger',size: 'normal'});
-    $('.bootstrap-switch').css('width','150px');    
+    fnc_validation_role($form_role);  
 }
 /*****************************************************************************************************************************************************************************/
 function fnc_datatable_role(_datatable){
@@ -71,7 +66,6 @@ function fnc_datatable_role(_datatable){
             "aoColumns": [
                     { "data":"RoleId", "title": "Rol ID" ,"sClass": "text-center"},
                     { "data":"RoleName", "title": "Rol" ,"sClass": "text-center"},
-                    { "data":"RoleStatus", "title": "Estado" ,"sClass": "text-center"},
                     {//Column de botones
                       "title": "Opciones","data":null,
                         "mRender": function(data, type, full) {
@@ -79,13 +73,6 @@ function fnc_datatable_role(_datatable){
                                   +'<a href="javascript:void(0);" class="btn btn-circle btn-icon-only blue btn-deletemodal-role" data-id="'+data['RoleId']+'" data-name="'+data['RoleName']+'"><i class="fa fa-trash"></i></a>';
                         }
                     }
-                ],
-            "columnDefs" : [
-                        { targets : [2],
-                          render : function (data, type, row) {
-                             return data == true ? '<span class="label bg-green-jungle">Activo</span>' : '<span class="label bg-red-intense">Inactivo</span>';
-                          }
-                        },
                 ],
                 "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
 
@@ -149,7 +136,6 @@ function fnc_set_role() {
   
   var data={};
   data.txt_rolename =  $txtrole.val();
-  data.chck_status  =  $chck_status.bootstrapSwitch('state')==true?1:0;
   data.roleid       =  roleid;
     
   var url_role = flagnew_role!=true?"update-role":"insert-role";
@@ -218,7 +204,6 @@ function fnc_get_role() {
         $role_modaltitle.text('Editar rol');
 
         $txtrole.val(resp.RoleName);
-        $chck_status.bootstrapSwitch('state',resp.RoleStatus==0?false:true);
 
         fnc_modal_events();
         $modal_role.modal({"backdrop": "static","keyboard": false, "show": true});

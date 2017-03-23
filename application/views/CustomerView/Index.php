@@ -10,7 +10,6 @@
 		</li>
 	</ul>
 </div>
-
 <!-- END PAGE HEADER-->
 
 <!-- BEGIN PAGE CONTENT-->
@@ -30,7 +29,7 @@
 			</div>
 			<div class="portlet-body">
 				<div class="row">
-					<div class="col-md-2">
+					<div class="col-lg-3 col-md-4 col-sm-6">
 						<div class="input-group group-design">
 							<span class="input-group-addon">
 								<i class="fa fa-sort-numeric-asc"></i>
@@ -40,7 +39,7 @@
 							</select>
 						</div> 
 					</div>
-					<div class="col-md-2">
+					<div class="col-lg-3 col-md-4 col-sm-6">
 						<div class="input-group group-design">
 							<span class="input-group-addon">
 								<i class="fa fa-question"></i>
@@ -78,7 +77,7 @@
 			<form role="form" class="form-horizontal" id="form-customer" onsubmit="return false">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-					<h4 class="modal-title">Registrar Cliente</h4>
+					<h4 class="modal-title">REGISTRAR CLIENTE</h4>
 				</div>
 				<div class="modal-body">
 					<div class="alertform alert alert-danger display-hide">
@@ -94,16 +93,8 @@
 
 							<div class="form-body">
 								<div class="form-group">
-									<div class="text-left col-md-3"><label class="control-label">Rol:</label></div>
-									<div class="col-md-9">
-										<select class="form-control" id="cbo-role" required="">
-											<option value=""></option>
-										</select>
-									</div>
-								</div>
-								<div class="form-group">
-									<div class="text-left col-md-3"><label class="control-label">Nombre:</label></div>
-									<div class="col-md-9">
+									<div class="text-left col-md-4"><label class="control-label">Nombre:</label></div>
+									<div class="col-md-8">
 										<div class="input-icon right">
 											<i class="fa"></i>
 											<input type="text" class="form-control" name="txtcustomer"/>
@@ -111,57 +102,58 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<div class="text-left col-md-3"><label class="control-label">R.U.C:</label></div>
-									<div class="col-md-9">
+									<div class="text-left col-md-4"><label class="control-label">R.U.C:</label></div>
+									<div class="col-md-8">
 										<div class="input-icon right">
 											<i class="fa"></i>
-											<input type="text" class="form-control" name="txtpassword"/>
+											<input type="text" class="form-control" name="txtruc"/>
 										</div>
 									</div>
 								</div>
 								<div class="form-group">
-									<div class="text-left col-md-3"><label class="control-label">Usuario SOL:</label></div>
-									<div class="col-md-9">
+									<div class="text-left col-md-4"><label class="control-label">Usuario SOL:</label></div>
+									<div class="col-md-8">
 										<div class="input-icon right">
 											<i class="fa"></i>
-											<input type="text" class="form-control" name="txtname"/>
+											<input type="text" class="form-control" name="txtusersol"/>
 										</div>
 									</div>
 								</div>
 								<div class="form-group">
-									<div class="text-left col-md-3"><label class="control-label">Clave SOL:</label></div>
-									<div class="col-md-9">
+									<div class="text-left col-md-4"><label class="control-label">Clave SOL:</label></div>
+									<div class="col-md-8">
 										<div class="input-icon right">
 											<i class="fa"></i>
-											<input type="text" class="form-control" name="txtlastname"/>
+											<input type="text" class="form-control" name="txtpasswordsol"/>
 										</div>
 									</div>
 								</div>
+
+								<div class="form-group">
+									<div class="text-left col-md-4"><label class="control-label">Dirección:</label></div>
+									<div class="col-md-8">
+										<div class="input-icon right">
+											<i class="fa"></i>
+											<input type="text" class="form-control" name="txtaddress"/>
+										</div>
+									</div>
+								</div>	
+								<div class="form-group">
+									<div class="text-left col-md-4"><label class="control-label">Teléfono(s):</label></div>
+									<div class="col-md-8">
+										<div class="input-icon right">
+											<i class="fa"></i>
+											<input type="text" class="form-control" name="txtphone"/>
+										</div>
+									</div>
+								</div>																
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-body">
 								<div class="form-group">
-									<div class="text-left col-md-3"><label class="control-label">Estado:</label></div>
-									<div class="col-md-9">
-										<div class="input-icon right">
-											<i class="fa"></i>
-											<input type="text" class="form-control" name="txtbirthday"/>
-										</div>
-									</div>
-								</div>
-								<div class="form-group">
-									<div class="text-left col-md-3"><label class="control-label">Régimen Tributario:</label></div>
-									<div class="col-md-9">
-										<div class="input-icon right">
-											<i class="fa"></i>
-											<input type="text" class="form-control" name="txttelephone"/>
-										</div>
-									</div>
-								</div>
-								<div class="form-group">
-									<div class="text-left col-md-3"><label class="control-label">E-mail(s):</label></div>
-									<div class="col-md-9">
+									<div class="text-left col-md-4"><label class="control-label">Email:</label></div>
+									<div class="col-md-8">
 										<div class="input-icon right">
 											<i class="fa"></i>
 											<input type="text" class="form-control" name="txtemail"/>
@@ -169,11 +161,38 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<div class="text-left col-md-3"><label class="control-label">Imagen:</label></div>
-									<div class="col-md-9">
+									<div class="text-left col-md-4"><label class="control-label">Rég. Tributario:</label></div>
+									<div class="col-md-8">
 										<div class="input-icon right">
 											<i class="fa"></i>
-											<input type="text" class="form-control" name="txtimage"/>
+											<input type="text" class="form-control" name="txtregtrib"/>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="text-left col-md-4"><label class="control-label">Rég. 4ta Categ:</label></div>
+									<div class="col-md-8">
+										<div class="input-icon right">
+											<i class="fa"></i>
+											<input type="text" class="form-control" name="txtreg4ta"/>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="text-left col-md-4"><label class="control-label">Rég. Laboral:</label></div>
+									<div class="col-md-8">
+										<div class="input-icon right">
+											<i class="fa"></i>
+											<input type="text" class="form-control" name="txtreglab"/>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="text-left col-md-4"><label class="control-label">Fecha Ingreso:</label></div>
+									<div class="col-md-8">
+										<div class="input-icon right">
+											<i class="fa"></i>
+											<input type="text" class="form-control" name="txtstartdate"/>
 										</div>
 									</div>
 								</div>
@@ -185,7 +204,7 @@
 											<input type="checkbox" checked id="chck-status">
 										</div>
 									</div>
-								</div>
+								</div>					
 							</div>
 						</div>
 					</div>

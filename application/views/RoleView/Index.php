@@ -73,16 +73,7 @@
 											<input type="text" class="form-control" name="txtrole"/>
 										</div>
 									</div>
-								</div>
-								<div class="form-group">
-									<div class="text-left col-md-3"><label class="control-label">Estado:</label></div>
-									<div class="col-md-9">
-										<div class="input-icon right">
-											<i class="fa"></i>
-											<input type="checkbox" checked id="chck-status">
-										</div>
-									</div>
-								</div>
+								</div>								
 							</div>
 						</div>
 					</div>

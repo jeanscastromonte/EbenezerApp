@@ -24,18 +24,21 @@ class CustomerModel extends CI_Model {
 	public function insert_customer($data)
     {
 
-    	$roleid        = $data['cbo_role'];
-    	$user     	   = $data['txt_user'];
-    	$password      = $data['txt_password'];
-    	$name 		   = $data['txt_name'];
-    	$lastname      = $data['txt_lastname'];
-    	$birthday	   = $data['txt_birthday'];
-    	$telephone	   = $data['txt_telephone'];
-    	$email		   = $data['txt_email'];
+    	$txtcustomer   = $data['txtcustomer'];
+    	$txtruc        = $data['txtruc'];
+    	$txtusersol    = $data['txtusersol'];
+    	$txtpasswordsol= $data['txtpasswordsol'];
+    	$txtaddress    = $data['txtaddress'];
+    	$txtphone	   = $data['txtphone'];
+    	$txtemail	   = $data['txtemail'];
+    	$txtregtrib	   = $data['txtregtrib'];
+    	$txtreg4ta	   = $data['txtreg4ta'];
+    	$txtreglab	   = $data['txtreglab'];
+    	$txtstartdate  = $data['txtstartdate'];
     	$status		   = $data['chck_status'];
     	$userid		   = $this->session->userdata('UserId');
 
-    	$query=$this->db->query("CALL sp_InsertUser($roleid,'$user','$password','$name','$lastname','$birthday','$telephone','$email',$status,$userid)");
+    	$query=$this->db->query("CALL sp_InsertUser('$txtcustomer','$txtruc','$txtusersol','$txtpasswordsol','$txtaddress','$txtphone','$txtemail','$txtregtrib','$txtreg4ta','$txtreglab',$txtstartdate,$status,$userid)");
 
     	if($query)
 		{

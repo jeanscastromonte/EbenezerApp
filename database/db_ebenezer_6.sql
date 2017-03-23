@@ -149,7 +149,7 @@ INSERT INTO `cliente` VALUES ('47', '9', 'INVERSIONES LUIS VASQUEZ SAC', '205318
 INSERT INTO `cliente` VALUES ('48', '9', 'VILLANUEVA LA TORRE JHONNY', '10326117469', 'ACUSPECL', 'butchiale', 'Natural', 'Activo', '--', '--', 'JuliaAvalos1@hotmail.com', '948540544 - 943009031', 'General', '--', '--', null);
 INSERT INTO `cliente` VALUES ('49', '9', 'PEREZ SALDAÑA NANCY CONMEMORACION', '10328066829', 'PORMUTHE', 'comannewo', 'Natural', 'De baja', '--', '--', 'x@x.com', '--', 'Especial', '--', '--', null);
 INSERT INTO `cliente` VALUES ('50', '9', 'BOCANEGRA VASQUEZ NICOLAS ', '10327889309', 'RIANDENN', 'lattateco', 'Natural', 'Activo', '--', '--', 'x@x.com', '--', 'Especial', '--', '--', null);
-INSERT INTO `cliente` VALUES ('51', '9', 'ALCALDE GARCIA VICTOR LEONARDO', '10328634339', 'PITONXTU', 'shanguent', 'Natural', 'Retirado', '--', '--', 'x@x.com', '51*829*4414', 'General', '--', '--', null);
+INSERT INTO `cliente` VALUES ('51', '9', 'ALCALDE GARsCIA VICTOR LEONARDO', '10328634339', 'PITONXTU', 'shanguent', 'Natural', 'Retirado', '--', '--', 'x@x.com', '51*829*4414', 'General', '--', '--', null);
 INSERT INTO `cliente` VALUES ('52', '9', 'IPARRAGUIRRE MEDINA JAIME', '10194297209', 'NTEDEALS', 'coreedian', 'Natural', 'Activo', '--', '--', 'x@x.com', '--', 'General', '--', '--', null);
 INSERT INTO `cliente` VALUES ('53', '9', 'CABREJOS MOORE ISABEL CRISTINA', '10328253149', 'DEAGOILL', 'opoispera', 'Natural', 'De baja', '--', '--', 'x@x.com', '--', 'Especial', '--', '--', null);
 INSERT INTO `cliente` VALUES ('54', '9', 'ACOSTA AGUILAR MARCO ANTONIO', '10433626589', 'FR4AETNK', 'CpossVY9X', 'Natural', 'De baja', '--', '--', 'x@x.com', '--', 'Especial', '--', '--', null);
@@ -616,14 +616,13 @@ DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role` (
   `RoleId` int(11) NOT NULL AUTO_INCREMENT,
   `RoleName` varchar(50) NOT NULL,
-  `RoleStatus` bit(1) NOT NULL,
   PRIMARY KEY (`RoleId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of role
 -- ----------------------------
-INSERT INTO `role` VALUES ('1', 'ADMINISTRADOR', '');
+INSERT INTO `role` VALUES ('1', 'ADMINISTRADOR');
 
 -- ----------------------------
 -- Table structure for schedule_sunat
@@ -741,26 +740,6 @@ BEGIN
 END
 ;;
 DELIMITER ;
-
--- ----------------------------
--- Procedure structure for sp_GetRolesActive
--- ----------------------------
-DROP PROCEDURE IF EXISTS `sp_GetRolesActive`;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetRolesActive`()
-BEGIN
-      SELECT
-      RoleId,
-      RoleName,
-      RoleStatus
-      FROM  role
-      WHERE RoleStatus=TRUE
-      ORDER BY RoleId ASC;
-END
-;;
-DELIMITER ;
-
-
 -- ----------------------------
 -- Procedure structure for sp_GetAllRoles
 -- ----------------------------
@@ -770,8 +749,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetAllRoles`()
 BEGIN
       SELECT
       RoleId,
-      RoleName,
-      RoleStatus
+      RoleName
       FROM  role
       ORDER BY RoleId ASC;
 END
@@ -816,7 +794,7 @@ BEGIN
   FROM assigned_roles ar
   INNER JOIN role r ON r.RoleId=ar.RoleId
   INNER JOIN module_menu m ON m.ModuleMenuId=ar.MenuId
-  WHERE r.RoleId=`_RoleId` AND r.RoleStatus=TRUE AND ar.Access=TRUE AND m.ModuleMenuStatus=TRUE AND m.ModuleMenuLevel=1
+  WHERE r.RoleId=`_RoleId` AND ar.Access=TRUE AND m.ModuleMenuStatus=TRUE AND m.ModuleMenuLevel=1
   ORDER BY m.ModuleMenuPosition ASC;
 END
 ;;
@@ -933,7 +911,7 @@ BEGIN
   FROM assigned_roles ar
   INNER JOIN role r ON r.RoleId=ar.RoleId
   INNER JOIN module_menu m ON m.ModuleMenuId=ar.MenuId
-  WHERE r.RoleId=`_RoleId` AND r.RoleStatus=TRUE AND ar.Access=TRUE AND m.ModuleMenuStatus=TRUE AND m.ModuleMenuIdFather=`_MenuId`
+  WHERE r.RoleId=`_RoleId` AND ar.Access=TRUE AND m.ModuleMenuStatus=TRUE AND m.ModuleMenuIdFather=`_MenuId`
   ORDER BY m.ModuleMenuPosition ASC;
 END
 ;;
@@ -993,7 +971,7 @@ BEGIN
   SELECT u.UserId,u.UserLoginName,u.UserName,u.UserImage,r.RoleId,r.RoleName FROM `user` u
   INNER JOIN role r ON r.RoleId=u.UserRoleId
   WHERE u.UserLoginName=`_UserLoginName` AND u.UserLoginPassword=`_UserLoginPassword`
-  AND u.UserStatus=TRUE AND r.RoleStatus=TRUE;
+  AND u.UserStatus=TRUE;
 
 END
 ;;
@@ -1122,8 +1100,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetRoleByRoleId`(IN `_roleid` IN
 BEGIN
   SELECT
   r.RoleId,
-  r.RoleName,
-  r.RoleStatus
+  r.RoleName
   FROM  role r
   WHERE r.RoleId=_roleid
   ORDER BY r.RoleId ASC;
@@ -1136,9 +1113,9 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `sp_InsertRole`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_InsertRole`(IN `_rolename` VARCHAR(10),IN `_status` BIT)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_InsertRole`(IN `_rolename` VARCHAR(10))
 BEGIN 
-  INSERT INTO `role`(RoleName,RoleStatus) VALUES(_rolename,_status);
+  INSERT INTO `role`(RoleName) VALUES(_rolename);
 END
 ;;
 DELIMITER ;
@@ -1148,11 +1125,10 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `sp_UpdateRole`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_UpdateRole`(IN `_roleid` INT,IN `_rolename` VARCHAR(50),IN `_status` BIT)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_UpdateRole`(IN `_roleid` INT,IN `_rolename` VARCHAR(50))
 BEGIN 
   UPDATE `role`
-  SET RoleName=_rolename,
-      RoleStatus=_status
+  SET RoleName=_rolename
   WHERE RoleId=_roleid;
 END
 ;;
