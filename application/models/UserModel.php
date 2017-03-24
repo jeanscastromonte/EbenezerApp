@@ -62,9 +62,20 @@ class UserModel extends CI_Model {
 
 		if ($query->num_rows()>0)
 		{
+// foreach ($query->result() as $row)
+// {
+// $data['UserId'] = $row->UserId;
+// $data['UserImage'] = base64_decode($row->UserImage);
+// $data['UserLoginName'] = $row->UserLoginName;
+// $data['UserName'] = $row->UserName;
+// $data['UserLastName'] = $row->UserLastName;
+// $data['UserBirthdate'] = $row->UserBirthdate;
+// $data['UserTelephone'] = $row->UserTelephone;
+// $data['UserEmail'] = $row->UserEmail;
+// $data['UserStatus'] = $row->UserStatus;
+// $data['RoleName'] = $row->RoleName;			
+ // }
 			$resp= $query->result();
-			// $query->next_result();
-			// $query->free_result();
 			return $resp;
 		}
 		else
@@ -102,9 +113,11 @@ class UserModel extends CI_Model {
     	$telephone	   = $data['txt_telephone'];
     	$email		   = $data['txt_email'];
     	$status		   = $data['chck_status'];
+    	$file_imageuser= base64_encode($data['file_imageuser']);
     	$respuserid	   = $this->session->userdata('UserId');
 
-    	$query=$this->db->query("CALL sp_InsertUser($roleid,'$user','$password','$name','$lastname','$birthday','$telephone','$email',$status,$respuserid)");
+    	$query=$this->db->query("CALL sp_InsertUser($roleid,'$user','$password','$name','$lastname','$birthday','$telephone',
+    	'$email',$status,'$file_imageuser',$respuserid)");
 
     	if($query)
 		{
@@ -137,9 +150,11 @@ class UserModel extends CI_Model {
     	$telephone	   = $data['txt_telephone'];
     	$email		   = $data['txt_email'];
     	$status		   = $data['chck_status'];
+    	$file_imageuser= base64_encode($data['file_imageuser']);
     	$respuserid    = $this->session->userdata('UserId');
 
-    	$query=$this->db->query("CALL sp_UpdateUser($userid,$roleid,'$user','$password','$name','$lastname','$birthday','$telephone','$email',$status,$respuserid)");
+    	$query=$this->db->query("CALL sp_UpdateUser($userid,$roleid,'$user','$password','$name','$lastname','$birthday','$telephone',
+    	'$email',$status,'$file_imageuser',$respuserid)");
 
     	if($query)
 		{

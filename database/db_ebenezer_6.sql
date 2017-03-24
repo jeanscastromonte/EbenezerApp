@@ -698,21 +698,19 @@ CREATE TABLE `user` (
   `UserBirthdate` date DEFAULT NULL,
   `UserTelephone` varchar(50) DEFAULT NULL,
   `UserEmail` varchar(100) DEFAULT NULL,
-  `UserImage` blob,
+  `UserImage` text,
   `UserStatus` bit(1) NOT NULL,
   `UserRegisterUserId` int(11) NOT NULL,
   PRIMARY KEY (`UserId`),
   UNIQUE KEY `Unique_UserLoginName` (`UserLoginName`),
   KEY `fk_User_Role_idx` (`UserRoleId`),
   CONSTRAINT `fk_User_Role` FOREIGN KEY (`UserRoleId`) REFERENCES `role` (`RoleId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
 INSERT INTO `user` VALUES ('1', '1', 'JEAN CARLOS', 'SANCHEZ CASTROMNONTE', 'admin', '1234', '1993-05-12', '943103555', 'jeanscastro7@gmial.com', null, '', '1');
-INSERT INTO `user` VALUES ('2', '1', 'ejemplo', 'ejemplo', 'ejemplo', 'ejemplo', null, '', 'ejemplo', null, '\0', '1');
-INSERT INTO `user` VALUES ('3', '1', 'a', 'a', 'a', 'aaaa', '2017-03-01', 'a', 'a', null, '', '1');
 
 -- ----------------------------
 -- Procedure structure for sp_DeleteScheduleSunat
@@ -765,7 +763,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetAllUsers`()
 BEGIN
 	SELECT
 	u.UserId,
-	u.UserImage,
+	FROM_BASE64(u.UserImage) as UserImage,
 	u.UserLoginName,
 	u.UserName,
 	u.UserLastName,
@@ -934,7 +932,7 @@ BEGIN
 	DATE_FORMAT(u.UserBirthdate,'%d/%m/%Y') as UserBirthdate,
 	u.UserTelephone,
 	u.UserEmail,
-	u.UserStatus,
+  u.UserStatus,
 	r.RoleId,
 	r.RoleName
 	FROM `user` u
@@ -950,12 +948,13 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `sp_InsertUser`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_InsertUser`(IN `_roleid` INT,IN `_user` VARCHAR(10),IN `_password` VARCHAR(20),IN `_name` VARCHAR(100),IN `_lastname` VARCHAR(100),IN `_birthday` DATE,IN `_telephone` VARCHAR(50),IN `_email` VARCHAR(100),IN `_status` BIT,IN `_userid` INT)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_InsertUser`(IN `_roleid` INT,IN `_user` VARCHAR(10),IN `_password` VARCHAR(20),IN `_name` VARCHAR(100),
+IN `_lastname` VARCHAR(100),IN `_birthday` DATE,IN `_telephone` VARCHAR(50),IN `_email` VARCHAR(100),IN `_status` BIT,IN `_imageuser` TEXT,IN `_userid` INT)
 BEGIN
   INSERT INTO `user`(UserRoleId,
 	UserName,UserLastName,UserLoginName,UserLoginPassword,UserBirthdate,
-	UserTelephone,UserEmail,UserStatus,UserRegisterUserId)
-  VALUES (_roleid,_name,_lastname,_user,_password,_birthday,_telephone,_email,_status,_userid); 
+	UserTelephone,UserEmail,UserStatus,UserImage,UserRegisterUserId)
+  VALUES (_roleid,_name,_lastname,_user,_password,_birthday,_telephone,_email,_status,_imageuser,_userid); 
 END
 ;;
 DELIMITER ;
@@ -1061,7 +1060,8 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `sp_UpdateUser`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_UpdateUser`(IN `_userid` INT,IN `_roleid` INT,IN `_user` VARCHAR(10),IN `_password` VARCHAR(20),IN `_name` VARCHAR(100),IN `_lastname` VARCHAR(100),IN `_birthday` DATE,IN `_telephone` VARCHAR(50),IN `_email` VARCHAR(100),IN `_status` BIT,IN `_respuserid` INT)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_UpdateUser`(IN `_userid` INT,IN `_roleid` INT,IN `_user` VARCHAR(10),IN `_password` VARCHAR(20),IN `_name` VARCHAR(100),
+  IN `_lastname` VARCHAR(100),IN `_birthday` DATE,IN `_telephone` VARCHAR(50),IN `_email` VARCHAR(100),IN `_status` BIT,IN `_imageuser` TEXT,IN `_respuserid` INT)
 BEGIN	
 	UPDATE `user`
 	SET UserRoleId=_roleid,
@@ -1072,7 +1072,8 @@ BEGIN
 			UserBirthdate=CASE _birthday WHEN '' THEN NULL ELSE _birthday END,
 			UserTelephone=_telephone,
 			UserEmail=_email,
-			UserStatus=_status,
+      UserStatus=_status,
+			UserImage=_imageuser,
 			UserRegisterUserId=_respuserid
 	WHERE UserId=_userid;
 END

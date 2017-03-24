@@ -16,6 +16,7 @@ $(document).ready(InitUser);
     var $txtbirthday    = $('[name=txtbirthday]');
     var $txttelephone   = $('[name=txttelephone]');
     var $txtemail       = $('[name=txtemail]');
+    var $file_imageuser = $('#file-image-user');
     var datatable;
     var userid=0;
     var $modal_user_message    = $('#modal-user-message');    
@@ -86,8 +87,12 @@ function fnc_datatable_user(_datatable){
                 "url": "assets/language/Spanish.json"
               },
             "aoColumns": [
-                    { "data":"UserId", "title": "Nro" ,"sClass": "text-center"},    
-                    { "data":"UserImage", "title": "Foto" ,"sClass": "text-center"},
+                    { "data":"UserId", "title": "ID" ,"sClass": "text-center"},    
+                    { "data":null, "title": "Imagen","sClass": "text-center",
+                      "mRender": function(data, type, full) {
+                            return '<div class="img-responsive"><img src="'+data['UserImage']+'" width="50" height="50"></div>'
+                            }
+                    },
                     { "data":"UserLoginName", "title": "Usuario" ,"sClass": "text-center"},
                     { "data":"RoleName", "title": "Rol" ,"sClass": "text-center"},
                     { "data":"UserName", "title": "Nombre(s)" ,"sClass": "text-center"},
@@ -211,8 +216,9 @@ function fnc_set_user() {
   data.txt_telephone=  $txttelephone.val();
   data.txt_email    =  $txtemail.val();
   data.chck_status  =  $chck_status.bootstrapSwitch('state')==true?1:0;
+  data.file_imageuser= $file_imageuser[0].files[0].result;
   data.userid       =  userid;
-    
+
   var url_user = flagnew_user!=true?"update-user":"insert-user";
   $.ajax({
     type: "POST",
@@ -287,6 +293,7 @@ function fnc_get_user() {
         $txttelephone.val(resp.UserTelephone);
         $txtemail.val(resp.UserEmail);
         $chck_status.bootstrapSwitch('state',resp.UserStatus==0?false:true);
+        $('#foto-ejemplo').html('<img src="'+resp.UserImage+'"/>');
 
         fnc_modal_events();
         $modal_user.modal({"backdrop": "static","keyboard": false, "show": true});

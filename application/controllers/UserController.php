@@ -66,7 +66,7 @@ class UserController extends  MasterController{
 /****************************************************************************************************/
 	public function get_all_users()
 	{
-		$list = $this->UserModel->get_all_users();	
+		$list = $this->UserModel->get_all_users();
 		$output = array("Data" => $list);
 		echo json_encode($output);
 	}
@@ -76,7 +76,23 @@ class UserController extends  MasterController{
 		$json =	file_get_contents('php://input');
 		$data =	json_decode($json,TRUE);
 		$output=$this->UserModel->get_user_by_userid($data);
-		echo json_encode($output);
+
+		$data= array(
+			'UserId'=>$output->UserId,
+			'UserImage'=>base64_decode($output->UserImage),
+			'UserLoginName'=>$output->UserLoginName,
+			'UserLoginPassword'=>$output->UserLoginPassword,
+			'UserName'=>$output->UserName,
+			'UserLastName'=>$output->UserLastName,
+			'UserBirthdate'=>$output->UserBirthdate,
+			'UserTelephone'=>$output->UserTelephone,
+			'UserEmail'=>$output->UserEmail,
+			'UserStatus'=>$output->UserStatus,
+			'RoleId'=>$output->RoleId,
+			'RoleName'=>$output->RoleName
+			);
+
+		echo json_encode($data);
 	}
 /****************************************************************************************************/
 	public function insert_user()

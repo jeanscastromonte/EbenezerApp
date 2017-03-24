@@ -40,6 +40,8 @@
 	<link rel="stylesheet" type="text/css" href="assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css"/>
 	<!-- END PAGE LEVEL STYLES -->
 	<!-- BEGIN THEME STYLES -->
+	<link href="assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
+
 	<link href="assets/global/css/components.css" id="style_components" rel="stylesheet" type="text/css"/>
 	<link href="assets/global/css/plugins.css" rel="stylesheet" type="text/css"/>
 	<link href="assets/admin/layout2/css/layout.css" rel="stylesheet" type="text/css"/>

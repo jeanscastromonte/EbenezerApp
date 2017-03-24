@@ -142,11 +142,21 @@
 								</div>
 								<div class="form-group">
 									<div class="text-left col-md-3"><label class="control-label">Imagen:</label></div>
-									<div class="col-md-9">
-										<div class="input-icon right">
-											<i class="fa"></i>
-											<input type="text" class="form-control" name="txtimage"/>
-										</div>
+									<div class="col-md-9 row">										
+										<div class="fileinput fileinput-new col-md-8" data-provides="fileinput" style="cursor: pointer;">
+											<div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 100%; height: 150px;
+											/*background-image:url('assets/admin/pages/media/gallery/camera.png');*/
+											background-size: 100px 100px;background-repeat: no-repeat;background-position: center;">
+											</div>
+											<div>
+												<span hidden="">
+													<input id="file-image-user" type="file" accept="image/*" required>
+												</span>
+												<a href="#" class="btn red fileinput-exists" data-dismiss="fileinput">
+													Eliminar 
+												</a>
+											</div>
+										</div>											
 									</div>
 								</div>
 								<div class="form-group">
@@ -191,3 +201,4 @@
 	<!-- /.modal-dialog -->
 </div>
 <!-- END MODAL MESSAGE-->
+<div id="foto-ejemplo"></div>

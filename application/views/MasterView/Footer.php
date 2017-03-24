@@ -58,6 +58,7 @@
 <script type="text/javascript" src="assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
+ <script src="assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
 
 <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
 <script src="assets/admin/layout2/scripts/layout.js" type="text/javascript"></script>
