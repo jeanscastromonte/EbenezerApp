@@ -64,6 +64,7 @@ function InitCustomer()
 
     $cbo_digit.on('change',function(){
       $cbo_customer_status.select2('val',1);
+      datatable.ajax.reload();
     });
     //***Switch Status customer***
     // $chck_status.bootstrapSwitch({onText:'Activo',offText:'&nbsp;Inactivo&nbsp;',onColor: 'success',offColor:'danger',size: 'normal'});
@@ -88,7 +89,8 @@ function fnc_datatable_customer(_datatable)
                 "type"   : "POST",
                 "url"    : "get-all-customer",
                 "data"   : function( d ) {
-                  d.option= 0;
+                  d.digit= $cbo_digit.select2('val');
+                  d.status= $cbo_customer_status.select2('val');
                 },
                 complete: function () 
                 {
@@ -100,17 +102,17 @@ function fnc_datatable_customer(_datatable)
                 "url": "assets/language/Spanish.json"
               },
             "aoColumns": [
-                    { "data":"id", "title": "Nº" ,"sClass": "text-center"},    
-                    { "data":"nombre", "title": "Nombre o Razón Social" ,"sClass": "text-center"},
-                    { "data":"ruc", "title": "R.U.C." ,"sClass": "text-center"},
-                    { "data":"usuariosol", "title": "Usuario SOL" ,"sClass": "text-center"},
-                    { "data":"clavesol", "title": "Clave SOL" ,"sClass": "text-center"},
-                    { "data":"tipoempresa", "title": "Tipo de Empresa" ,"sClass": "text-center"},
-                    { "data":"regtrib", "title": "Régimen Tributario","sClass": "text-center"},
-                    { "data":"regtt", "title": "Régimen Trib.","sClass": "text-center"},
-                    { "data":"reglab", "title": "Régimen Laboral","sClass": "text-center"},
-                    { "data":"telefono", "title": "Teléfono","sClass": "text-center"},                    
-                    { "data":"estado", "title": "Estado","sClass": "text-center"},                    
+                    { "data":"CustomerId", "title": "ID" ,"sClass": "text-center"},    
+                    { "data":"CustomerName", "title": "Nombre" ,"sClass": "text-center"},
+                    { "data":"CustomerRuc", "title": "RUC" ,"sClass": "text-center"},
+                    { "data":"CustomerUserSol", "title": "Usuario SOL" ,"sClass": "text-center"},
+                    { "data":"CustomerPasswordSol", "title": "Clave SOL" ,"sClass": "text-center"},
+                    { "data":"CustomerType", "title": "Tipo Empresa" ,"sClass": "text-center"},
+                    { "data":"CustomerRegtrib", "title": "Rég. Trib 1","sClass": "text-center"},
+                    { "data":"CustomerRegtt", "title": "Rég. Trib 2","sClass": "text-center"},
+                    { "data":"CustomerReglab", "title": "Rég. Laboral","sClass": "text-center"},
+                    { "data":"CustomerTelephone", "title": "Teléfono","sClass": "text-center"},                    
+                    { "data":"CustomerStatus", "title": "Estado","sClass": "text-center"},                    
                     {//Column de botones
                       "title": "Opciones","data":null,
                         "mRender": function(data, type, full) {

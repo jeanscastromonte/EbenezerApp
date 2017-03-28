@@ -63,68 +63,78 @@ function InitUser(){
       autoclose: true,
       language: 'es'
     });
+
+  $('.fileinput-exists').tooltip({ html: true, placement: 'top', container: 'body', title: 'Hola mundo!'});
+
+  var btnCust = '<button type="button" class="btn btn-default" title="Add picture tags" ' + 
+    'onclick="alert(\'Call your custom code here.\')">' +
+    '<i class="glyphicon glyphicon-tag"></i>' +
+    '</button>'; 
+
+$("#avatar-1").fileinput();
+
 }
 /*****************************************************************************************************************************************************************************/
 function fnc_datatable_user(_datatable){
 
   $('#spinner-loading').show();  
   var datatable= _datatable.DataTable({
-            "ajax":
-             {
-                "dataSrc": "Data",
-                "type"   : "POST",
-                "url"    : "get-all-users",
-                "data"   : function( d ) {
-                  d.user_id= 0;
-                },
-                complete: function () 
-                {
-                    $('#spinner-loading').hide();           
-                },
-              },
-              "bLengthChange" : false,
-              "language": {
-                "url": "assets/language/Spanish.json"
-              },
-            "aoColumns": [
-                    { "data":"UserId", "title": "ID" ,"sClass": "text-center"},    
-                    { "data":null, "title": "Imagen","sClass": "text-center",
-                      "mRender": function(data, type, full) {
-                            return '<div class="img-responsive"><img src="'+data['UserImage']+'" width="50" height="50"></div>'
-                            }
-                    },
-                    { "data":"UserLoginName", "title": "Usuario" ,"sClass": "text-center"},
-                    { "data":"RoleName", "title": "Rol" ,"sClass": "text-center"},
-                    { "data":"UserName", "title": "Nombre(s)" ,"sClass": "text-center"},
-                    { "data":"UserLastName", "title": "Apellido(s)" ,"sClass": "text-center"},
-                    { "data":"UserBirthdate", "title": "Fecha de Nacimiento","sClass": "text-center"},
-                    { "data":"UserTelephone", "title": "Teléfono","sClass": "text-center"},
-                    { "data":"UserEmail", "title": "E-mail","sClass": "text-center"},
-                    { "data":"UserStatus", "title": "Estado","sClass": "text-center"},                    
-                    {//Column de botones
-                      "title": "Opciones","data":null,
-                        "mRender": function(data, type, full) {
-                            return '<a href="javascript:void(0);" class="btn btn-circle btn-icon-only blue btn-editmodal-user" data-id="'+data['UserId']+'"><i class="fa fa-edit"></i></a>'
-                                  +'<a href="javascript:void(0);" class="btn btn-circle btn-icon-only blue btn-deletemodal-user" data-id="'+data['UserId']+'" data-name="'+data['UserLoginName']+'"><i class="fa fa-trash"></i></a>';
-                        }
-                    }
-                ],
-            "columnDefs" : [
-                        { targets : [9],
-                          render : function (data, type, row) {
-                             return data == true ? '<span class="label bg-green-jungle">Activo</span>' : '<span class="label bg-red-intense">Inactivo</span>';
-                          }
-                        },
-                ],
-                "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-                  $('td:eq(2),td:eq(4),td:eq(5)', nRow).addClass( "text-left" );
-                  $('td:eq(2),td:eq(4),td:eq(5)', nRow).removeClass( "text-center" );
-
-                  //ADD TOOLTIP NEW ELEMENT CREATED
-                  $('.btn-editmodal-user', nRow).tooltip({html: true, title: 'Editar usuario'});
-                  $('.btn-deletemodal-user', nRow).tooltip({html: true, title: 'Eliminar usuario'});
+    "ajax":
+     {
+        "dataSrc": "Data",
+        "type"   : "POST",
+        "url"    : "get-all-users",
+        "data"   : function( d ) {
+          d.user_id= 0;
+        },
+        complete: function () 
+        {
+            $('#spinner-loading').hide();           
+        },
+      },
+      "bLengthChange" : false,
+      "language": {
+        "url": "assets/language/Spanish.json"
+      },
+    "aoColumns": [
+            { "data":"UserId", "title": "ID" ,"sClass": "text-center"},    
+            { "data":null, "title": "Imagen","sClass": "text-center",
+              "mRender": function(data, type, full) {
+                var image=data['UserImage']!=null?data['UserImage']:"assets/img/avatar.png"
+                return '<div class="img-responsive"><img src="'+image+'" width="50" height="50"></div>'
+              }
+            },
+            { "data":"UserLoginName", "title": "Usuario" ,"sClass": "text-center"},
+            { "data":"RoleName", "title": "Rol" ,"sClass": "text-center"},
+            { "data":"UserName", "title": "Nombre(s)" ,"sClass": "text-center"},
+            { "data":"UserLastName", "title": "Apellido(s)" ,"sClass": "text-center"},
+            { "data":"UserBirthdate", "title": "F. Nac.","sClass": "text-center"},
+            { "data":"UserTelephone", "title": "Teléfono","sClass": "text-center"},
+            { "data":"UserEmail", "title": "E-mail","sClass": "text-center"},
+            { "data":"UserStatus", "title": "Estado","sClass": "text-center"},                    
+            {//Column de botones
+              "title": "Opciones","data":null,
+                "mRender": function(data, type, full) {
+                    return '<a href="javascript:void(0);" class="btn btn-circle btn-icon-only blue btn-editmodal-user" data-id="'+data['UserId']+'"><i class="fa fa-edit"></i></a>'
+                          +'<a href="javascript:void(0);" class="btn btn-circle btn-icon-only blue btn-deletemodal-user" data-id="'+data['UserId']+'" data-name="'+data['UserLoginName']+'"><i class="fa fa-trash"></i></a>';
                 }
-        });
+            }
+        ],
+    "columnDefs" : [
+                { targets : [9],
+                  render : function (data, type, row) {
+                     return data == true ? '<span class="label bg-green-jungle">Activo</span>' : '<span class="label bg-red-intense">Inactivo</span>';
+                  }
+                },
+        ],
+        "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+          $('td:eq(2),td:eq(4),td:eq(5)', nRow).addClass( "text-left" );
+          $('td:eq(2),td:eq(4),td:eq(5)', nRow).removeClass( "text-center" );
+          
+          $('.btn-editmodal-user', nRow).tooltip({html: true, title: 'Editar usuario'});
+          $('.btn-deletemodal-user', nRow).tooltip({html: true, title: 'Eliminar usuario'});
+        }
+});
   return datatable;
 }
 /*****************************************************************************************************************************************************************************/
@@ -206,6 +216,7 @@ function fnc_validation_user(_form) {
 function fnc_set_user() {
 
   var birthday = $txtbirthday.datepicker('getDate');
+  var fileimage=$file_imageuser[0].files[0].result;
   var data={};    
   data.cbo_role     =  $cbo_role.select2('val');
   data.txt_user     =  $txtuser.val();
@@ -216,7 +227,7 @@ function fnc_set_user() {
   data.txt_telephone=  $txttelephone.val();
   data.txt_email    =  $txtemail.val();
   data.chck_status  =  $chck_status.bootstrapSwitch('state')==true?1:0;
-  data.file_imageuser= $file_imageuser[0].files[0].result;
+  data.file_imageuser= fileimage!=null?fileimage:'';
   data.userid       =  userid;
 
   var url_user = flagnew_user!=true?"update-user":"insert-user";
@@ -240,6 +251,7 @@ function fnc_set_user() {
             $modal_user.modal('hide');
             fnc_msj_alert(resp.type,resp.message,'',resp.icon,5);
             datatable.ajax.reload();
+            $(".dropdown-user").load(location.href+" .dropdown-user>*","");
             $('#spinner-loading').hide();
             break;
 
@@ -293,7 +305,9 @@ function fnc_get_user() {
         $txttelephone.val(resp.UserTelephone);
         $txtemail.val(resp.UserEmail);
         $chck_status.bootstrapSwitch('state',resp.UserStatus==0?false:true);
-        $('#foto-ejemplo').html('<img src="'+resp.UserImage+'"/>');
+
+        var image=resp.UserImage!=''?resp.UserImage:"assets/img/avatar.png"
+        $('.fileinput-preview').html('<img src="'+image+'"/>'); 
 
         fnc_modal_events();
         $modal_user.modal({"backdrop": "static","keyboard": false, "show": true});

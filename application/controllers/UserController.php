@@ -40,10 +40,6 @@ class UserController extends  MasterController{
 				$array_session= array(
 				'UserId'   		=> $login_user->UserId,
 				'UserRolId'   	=> $login_user->RoleId,
-				'UserRol'   	=> $login_user->RoleName,
-				'UserLoginName' => $login_user->UserLoginName,
-				'UserName'  	=> $login_user->UserName,
-				'UserImage'	  	=> $login_user->UserImage,
 				'login'   		=> TRUE);
 
 				$this->session->set_userdata($array_session);
@@ -64,10 +60,34 @@ class UserController extends  MasterController{
 		}
 	}
 /****************************************************************************************************/
+	public function logout_user() 
+    {
+        $this->session->sess_destroy();           
+        redirect(base_url());
+    }
+/****************************************************************************************************/
 	public function get_all_users()
 	{
 		$list = $this->UserModel->get_all_users();
-		$output = array("Data" => $list);
+
+		$array = array();
+		foreach ($list as $row)
+		{
+			$data['UserId'] = $row->UserId;
+			$data['UserImage'] = base64_decode($row->UserImage);
+			$data['UserLoginName'] = $row->UserLoginName;
+			$data['UserName'] = $row->UserName;
+			$data['UserLastName'] = $row->UserLastName;
+			$data['UserBirthdate'] = $row->UserBirthdate;
+			$data['UserTelephone'] = $row->UserTelephone;
+			$data['UserEmail'] = $row->UserEmail;
+			$data['UserStatus'] = $row->UserStatus;
+			$data['RoleName'] = $row->RoleName;
+
+			array_push($array,$data);
+		}
+
+		$output = array('Data'=>$array);
 		echo json_encode($output);
 	}
 /****************************************************************************************************/

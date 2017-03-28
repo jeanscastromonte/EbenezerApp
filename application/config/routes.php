@@ -9,6 +9,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*********************************************************************/
 # Region "Login User"
 	$route['login-user'] 		= 'UserController/login_user';
+	$route['logout-user'] 		= 'UserController/logout_user';
 # End Region
 /*********************************************************************/
 # Region "Sale"

@@ -16,71 +16,70 @@ $(document).ready(Initrole);
 /******************************************************************************************************************************************************************************/
 function Initrole(){
 
-    //***Private variables**
+  //***Private variables**
     var $datatable_role       =   $('#datatable-role');   
     var $btn_callmodal_role   =   $('#btn-callmodal-role');    
-   
-    //***Call Modal role*** 
-    $btn_callmodal_role.on('click',function () {
 
+  //***Events*** 
+    $btn_callmodal_role.on('click',function () {
       fnc_modal_events();
       $modal_role.modal({"backdrop": "static","keyboard": false, "show": true});
       fnc_clear_form($form_role);
       $role_modaltitle.text('Registrar rol');
       flagnew_role=true;
-      roleid=0;    
+      roleid=0;
     });
 
     $(document).on('click','.btn-editmodal-role',fnc_get_role);
     $(document).on('click','.btn-deletemodal-role',fnc_modaldelete_role);
     $btn_acceptdelete_role.on('click',fnc_delete_role);
 
-    //***Init Datatable roles***
+    fnc_only_letter($txtrole);
+    
+  //***Init Datatable roles***
     datatable=fnc_datatable_role($datatable_role);
 
-    //***Validation form role***
-    fnc_validation_role($form_role);  
+  //***Validation form role***
+    fnc_validation_role($form_role);
 }
 /*****************************************************************************************************************************************************************************/
 function fnc_datatable_role(_datatable){
 
   $('#spinner-loading').show();  
   var datatable= _datatable.DataTable({
-            "ajax":
-             {
-                "dataSrc": "Data",
-                "type"   : "POST",
-                "url"    : "get-all-roles",
-                "data"   : function( d ) {
-                  d.role_id= 0;
-                },
-                complete: function () 
-                {
-                    $('#spinner-loading').hide();           
-                },
-              },
-              "bLengthChange" : false,
-              "language": {
-                "url": "assets/language/Spanish.json"
-              },
-            "aoColumns": [
-                    { "data":"RoleId", "title": "Rol ID" ,"sClass": "text-center"},
-                    { "data":"RoleName", "title": "Rol" ,"sClass": "text-center"},
-                    {//Column de botones
-                      "title": "Opciones","data":null,
-                        "mRender": function(data, type, full) {
-                            return '<a href="javascript:void(0);" class="btn btn-circle btn-icon-only blue btn-editmodal-role" data-id="'+data['RoleId']+'"><i class="fa fa-edit"></i></a>'
-                                  +'<a href="javascript:void(0);" class="btn btn-circle btn-icon-only blue btn-deletemodal-role" data-id="'+data['RoleId']+'" data-name="'+data['RoleName']+'"><i class="fa fa-trash"></i></a>';
-                        }
-                    }
-                ],
-                "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-
-                  //ADD TOOLTIP NEW ELEMENT CREATED
-                  $('.btn-editmodal-role', nRow).tooltip({html: true, title: 'Editar rol'});
-                  $('.btn-deletemodal-role', nRow).tooltip({html: true, title: 'Eliminar rol'});
-                }
-        });
+      "ajax":
+      {
+        "dataSrc": "Data",
+        "type"   : "POST",
+        "url"    : "get-all-roles",
+        "data"   : function( d ) {
+        d.role_id= 0;
+        },
+        complete: function () 
+        {
+          $('#spinner-loading').hide();           
+        },
+      },
+        "bLengthChange" : false,
+        "language": {
+          "url": "assets/language/Spanish.json"
+        },
+        "aoColumns": [
+        { "data":"RoleId", "title": "ID" ,"sClass": "text-center"},
+        { "data":"RoleName", "title": "Rol" ,"sClass": "text-center"},
+        {
+          "title": "Opciones","data":null,"sClass": "text-center",
+          "mRender": function(data, type, full) {
+            return '<a href="javascript:void(0);" class="btn btn-circle btn-icon-only blue btn-editmodal-role" data-id="'+data['RoleId']+'"><i class="fa fa-edit"></i></a>'
+            +'<a href="javascript:void(0);" class="btn btn-circle btn-icon-only blue btn-deletemodal-role" data-id="'+data['RoleId']+'" data-name="'+data['RoleName']+'"><i class="fa fa-trash"></i></a>';
+          }
+        }
+        ],
+        "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+          $('.btn-editmodal-role', nRow).tooltip({html: true, title: 'Editar rol'});
+          $('.btn-deletemodal-role', nRow).tooltip({html: true, title: 'Eliminar rol'});
+        }
+  });
   return datatable;
 }
 /*****************************************************************************************************************************************************************************/

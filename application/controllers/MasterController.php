@@ -91,11 +91,19 @@ class MasterController extends CI_Controller {
 /****************************************************************************************************/
 	public function get_information_user()
 	{
-		return $data= array(		
-		'UserRol'   	=> $this->session->userdata('UserRol'),
-		'UserLoginName' => $this->session->userdata('UserLoginName'),
-		'UserName'  	=> $this->session->userdata('UserName'),
-		'UserImage'	  	=> $this->session->userdata('UserImage'));
+		$userid=array('userid'=>$this->session->userdata('UserId'));
+		$output=$this->UserModel->get_user_by_userid($userid);
+
+		$data= array(
+		'UserId'=>$output->UserId,
+		'UserImage'=>base64_decode($output->UserImage),
+		'UserLoginName'=>$output->UserLoginName,
+		'UserName'=>$output->UserName,
+		'UserStatus'=>$output->UserStatus,
+		'UserRol'=>$output->RoleName
+		);
+
+		return $data;
 	}
 /****************************************************************************************************/
 }

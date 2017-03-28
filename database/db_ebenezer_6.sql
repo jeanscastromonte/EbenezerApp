@@ -698,7 +698,7 @@ CREATE TABLE `user` (
   `UserBirthdate` date DEFAULT NULL,
   `UserTelephone` varchar(50) DEFAULT NULL,
   `UserEmail` varchar(100) DEFAULT NULL,
-  `UserImage` text,
+  `UserImage` longblob,
   `UserStatus` bit(1) NOT NULL,
   `UserRegisterUserId` int(11) NOT NULL,
   PRIMARY KEY (`UserId`),
@@ -763,7 +763,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetAllUsers`()
 BEGIN
 	SELECT
 	u.UserId,
-	FROM_BASE64(u.UserImage) as UserImage,
+	u.UserImage,
 	u.UserLoginName,
 	u.UserName,
 	u.UserLastName,
@@ -949,7 +949,7 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS `sp_InsertUser`;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_InsertUser`(IN `_roleid` INT,IN `_user` VARCHAR(10),IN `_password` VARCHAR(20),IN `_name` VARCHAR(100),
-IN `_lastname` VARCHAR(100),IN `_birthday` DATE,IN `_telephone` VARCHAR(50),IN `_email` VARCHAR(100),IN `_status` BIT,IN `_imageuser` TEXT,IN `_userid` INT)
+IN `_lastname` VARCHAR(100),IN `_birthday` DATE,IN `_telephone` VARCHAR(50),IN `_email` VARCHAR(100),IN `_status` BIT,IN `_imageuser` LONGBLOB,IN `_userid` INT)
 BEGIN
   INSERT INTO `user`(UserRoleId,
 	UserName,UserLastName,UserLoginName,UserLoginPassword,UserBirthdate,
@@ -1061,7 +1061,7 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS `sp_UpdateUser`;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_UpdateUser`(IN `_userid` INT,IN `_roleid` INT,IN `_user` VARCHAR(10),IN `_password` VARCHAR(20),IN `_name` VARCHAR(100),
-  IN `_lastname` VARCHAR(100),IN `_birthday` DATE,IN `_telephone` VARCHAR(50),IN `_email` VARCHAR(100),IN `_status` BIT,IN `_imageuser` TEXT,IN `_respuserid` INT)
+  IN `_lastname` VARCHAR(100),IN `_birthday` DATE,IN `_telephone` VARCHAR(50),IN `_email` VARCHAR(100),IN `_status` BIT,IN `_imageuser` LONGBLOB,IN `_respuserid` INT)
 BEGIN	
 	UPDATE `user`
 	SET UserRoleId=_roleid,
@@ -1142,8 +1142,7 @@ DROP PROCEDURE IF EXISTS `sp_DeleteRole`;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_DeleteRole`(IN `_roleid` INT)
 BEGIN
-  DELETE FROM `role`
-  WHERE RoleId=`_roleid`;
+  DELETE FROM `role` WHERE RoleId=`_roleid`;
 END
 ;;
 DELIMITER ;

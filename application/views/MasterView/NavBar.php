@@ -401,7 +401,7 @@
 					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
 					<li class="dropdown dropdown-user">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-						<img alt="" class="img-circle" src="assets/admin/layout2/img/avatar3_small.jpg"/>
+						<img alt="" class="img-circle" src="<?=$get_information_user['UserImage'];?>"/>
 						<span class="username username-hide-on-mobile">
 						<?=$get_information_user['UserLoginName'];?> </span>
 						<i class="fa fa-angle-down"></i>
@@ -428,7 +428,7 @@
 								<i class="icon-lock"></i> Lock Screen </a>
 							</li> -->
 							<li>
-								<a href="javascript:void(0);">
+								<a href="logout-user">
 								<i class="icon-key"></i>Cerrar Sesión</a>
 							</li>
 						</ul>

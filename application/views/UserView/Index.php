@@ -29,10 +29,6 @@
 				</div>
 			</div>
 			<div class="portlet-body">
-				<!-- <div class="text-center" id="spinner-loading" hidden="hidden">
-					<i class="fa fa-spinner fa-spin fa-3x color-spinner"></i>&nbsp;Cargando...
-				</div> -->
-
 				<table class="table table-striped table-bordered table-hover" id="datatable-user">					
 				</table>	
 			</div>
@@ -96,7 +92,7 @@
 									<div class="col-md-9">
 										<div class="input-icon right">
 											<i class="fa"></i>
-											<input type="text" class="form-control" name="txtname"/>
+											<input type="text" class="form-control" name="txtname" style='text-transform:uppercase'/>
 										</div>
 									</div>
 								</div>
@@ -105,7 +101,7 @@
 									<div class="col-md-9">
 										<div class="input-icon right">
 											<i class="fa"></i>
-											<input type="text" class="form-control" name="txtlastname"/>
+											<input type="text" class="form-control" name="txtlastname" style='text-transform:uppercase'/>
 										</div>
 									</div>
 								</div>
@@ -143,8 +139,8 @@
 								<div class="form-group">
 									<div class="text-left col-md-3"><label class="control-label">Imagen:</label></div>
 									<div class="col-md-9 row">										
-										<div class="fileinput fileinput-new col-md-8" data-provides="fileinput" style="cursor: pointer;">
-											<div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 100%; height: 150px;
+										<div class="fileinput fileinput-new col-md-6" data-provides="fileinput" style="cursor: pointer;">
+											<div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 100%; height: 100px;
 											/*background-image:url('assets/admin/pages/media/gallery/camera.png');*/
 											background-size: 100px 100px;background-repeat: no-repeat;background-position: center;">
 											</div>
@@ -153,7 +149,7 @@
 													<input id="file-image-user" type="file" accept="image/*" required>
 												</span>
 												<a href="#" class="btn red fileinput-exists" data-dismiss="fileinput">
-													Eliminar 
+													<i class="fa fa-trash"></i> 
 												</a>
 											</div>
 										</div>											
@@ -201,4 +197,3 @@
 	<!-- /.modal-dialog -->
 </div>
 <!-- END MODAL MESSAGE-->
-<div id="foto-ejemplo"></div>

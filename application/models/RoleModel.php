@@ -41,7 +41,7 @@ class RoleModel extends CI_Model {
 /*************************************************************************/
 	public function insert_role($data)
     {
-    	$rolename  	   = $data['rolename'];
+    	$rolename  	   = strtoupper($data['rolename']);
 
     	$query=$this->db->query("CALL sp_InsertRole('$rolename')");
 
@@ -67,7 +67,7 @@ class RoleModel extends CI_Model {
 	public function update_role($data)
     {
     	$roleid   = $data['roleid'];
-    	$rolename = $data['txt_rolename'];
+    	$rolename = strtoupper($data['txt_rolename']);
 
     	$query=$this->db->query("CALL sp_UpdateRole($roleid,'$rolename')");
 

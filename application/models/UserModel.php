@@ -62,19 +62,6 @@ class UserModel extends CI_Model {
 
 		if ($query->num_rows()>0)
 		{
-// foreach ($query->result() as $row)
-// {
-// $data['UserId'] = $row->UserId;
-// $data['UserImage'] = base64_decode($row->UserImage);
-// $data['UserLoginName'] = $row->UserLoginName;
-// $data['UserName'] = $row->UserName;
-// $data['UserLastName'] = $row->UserLastName;
-// $data['UserBirthdate'] = $row->UserBirthdate;
-// $data['UserTelephone'] = $row->UserTelephone;
-// $data['UserEmail'] = $row->UserEmail;
-// $data['UserStatus'] = $row->UserStatus;
-// $data['RoleName'] = $row->RoleName;			
- // }
 			$resp= $query->result();
 			return $resp;
 		}
