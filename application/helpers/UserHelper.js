@@ -25,13 +25,12 @@ $(document).ready(InitUser);
 /******************************************************************************************************************************************************************************/
 function InitUser(){
 
-    //***Private variables**
+  //***Private variables**
     var $datatable_user       =   $('#datatable-user');   
     var $btn_callmodal_user   =   $('#btn-callmodal-user');    
-   
-    //***Call Modal User*** 
-    $btn_callmodal_user.on('click',function () {
 
+  //***Private Events*** 
+    $btn_callmodal_user.on('click',function () {
       fnc_modal_events();
       $modal_user.modal({"backdrop": "static","keyboard": false, "show": true});
       fnc_clear_form($form_user);
@@ -44,34 +43,34 @@ function InitUser(){
     $(document).on('click','.btn-deletemodal-user',fnc_modaldelete_user);
     $btn_acceptdelete_user.on('click',fnc_delete_user);
 
-    //***Init Datatable users***
+  //***Private datatable***
     datatable=fnc_datatable_user($datatable_user);
 
-    //***Validation form user***
+  //***Validation form user***
     fnc_validation_user($form_user);
 
-    //***Select2 roles***
+  //***Select2 roles***
     fnc_select2_roles($cbo_role)
-    
-    //***Switch Status user***
+
+  //***Switch Status user***
     $chck_status.bootstrapSwitch({onText:'Activo',offText:'&nbsp;Inactivo&nbsp;',onColor: 'success',offColor:'danger',size: 'normal'});
     $('.bootstrap-switch').css('width','150px');
-      
-    $txtbirthday.datepicker({
-      format: 'dd/mm/yyyy',
-      pickTime: false,
-      autoclose: true,
-      language: 'es'
-    });
+
+  $txtbirthday.datepicker({
+  format: 'dd/mm/yyyy',
+  pickTime: false,
+  autoclose: true,
+  language: 'es'
+  });
 
   $('.fileinput-exists').tooltip({ html: true, placement: 'top', container: 'body', title: 'Hola mundo!'});
 
   var btnCust = '<button type="button" class="btn btn-default" title="Add picture tags" ' + 
-    'onclick="alert(\'Call your custom code here.\')">' +
-    '<i class="glyphicon glyphicon-tag"></i>' +
-    '</button>'; 
+  'onclick="alert(\'Call your custom code here.\')">' +
+  '<i class="glyphicon glyphicon-tag"></i>' +
+  '</button>'; 
 
-$("#avatar-1").fileinput();
+  $("#avatar-1").fileinput();
 
 }
 /*****************************************************************************************************************************************************************************/
@@ -100,7 +99,7 @@ function fnc_datatable_user(_datatable){
             { "data":"UserId", "title": "ID" ,"sClass": "text-center"},    
             { "data":null, "title": "Imagen","sClass": "text-center",
               "mRender": function(data, type, full) {
-                var image=data['UserImage']!=null?data['UserImage']:"assets/img/avatar.png"
+                var image=data['UserImage']!=''?data['UserImage']:"assets/img/avatar.png"
                 return '<div class="img-responsive"><img src="'+image+'" width="50" height="50"></div>'
               }
             },
@@ -216,7 +215,8 @@ function fnc_validation_user(_form) {
 function fnc_set_user() {
 
   var birthday = $txtbirthday.datepicker('getDate');
-  var fileimage=$file_imageuser[0].files[0].result;
+  //var fileimage=$file_imageuser[0].files[0].result;
+
   var data={};    
   data.cbo_role     =  $cbo_role.select2('val');
   data.txt_user     =  $txtuser.val();
@@ -227,7 +227,7 @@ function fnc_set_user() {
   data.txt_telephone=  $txttelephone.val();
   data.txt_email    =  $txtemail.val();
   data.chck_status  =  $chck_status.bootstrapSwitch('state')==true?1:0;
-  data.file_imageuser= fileimage!=null?fileimage:'';
+  data.file_imageuser= $file_imageuser[0].files[0].result;
   data.userid       =  userid;
 
   var url_user = flagnew_user!=true?"update-user":"insert-user";
