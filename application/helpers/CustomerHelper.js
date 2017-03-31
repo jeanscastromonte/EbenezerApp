@@ -110,9 +110,9 @@ function fnc_datatable_customer(_datatable)
                     { "data":"CustomerType", "title": "Tipo Empresa" ,"sClass": "text-center"},
                     { "data":"CustomerRegtrib", "title": "Rég. Trib 1","sClass": "text-center"},
                     { "data":"CustomerRegtt", "title": "Rég. Trib 2","sClass": "text-center"},
-                    { "data":"CustomerReglab", "title": "Rég. Laboral","sClass": "text-center"},
+                    { "data":"CustomerReglab", "title": "Rég. Lab.","sClass": "text-center"},
                     { "data":"CustomerTelephone", "title": "Teléfono","sClass": "text-center"},                    
-                    { "data":"CustomerStatus", "title": "Estado","sClass": "text-center"},                    
+                    { "data":"CustomerStatus", "title": "Estado","sClass": "text-center","width": "40%"},                    
                     {//Column de botones
                       "title": "Opciones","data":null,
                         "mRender": function(data, type, full) {
@@ -121,16 +121,30 @@ function fnc_datatable_customer(_datatable)
                         }
                     }
                 ],
-            // "columnDefs" : [
-            //             { targets : [10],
-            //               render : function (data, type, row) {
-            //                  return data == true ? '<span class="label bg-green-jungle">Activo</span>' : '<span class="label bg-red-intense">Inactivo</span>';
-            //               }
-            //             },
-            //     ],
+            "columnDefs" : [
+                        // { targets : [0],"width": "10%"},
+                        // { targets : [1],"width": "5%"},
+                        // { targets : [2],"width": "5%"},
+                        // { targets : [3],"width": "5%"},
+                        // { targets : [4],"width": "5%"},
+                        // { targets : [5],"width": "5%"},
+                        // { targets : [6],"width": "5%"},
+                        // { targets : [7],"width": "5%"},
+                        // { targets : [8],"width": "5%"},
+                        // { targets : [9],"width": "5%"},
+                        // { targets : [10],"width": "5%"},
+                        // { targets : [11],"width": "40%"},
+                        //   render : function (data, type, row) {
+                        //      return data == true ? '<span class="label bg-green-jungle">Activo</span>' : '<span class="label bg-red-intense">Inactivo</span>';
+                        //   }
+                        
+                  // { "width": "20%", "targets": 0 },
+                  // { "width": "50%", "targets": 1 }
+                ],
                 "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-                  // $('td:eq(2),td:eq(4),td:eq(5)', nRow).addClass( "text-left" );
-                  // $('td:eq(2),td:eq(4),td:eq(5)', nRow).removeClass( "text-center" );
+
+                  $('td:eq(1)', nRow).removeClass( "text-center").addClass( "text-left" );
+                  $('th:eq(1)', nRow).css('width','20%');
 
                   //ADD TOOLTIP NEW ELEMENT CREATED
                   $('.btn-editmodal-customer', nRow).tooltip({html: true, title: 'Editar Cliente'});
