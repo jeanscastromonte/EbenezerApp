@@ -63,8 +63,10 @@ function InitCustomer()
         +'<option value="5">Todos</option>');
 
     $cbo_digit.on('change',function(){
+      $('#spinner-loading').show();  
       $cbo_customer_status.select2('val',1);
       datatable.ajax.reload();
+      $('#spinner-loading').hide();
     });
     //***Switch Status customer***
     // $chck_status.bootstrapSwitch({onText:'Activo',offText:'&nbsp;Inactivo&nbsp;',onColor: 'success',offColor:'danger',size: 'normal'});
@@ -78,10 +80,9 @@ function InitCustomer()
     // });
 }
 /*****************************************************************************************************************************************************************************/
-function fnc_datatable_customer(_datatable)
-{
+function fnc_datatable_customer(_datatable){
 
-    $('#spinner-loading').show();  
+  $('#spinner-loading').show();  
   var datatable= _datatable.DataTable({
             "ajax":
              {
@@ -89,12 +90,12 @@ function fnc_datatable_customer(_datatable)
                 "type"   : "POST",
                 "url"    : "get-all-customer",
                 "data"   : function( d ) {
-                  d.digit= $cbo_digit.select2('val');
-                  d.status= $cbo_customer_status.select2('val');
+                  d.digit= $cbo_digit.select2('val')!=''?$cbo_digit.select2('val'):null;
+                  d.status= $cbo_customer_status.select2('val')!=''?$cbo_customer_status.select2('val'):null;
                 },
                 complete: function () 
                 {
-                    $('#spinner-loading').hide();           
+                    $('#spinner-loading').hide();
                 },
               },
               "bLengthChange" : false,
@@ -154,8 +155,7 @@ function fnc_datatable_customer(_datatable)
   return datatable;
 }
 /*****************************************************************************************************************************************************************************/
-function fnc_select2_roles(_cbo)
-{
+function fnc_select2_roles(_cbo){
     $.getJSON("get-all-roles", function (data){ 
         _cbo.html('<option></option>');
         for (var i = 0; i<data.length;i++) 

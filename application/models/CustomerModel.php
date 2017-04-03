@@ -3,10 +3,10 @@
 class CustomerModel extends CI_Model {
 
 /*************************************************************************/
-	public function get_all_customer($option)
+	public function get_all_customer($digit,$status)
 	{
 
-		$query=$this->db->query("CALL sp_GetAllCustomer()");
+		$query=$this->db->query("CALL sp_GetAllCustomer($digit,$status)");
 
 		if ($query->num_rows()>0)
 		{
@@ -23,7 +23,6 @@ class CustomerModel extends CI_Model {
 /*************************************************************************/
 	public function insert_customer($data)
     {
-
     	$txtcustomer   = $data['txtcustomer'];
     	$txtruc        = $data['txtruc'];
     	$txtusersol    = $data['txtusersol'];
