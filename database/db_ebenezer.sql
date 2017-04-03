@@ -39,10 +39,18 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_DeleteUser` (IN `_userid` INT)  
 END$$
 
 DROP PROCEDURE IF EXISTS `sp_GetAllCustomer`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetAllCustomer` ()  BEGIN
-      SELECT
-      *
-      FROM `customer`;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetAllCustomer` (IN `_digit` INT, IN `_status` INT)  BEGIN
+  SELECT
+  *
+  FROM `customer`
+  WHERE CustomerDigit LIKE _digit
+  AND CustomerStatus LIKE (CASE _status 
+  WHEN 1 THEN 'Activo'
+  WHEN 2 THEN 'Suspensión'
+  WHEN 3 THEN 'De baja'
+  WHEN 4 THEN 'Retirado'
+  WHEN 5 THEN ''
+  ELSE ''  END);
 END$$
 
 DROP PROCEDURE IF EXISTS `sp_GetAllRoles`$$

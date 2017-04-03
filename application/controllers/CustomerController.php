@@ -27,8 +27,10 @@ class CustomerController extends  MasterController{
 /****************************************************************************************************/
 	public function get_all_customer()
 	{
-		$option = $this->input->post('option', TRUE);
-		$list = $this->CustomerModel->get_all_customer($option);	
+		$digit = $this->input->post('digit', TRUE);
+		$status = $this->input->post('status', TRUE);
+				
+		$list = $this->CustomerModel->get_all_customer($digit,$status);	
 		$output = array("Data" => $list);
 		echo json_encode($output);
 	}
