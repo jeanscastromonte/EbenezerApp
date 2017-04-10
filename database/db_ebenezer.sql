@@ -39,7 +39,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_DeleteUser` (IN `_userid` INT)  
 END$$
 
 DROP PROCEDURE IF EXISTS `sp_GetAllCustomer`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetAllCustomer` (IN `_digit` INT, IN `_status` INT)  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetAllCustomer` (IN `_digit` VARCHAR(2), IN `_status` VARCHAR(2))  BEGIN
   SELECT
   *
   FROM `customer`
