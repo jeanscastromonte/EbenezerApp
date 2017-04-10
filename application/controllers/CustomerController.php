@@ -22,7 +22,7 @@ class CustomerController extends  MasterController{
 
 				$this->load->view('MasterView/Index',$data);
 				break;	;			
-		}		
+		}
 	}
 /****************************************************************************************************/
 	public function get_all_customer()

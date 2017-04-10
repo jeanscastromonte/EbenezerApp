@@ -19,7 +19,7 @@ USE `db_ebenezer`;
 
 DELIMITER $$
 --
--- Procedimientos
+--
 --
 DROP PROCEDURE IF EXISTS `sp_DeleteRole`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_DeleteRole` (IN `_roleid` INT)  BEGIN

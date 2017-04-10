@@ -140,7 +140,6 @@ function fnc_datatable_customer(_datatable){
                         //   }
                         
                   // { "width": "20%", "targets": 0 },
-                  // { "width": "50%", "targets": 1 }
                 ],
                 "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
 

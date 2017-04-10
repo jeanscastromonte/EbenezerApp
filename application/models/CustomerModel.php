@@ -18,7 +18,7 @@ class CustomerModel extends CI_Model {
 		else
 		{
 			return FALSE;
-		} 
+		}
 	}
 /*************************************************************************/
 	public function insert_customer($data)
