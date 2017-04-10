@@ -6,7 +6,7 @@ class CustomerModel extends CI_Model {
 	public function get_all_customer($digit,$status)
 	{
 
-		$query=$this->db->query("CALL sp_GetAllCustomer($digit,$status)");
+		$query=$this->db->query("CALL sp_GetAllCustomer('$digit','$status')");
 
 		if ($query->num_rows()>0)
 		{

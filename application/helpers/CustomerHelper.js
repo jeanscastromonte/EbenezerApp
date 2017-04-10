@@ -10,17 +10,17 @@ $(document).ready(InitCustomer);
     var $chck_status         =   $('#chck-status');
     var flagnew_customer     =   false; 
 
-    var $txtcustomer    = $('[name=txtcustomer]');
-    var $txtruc         = $('[name=txtruc]');
-    var $txtusersol     = $('[name=txtusersol]');
-    var $txtpasswordsol = $('[name=txtpasswordsol]');
-    var $txtaddress     = $('[name=txtaddress]');
-    var $txtphone       = $('[name=txtphone]');
-    var $txtemail       = $('[name=txtemail]');
-    var $txtregtrib     = $('[name=txtregtrib]');
-    var $txtreg4ta      = $('[name=txtreg4ta]');
-    var $txtreglab      = $('[name=txtreglab]');
-    var $txtstartdate   = $('[name=txtstartdate]');
+    var $txtcustomer         = $('[name=txtcustomer]');
+    var $txtruc              = $('[name=txtruc]');
+    var $txtusersol          = $('[name=txtusersol]');
+    var $txtpasswordsol      = $('[name=txtpasswordsol]');
+    var $txtaddress          = $('[name=txtaddress]');
+    var $txtphone            = $('[name=txtphone]');
+    var $txtemail            = $('[name=txtemail]');
+    var $txtregtrib          = $('[name=txtregtrib]');
+    var $txtreg4ta           = $('[name=txtreg4ta]');
+    var $txtreglab           = $('[name=txtreglab]');
+    var $txtstartdate        = $('[name=txtstartdate]');
     var datatable;
 /******************************************************************************************************************************************************************************/
 function InitCustomer()
@@ -90,8 +90,8 @@ function fnc_datatable_customer(_datatable){
                 "type"   : "POST",
                 "url"    : "get-all-customer",
                 "data"   : function( d ) {
-                  d.digit= $cbo_digit.select2('val')!=''?$cbo_digit.select2('val'):null;
-                  d.status= $cbo_customer_status.select2('val')!=''?$cbo_customer_status.select2('val'):null;
+                  d.digit  = $cbo_digit.select2('val');
+                  d.status = $cbo_customer_status.select2('val');
                 },
                 complete: function () 
                 {

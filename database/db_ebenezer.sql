@@ -43,14 +43,14 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetAllCustomer` (IN `_digit` INT
   SELECT
   *
   FROM `customer`
-  WHERE CustomerDigit LIKE _digit
-  AND CustomerStatus LIKE (CASE _status 
-  WHEN 1 THEN 'Activo'
-  WHEN 2 THEN 'Suspensión'
-  WHEN 3 THEN 'De baja'
-  WHEN 4 THEN 'Retirado'
-  WHEN 5 THEN ''
-  ELSE ''  END);
+  WHERE CustomerDigit LIKE (CASE _digit WHEN '' THEN '%' ELSE _digit END)
+  AND CustomerStatus LIKE  (CASE _status 
+  WHEN '1' THEN 'Activo'
+  WHEN '2' THEN 'Suspensión'
+  WHEN '3' THEN 'De baja'
+  WHEN '4' THEN 'Retirado'
+  WHEN '5' THEN '%'
+  ELSE '%'  END);
 END$$
 
 DROP PROCEDURE IF EXISTS `sp_GetAllRoles`$$
