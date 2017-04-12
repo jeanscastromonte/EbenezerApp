@@ -4,6 +4,7 @@ $(document).ready(InitCustomer);
   //***Public Attributes***
     var $cbo_digit           =   $('#cbo-digit');
     var $cbo_customer_status =   $('#cbo-customer-status');
+    var $cbo_status          =   $('#cbo-status');
     var $modal_customer      =   $('#modal-customer');
     var $customer_modaltitle =   $modal_customer.find('.modal-title');
     var $form_customer       =   $('#form-customer');    
@@ -23,61 +24,69 @@ $(document).ready(InitCustomer);
     var $txtstartdate        = $('[name=txtstartdate]');
     var datatable;
 /******************************************************************************************************************************************************************************/
-function InitCustomer()
-{
-    //***Private variables**
-    var $datatable_customer       =   $('#datatable-customer');   
-    var $btn_callmodal_customer   =   $('#btn-callmodal-customer');    
-   
-    //***Call Modal customer*** 
-    $btn_callmodal_customer.on('click',function () {
+function InitCustomer(){
 
+  //***Private variables**
+    var $datatable_customer       =   $('#datatable-customer');   
+    var $btn_callmodal_customer   =   $('#btn-callmodal-customer'); 
+
+    var options_status            ='<option value="1">Activos</option>'
+                                    +'<option value="2">Suspendidos Temp.</option>'
+                                    +'<option value="3">De baja</option>'
+                                    +'<option value="4">Retirados</option>'
+                                    +'<option value="5">Todos</option>';
+  //***Call Modal customer*** 
+    $btn_callmodal_customer.on('click',function () {
       fnc_modal_events();
       $modal_customer.modal({"backdrop": "static","keyboard": false, "show": true});
       fnc_clear_form($form_customer);
       $customer_modaltitle.text('Registrar Usuario');
-      flagnew_customer=true;    
+      flagnew_customer=true;
+      $txtstartdate.datepicker('setDate', new Date());
+
     });
 
     $(document).on('click','.btn-editmodal-customer',fnc_get_customer);
     // $(document).on('click','.btn-deletemodal-customer',fnc_modaldelete_customer);
     // $btn_acceptdelete_schedule.on('click',fnc_delete_schedule);
 
-    //***Init Datatable customers***
+  //***Init Datatable customers***
     datatable=fnc_datatable_customer($datatable_customer);
     $datatable_customer.find('thead').css({'background-color':'#67809F','color':'white'});
     $datatable_customer.find('tbody').css({'font-weight':'bold'});
 
-    //***Validation form customer***
+  //***Validation form customer***
     fnc_validation_customer($form_customer);
 
-    //***Select2 Digit***
-      fnc_select2( $cbo_digit,"Seleccione dígito...");
-      fnc_fill_options_digits($cbo_digit);
+  //***Select2 Digit***
+    fnc_select2( $cbo_digit,"Seleccione dígito...");
+    fnc_fill_options_digits($cbo_digit);
 
-      fnc_select2($cbo_customer_status,"Seleccione Estado...");   
-      $cbo_customer_status.append('<option value="1">Activos</option>'
-        +'<option value="2">Suspendidos Temp.</option>'
-        +'<option value="3">De baja</option>'
-        +'<option value="4">Retirados</option>'
-        +'<option value="5">Todos</option>');
+    fnc_select2($cbo_customer_status,"Seleccione Estado...");
+    $cbo_customer_status.append(options_status);
+
+    fnc_select2($cbo_status,"Seleccione Estado...");
+    $cbo_status.append(options_status);
+
+    $cbo_customer_status.select2('val',1);
 
     $cbo_digit.on('change',function(){
-      $('#spinner-loading').show();  
-      $cbo_customer_status.select2('val',1);
+      $('#spinner-loading').show();      
       datatable.ajax.reload();
       $('#spinner-loading').hide();
     });
-    //***Switch Status customer***
-    // $chck_status.bootstrapSwitch({onText:'Activo',offText:'&nbsp;Inactivo&nbsp;',onColor: 'success',offColor:'danger',size: 'normal'});
-    // $('.bootstrap-switch').css('width','150px');
-      
-    // $txtbirthday.datepicker({
-    //   format: 'dd/mm/yyyy',
-    //   pickTime: false,
-    //   autoclose: true,
-    //   language: 'es'
-    // });
+    $cbo_customer_status.on('change',function(){
+      $('#spinner-loading').show();      
+      datatable.ajax.reload();
+      $('#spinner-loading').hide();
+    });
+
+  $txtstartdate.datepicker({
+    format: 'dd/mm/yyyy',
+    pickTime: false,
+    autoclose: true,
+    language: 'es'
+  });
 }
 /*****************************************************************************************************************************************************************************/
 function fnc_datatable_customer(_datatable){
@@ -160,7 +169,7 @@ function fnc_select2_roles(_cbo){
         for (var i = 0; i<data.length;i++) 
         {
             _cbo.append('<option value="'+data[i].RoleId+'">'+data[i].RoleName+'</option>');                   
-        }
+        } 
     });
      _cbo.select2({
         placeholder: "Seleccione...",
@@ -172,8 +181,8 @@ function fnc_select2_roles(_cbo){
 function fnc_clear_form(_form) {
 
   _form.trigger("reset");  
-  $txtbirthday.datepicker('setDate', null);
-  $cbo_role.select2('val','');
+  // $txtbirthday.datepicker('setDate', null);
+  // $cbo_role.select2('val','');
 }
 /*****************************************************************************************************************************************************************************/
 function fnc_validation_customer(_form) {

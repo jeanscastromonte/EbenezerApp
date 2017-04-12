@@ -16,7 +16,7 @@ class CustomerController extends  MasterController{
 			case TRUE:			
 				$data= array(
 				'get_view'=> 'CustomerView/Index',				
-				'get_menu'=> $this->get_menu(2),
+				'get_menu'=> $this->get_menu(1),
 				'get_information_user'=> $this->get_information_user(),
 				'get_script_page'=>'<script src="application/helpers/CustomerHelper.js" type="text/javascript"></script>');
 

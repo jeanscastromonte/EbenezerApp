@@ -29,7 +29,7 @@
 			</div>
 			<div class="portlet-body">
 				<div class="row">
-					<div class="col-lg-3 col-md-4 col-sm-6">
+					<div class="col-lg-3 col-md-3 col-sm-6">
 						<div class="input-group group-design">
 							<span class="input-group-addon">
 								<i class="fa fa-sort-numeric-asc"></i>
@@ -39,10 +39,10 @@
 							</select>
 						</div> 
 					</div>
-					<div class="col-lg-3 col-md-4 col-sm-6">
+					<div class="col-lg-3 col-md-3 col-sm-6">
 						<div class="input-group group-design">
 							<span class="input-group-addon">
-								<i class="fa fa-question"></i>
+								<i class="fa fa-circle" style="color:green;"></i>
 							</span>
 							<select class="form-control" id="cbo-customer-status">
 								<option value=""></option>
@@ -72,7 +72,7 @@
 
 <!-- BEGIN MODAL CUSTOMER-->
 <div id="modal-customer" class="modal fade bs-modal-lg" tabindex="-1" aria-hidden="true">
-	<div class="modal-dialog modal-lg">		
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<form role="form" class="form-horizontal" id="form-customer" onsubmit="return false">
 				<div class="modal-header">
@@ -90,7 +90,6 @@
 					</div>	
 					<div class="row">
 						<div class="col-md-6">
-
 							<div class="form-body">
 								<div class="form-group">
 									<div class="text-left col-md-4"><label class="control-label">Nombre:</label></div>
@@ -197,12 +196,10 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<div class="text-left col-md-3"><label class="control-label">Estado:</label></div>
-									<div class="col-md-9">
-										<div class="input-icon right">
-											<i class="fa"></i>
-											<input type="checkbox" checked id="chck-status">
-										</div>
+									<div class="text-left col-md-4"><label class="control-label">Estado:</label></div>
+									<div class="col-md-8">										
+										<select class="form-control" id="cbo-status" required="">
+										<option value=""></option>
 									</div>
 								</div>					
 							</div>
