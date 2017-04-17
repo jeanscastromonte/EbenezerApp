@@ -21,7 +21,7 @@ class CustomerController extends  MasterController{
 				'get_script_page'=>'<script src="application/helpers/CustomerHelper.js" type="text/javascript"></script>');
 
 				$this->load->view('MasterView/Index',$data);
-				break;	;			
+				break;
 		}
 	}
 /****************************************************************************************************/
@@ -40,6 +40,22 @@ class CustomerController extends  MasterController{
 		$json =	file_get_contents('php://input');
 		$data =	json_decode($json,TRUE);
 		$output=$this->CustomerModel->insert_customer($data);
+		echo json_encode($output);
+	}
+/****************************************************************************************************/
+	public function update_customer()
+	{
+		$json =	file_get_contents('php://input');
+		$data =	json_decode($json,TRUE);
+		$output=$this->CustomerModel->update_customer($data);
+		echo json_encode($output);
+	}
+/****************************************************************************************************/
+	public function delete_customer()
+	{
+		$json =	file_get_contents('php://input');
+		$data =	json_decode($json,TRUE);
+		$output=$this->CustomerModel->delete_customer($data);
 		echo json_encode($output);
 	}
 /****************************************************************************************************/

@@ -31,9 +31,9 @@ function InitUser(){
 
   //***Private Events*** 
     $btn_callmodal_user.on('click',function () {
+      fnc_clear_form($form_user);      
       fnc_modal_events();
       $modal_user.modal({"backdrop": "static","keyboard": false, "show": true});
-      fnc_clear_form($form_user);
       $user_modaltitle.text('Registrar Usuario');
       flagnew_user=true;
       userid=0;    
@@ -57,20 +57,11 @@ function InitUser(){
     $('.bootstrap-switch').css('width','150px');
 
   $txtbirthday.datepicker({
-  format: 'dd/mm/yyyy',
-  pickTime: false,
-  autoclose: true,
-  language: 'es'
-  });
-
-  $('.fileinput-exists').tooltip({ html: true, placement: 'top', container: 'body', title: 'Hola mundo!'});
-
-  var btnCust = '<button type="button" class="btn btn-default" title="Add picture tags" ' + 
-  'onclick="alert(\'Call your custom code here.\')">' +
-  '<i class="glyphicon glyphicon-tag"></i>' +
-  '</button>'; 
-
-  $("#avatar-1").fileinput();
+    format: 'dd/mm/yyyy',
+    pickTime: false,
+    autoclose: true,
+    language: 'es'
+    });
 
 }
 /*****************************************************************************************************************************************************************************/
@@ -133,7 +124,7 @@ function fnc_datatable_user(_datatable){
           $('.btn-editmodal-user', nRow).tooltip({html: true, title: 'Editar usuario'});
           $('.btn-deletemodal-user', nRow).tooltip({html: true, title: 'Eliminar usuario'});
         }
-});
+  });
   return datatable;
 }
 /*****************************************************************************************************************************************************************************/
@@ -153,10 +144,27 @@ function fnc_select2_roles(_cbo){
 }
 /*****************************************************************************************************************************************************************************/
 function fnc_clear_form(_form) {
+  $('.fileinput-exists').trigger('click'); 
+  $('.fileinput-preview').empty();
 
-  _form.trigger("reset");  
-  $txtbirthday.datepicker('setDate', null);
-  $cbo_role.select2('val','');
+  $txtbirthday.datepicker('setDate', null);  
+  $txtbirthday.datepicker('remove');
+  $txtbirthday.datepicker({
+  format: 'dd/mm/yyyy',
+  pickTime: false,
+  autoclose: true,
+  language: 'es'
+  });
+
+
+  $cbo_role.select2('val',''); 
+  $txtuser.val("");
+  $txtpassword.val("");
+  $txtname.val("");
+  $txtlastname.val("");
+  $txttelephone.val("");
+  $txtemail.val("");
+  $chck_status.bootstrapSwitch('state',true);
 }
 /*****************************************************************************************************************************************************************************/
 function fnc_validation_user(_form) {
@@ -215,8 +223,7 @@ function fnc_validation_user(_form) {
 function fnc_set_user() {
 
   var birthday = $txtbirthday.datepicker('getDate');
-  //var fileimage=$file_imageuser[0].files[0].result;
-
+  
   var data={};    
   data.cbo_role     =  $cbo_role.select2('val');
   data.txt_user     =  $txtuser.val();

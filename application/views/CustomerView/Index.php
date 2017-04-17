@@ -1,12 +1,16 @@
  <!--BEGIN DASHBOARD STATS -->
 <!-- BEGIN PAGE HEADER-->
-<h3 class="page-title">Clientes</h3>
+<h3 class="page-title">Registro de cliente</h3>
 <div class="page-bar">
 	<ul class="page-breadcrumb">
 		<li>
 			<i class="fa fa-home"></i>
-			<a href="javascritp:void(0);">Registro de Clientes</a>
-			<!-- <i class="fa fa-angle-right"></i> -->
+			<a href="<?=base_url();?>">Inicio</a>
+			<i class="fa fa-angle-right"></i>
+			<i class="icon-grid"></i>
+			<a href="javascritp:void(0);">Cliente</a>
+			<i class="fa fa-angle-right"></i>
+			<a href="javascritp:void(0);">Registro de cliente</a>
 		</li>
 	</ul>
 </div>
@@ -19,7 +23,7 @@
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
 				<div class="caption">
-					<i class="fa fa-customers"></i>Clientes
+					<i class="fa fa-customers"></i>CLIENTES <span id="span-title-digit"></span>
 				</div>
 				<div class="tools">
 					<button type="button" class="btn btn-default tooltips" id="btn-callmodal-customer" data-container="body" data-placement="top" data-original-title="Agregar Cronograma">
@@ -42,7 +46,7 @@
 					<div class="col-lg-3 col-md-3 col-sm-6">
 						<div class="input-group group-design">
 							<span class="input-group-addon">
-								<i class="fa fa-circle" style="color:green;"></i>
+								<i class="fa fa-circle"></i>
 							</span>
 							<select class="form-control" id="cbo-customer-status">
 								<option value=""></option>
@@ -80,6 +84,7 @@
 					<h4 class="modal-title">REGISTRAR CLIENTE</h4>
 				</div>
 				<div class="modal-body">
+					<div class="modal-msj-alert"></div>
 					<div class="alertform alert alert-danger display-hide">
 					<button class="close" data-close="alert"></button>
 					Usted tiene algunos errores. Por favor, compruebe a continuación.
@@ -200,6 +205,7 @@
 									<div class="col-md-8">										
 										<select class="form-control" id="cbo-status" required="">
 										<option value=""></option>
+										</select>
 									</div>
 								</div>					
 							</div>
@@ -215,3 +221,23 @@
 	</div>
 </div>
 <!-- END MODAL CUSTOMER-->
+
+<!-- BEGIN MODAL MESSAGE-->
+<div id="modal-customer-message" class="modal fade bs-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+				<h4 class="modal-title">Confirmación</h4>
+			</div>
+			<div class="modal-body">¿Desea eliminar al  cliente (<b><span id="span-customer-name"></span></b>)?</div>
+			<div class="modal-footer">
+				<button type="button" data-dismiss="modal" class="btn default">Cancelar</button>
+				<button type="button" id="btn-acceptdelete-customer" class="btn btn-primary">Aceptar</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- END MODAL MESSAGE-->

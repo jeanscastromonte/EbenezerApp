@@ -21,6 +21,61 @@ DELIMITER $$
 --
 --
 --
+DROP PROCEDURE IF EXISTS `sp_UpdateCustomer`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_UpdateCustomer` (IN `_customerid` INT,IN `_customer` varchar(200), IN `_ruc` VARCHAR(20), IN `_usersol` VARCHAR(50), 
+  IN `_passwordsol` VARCHAR(50), IN `_address` text, IN `_phone` varchar(50), IN `_email` VARCHAR(100), 
+  IN `_regtrib` VARCHAR(20), IN `_reg4ta` varchar(50), IN `_reglab` varchar(20), IN `_startdate` varchar(50),IN `_status` varchar(50),IN `_userid` INT)  BEGIN
+  
+  DECLARE _digit INT;
+  DECLARE _type varchar(10);
+  
+  SET _digit=RIGHT(_ruc, 1);
+  SET _type = CASE LEFT(_ruc, 1) WHEN 1 THEN 'Natural' WHEN 2 THEN 'Jurídica' END;
+
+  UPDATE customer
+  SET
+  CustomerDigit=_digit,CustomerName=_customer,CustomerRuc=_ruc,CustomerUserSol=_usersol,CustomerPasswordSol=_passwordsol,CustomerType=_type,
+  CustomerStatus=_status,CustomerDateStart=_startdate,CustomerEmail=_email,CustomerTelephone=_phone,
+  CustomerRegtrib=_regtrib,CustomerReglab=_reglab,CustomerRegtt=_reg4ta,CustomerAddress=_address,ResponsibleUserId=_userid
+  WHERE CustomerId=_customerid;
+END$$
+
+DROP PROCEDURE IF EXISTS `sp_DeleteCustomer`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_DeleteCustomer` (IN `_customerid` INT)  BEGIN
+  DELETE FROM `customer` WHERE CustomerId=`_customerid`;
+END$$
+
+DROP PROCEDURE IF EXISTS `sp_GetCustomerByCustomerId`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetCustomerByCustomerId` (IN `_customerid` INT)  BEGIN
+  SELECT
+  CustomerId,CustomerDigit,CustomerName,CustomerRuc,CustomerUserSol,CustomerPasswordSol,CustomerType,
+  CustomerStatus,CustomerDateStart,CustomerDateEnd,CustomerEmail,CustomerTelephone,
+  CustomerRegtrib,CustomerReglab,CustomerRegtt,CustomerDeclared,CustomerAddress,ResponsibleUserId
+  FROM  customer
+  WHERE CustomerId=_customerid;
+END$$
+
+
+DROP PROCEDURE IF EXISTS `sp_InsertCustomer`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_InsertCustomer` (IN `_customer` varchar(200), IN `_ruc` VARCHAR(20), IN `_usersol` VARCHAR(50), 
+  IN `_passwordsol` VARCHAR(50), IN `_address` text, IN `_phone` varchar(50), IN `_email` VARCHAR(100), 
+  IN `_regtrib` VARCHAR(20), IN `_reg4ta` varchar(50), IN `_reglab` varchar(20), IN `_startdate` varchar(50),IN `_status` varchar(50),IN `_userid` INT)  BEGIN
+
+  DECLARE _digit INT;
+  DECLARE _type varchar(10);
+  
+  SET _digit=RIGHT(_ruc, 1);
+  SET _type = CASE LEFT(_ruc, 1) WHEN 1 THEN 'Natural' WHEN 2 THEN 'Jurídica' END;
+
+ INSERT INTO `customer`(CustomerDigit,CustomerName,CustomerRuc,CustomerUserSol,CustomerPasswordSol,CustomerType,
+  CustomerStatus,CustomerDateStart,CustomerDateEnd,CustomerEmail,CustomerTelephone,
+  CustomerRegtrib,CustomerReglab,CustomerRegtt,CustomerDeclared,CustomerAddress,ResponsibleUserId)
+
+  VALUES (_digit,_customer,_ruc,_usersol,_passwordsol,_type,_status,_startdate,'',_email,_phone,
+  _regtrib,_reglab,_reg4ta,'',_address,_userid);
+
+END$$
+
 DROP PROCEDURE IF EXISTS `sp_DeleteRole`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_DeleteRole` (IN `_roleid` INT)  BEGIN
   DELETE FROM `role` WHERE RoleId=`_roleid`;
@@ -389,7 +444,8 @@ CREATE TABLE `customer` (
   `CustomerReglab` varchar(20) DEFAULT NULL,
   `CustomerRegtt` varchar(50) DEFAULT NULL,
   `CustomerDeclared` varchar(50) DEFAULT NULL,
-  `CustomerAddress` text DEFAULT NULL
+  `CustomerAddress` text DEFAULT NULL,
+  `ResponsibleUserId` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 

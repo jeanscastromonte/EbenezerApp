@@ -117,7 +117,7 @@ function InitUser(){
 /*****************************************************************************************************************************************************************************/
 function fnc_period(format,mode) {
 
-  $txt_period.datepicker('remove');  
+  $txt_period.datepicker('remove');
   $txt_period.datepicker( {
       format: format,
       startView: mode, 

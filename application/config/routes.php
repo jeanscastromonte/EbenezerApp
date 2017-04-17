@@ -47,8 +47,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 # End Region
 /*********************************************************************/
 # Region "Customer"
-	$route['register-customer'] 	= 'CustomerController/customer_view';
+	$route['register-customer'] = 'CustomerController/customer_view';
 	$route['get-all-customer'] 	= 'CustomerController/get_all_customer';
 	$route['insert-customer'] 	= 'CustomerController/insert_customer';
+	$route['update-customer'] 	= 'CustomerController/update_customer';
+	$route['delete-customer'] 	= 'CustomerController/delete_customer';
+	$route['get-customer-by-customerid'] 	= 'CustomerController/get_customer_by_customerid';
 # End Region
 /*********************************************************************/
