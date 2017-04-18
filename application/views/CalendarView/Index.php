@@ -1,12 +1,16 @@
  <!--BEGIN CALENDAR STATS -->
 
 <!-- BEGIN PAGE HEADER-->
-<div class="msj-alert"></div>
-<h3 class="page-title">Agenda</h3>
+<h3 class="page-title">Cronograma Sunat</h3>
 <div class="page-bar">
 	<ul class="page-breadcrumb">
 		<li>
 			<i class="fa fa-home"></i>
+			<a href="<?=base_url();?>">Inicio</a>
+			<i class="fa fa-angle-right"></i>
+			<i class="icon-grid"></i>
+			<a href="javascritp:void(0);">Agenda</a>
+			<i class="fa fa-angle-right"></i>
 			<a href="javascritp:void(0);">Cronograma Sunat</a>
 		</li>
 	</ul>

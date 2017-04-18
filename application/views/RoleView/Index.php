@@ -1,16 +1,19 @@
- <!--BEGIN DASHBOARD STATS -->
+<!--BEGIN DASHBOARD STATS -->
 <!-- BEGIN PAGE HEADER-->
-<h3 class="page-title">Roles</h3>
+<h3 class="page-title">Registro de Rol</h3>
 <div class="page-bar">
 	<ul class="page-breadcrumb">
 		<li>
 			<i class="fa fa-home"></i>
-			<a href="javascritp:void(0);">Registro de Roles</a>
-			<!-- <i class="fa fa-angle-right"></i> -->
+			<a href="<?=base_url();?>">Inicio</a>
+			<i class="fa fa-angle-right"></i>
+			<i class="icon-grid"></i>
+			<a href="javascritp:void(0);">Usuario</a>
+			<i class="fa fa-angle-right"></i>
+			<a href="javascritp:void(0);">Registro de Rol</a>
 		</li>
 	</ul>
 </div>
-
 <!-- END PAGE HEADER-->
 
 <!-- BEGIN PAGE CONTENT-->
