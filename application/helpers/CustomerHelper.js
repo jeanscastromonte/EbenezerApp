@@ -4,6 +4,9 @@ $(document).ready(InitCustomer);
   //***Public Attributes***
     var $cbo_digit           =   $('#cbo-digit');
     var $cbo_customer_status =   $('#cbo-customer-status');
+    var $cbo_regtrib1        =   $('#cbo-regtrib1');
+    var $cbo_regtrib2        =   $('#cbo-regtrib2');
+
     var $cbo_status          =   $('#cbo-status');
 
     var $modal_customer      =   $('#modal-customer');
@@ -18,9 +21,12 @@ $(document).ready(InitCustomer);
     var $txtaddress          = $('[name=txtaddress]');
     var $txtphone            = $('[name=txtphone]');
     var $txtemail            = $('[name=txtemail]');
-    var $txtregtrib          = $('[name=txtregtrib]');
-    var $txtreg4ta           = $('[name=txtreg4ta]');
-    var $txtreglab           = $('[name=txtreglab]');
+
+    var $txtregtrib          = $('[name=cbo-regtrib]');
+    var $txtreg4ta           = $('[name=cbo-reg4ta]');
+    var $txtreg5ta           = $('[name=cbo-reg5ta]');
+    var $txtreglab           = $('[name=cbo-reglab]');
+
     var $txtstartdate        = $('[name=txtstartdate]');
     var datatable;
     var customerid=0;
@@ -43,6 +49,7 @@ function InitCustomer(){
       flagnew_customer=true;
       customerid=0;
       $txtstartdate.datepicker('setDate', new Date());
+      $cbo_status.select2('val','Activo');
     });
 
     $(document).on('click','.btn-editmodal-customer',fnc_get_customer);
@@ -68,11 +75,44 @@ function InitCustomer(){
                                   +'<option value="4">Retirados</option>'
                                   +'<option value="5">Todos</option>');
 
+    fnc_select2($cbo_regtrib1,"Seleccione RegTrib...");
+    $cbo_regtrib1.append('<option value="RUS">RUS</option>'
+                        +'<option value="REMYPE">REMYPE</option>'
+                        +'<option value="Especial">Especial</option>'
+                        +'<option value="General">General</option>'
+                        +'<option value="0">Todos</option>');
+
+    fnc_select2($cbo_regtrib2,"Seleccione RegTrib2...");
+    $cbo_regtrib2.append('<option value="Regtrib4">Regimén 4ta Categoría</option>'
+                                  +'<option value="regtrib5">Regimén 5ta Categoría</option>'
+                                  +'<option value="No">No</option>'
+                                  +'<option value="0">Todos</option>');
+
+
+
     fnc_select2($cbo_status,"Seleccione Estado...");
     $cbo_status.append('<option value="Activo">Activo</option>'
                         +'<option value="Suspendido">Suspendido</option>'
                         +'<option value="De baja">De baja</option>'
                         +'<option value="Retirado">Retirado</option>');
+
+    fnc_select2($txtregtrib,"Seleccione...");
+    $txtregtrib.append('<option value="RUS">RUS</option>'
+                        +'<option value="REMYPE">REMYPE</option>'
+                        +'<option value="Especial">Especial</option>'
+                        +'<option value="General">General</option>');
+
+    fnc_select2($txtreg4ta,"Seleccione...");
+    $txtreg4ta.append('<option value="4ta Categoría">Si</option>'
+                        +'<option value="0">No</option>');
+
+    fnc_select2($txtreg5ta,"Seleccione...");
+    $txtreg5ta.append('<option value="1">Si</option>'
+                        +'<option value="0">No</option>');
+
+    fnc_select2($txtreglab,"Seleccione...");
+    $txtreglab.append('<option value="Planilla">Planilla</option>'
+                        +'<option value="Sin Planilla">Sin Planilla</option>');
 
     $cbo_customer_status.select2('val',1);
 
@@ -352,9 +392,11 @@ function fnc_get_customer() {
         $txtaddress.val(resp.CustomerAddress);
         $txtphone.val(resp.CustomerTelephone);
         $txtemail.val(resp.CustomerEmail);
-        $txtregtrib.val(resp.CustomerRegtrib);
-        $txtreg4ta.val(resp.CustomerRegtt);
-        $txtreglab.val(resp.CustomerReglab);       
+
+        $txtregtrib.select2('val',resp.CustomerRegtrib);
+        $txtreg4ta.select2('val',resp.CustomerRegtt);
+        $txtreglab.select2('val',resp.CustomerReglab);
+
         $txtstartdate.val(resp.CustomerDateStart);
         $cbo_status.select2('val',resp.CustomerStatus);
 

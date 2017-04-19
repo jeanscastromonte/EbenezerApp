@@ -53,14 +53,27 @@
 							</select>
 						</div> 
 					</div>
-
-					<div class="col-md-3" style="padding-top: 5px;">
-						<div class="input-icon">
-							<i class="fa"></i>
-							<input type="checkbox" checked id="chck-date-period">
-						</div>									
+					<div class="col-lg-3 col-md-3 col-sm-6">
+						<div class="input-group group-design">
+							<span class="input-group-addon">
+								<i class="fa fa-book"></i>
+							</span>
+							<select class="form-control" id="cbo-regtrib1">
+								<option value=""></option>
+							</select>
+						</div> 
 					</div>
-				</div>
+					<div class="col-lg-3 col-md-3 col-sm-6">
+						<div class="input-group group-design">
+							<span class="input-group-addon">
+								<i class="fa fa-book"></i>
+							</span>
+							<select class="form-control" id="cbo-regtrib2">
+								<option value=""></option>
+							</select>
+						</div> 
+					</div>
+				</div><br><br>
 				<div class="row">
 					<div class="col-md-12">
 						<table class="table table-striped table-bordered table-hover" id="datatable-customer">					
@@ -150,11 +163,7 @@
 											<input type="text" class="form-control" name="txtphone"/>
 										</div>
 									</div>
-								</div>																
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-body">
+								</div>
 								<div class="form-group">
 									<div class="text-left col-md-4"><label class="control-label">Email:</label></div>
 									<div class="col-md-8">
@@ -163,32 +172,41 @@
 											<input type="text" class="form-control" name="txtemail"/>
 										</div>
 									</div>
-								</div>
+								</div>															
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-body">								
 								<div class="form-group">
 									<div class="text-left col-md-4"><label class="control-label">Rég. Tributario:</label></div>
 									<div class="col-md-8">
-										<div class="input-icon right">
-											<i class="fa"></i>
-											<input type="text" class="form-control" name="txtregtrib"/>
-										</div>
+										<select class="form-control" name="cbo-regtrib" required="">
+											<option value=""></option>
+										</select>
 									</div>
 								</div>
 								<div class="form-group">
 									<div class="text-left col-md-4"><label class="control-label">Rég. 4ta Categ:</label></div>
 									<div class="col-md-8">
-										<div class="input-icon right">
-											<i class="fa"></i>
-											<input type="text" class="form-control" name="txtreg4ta"/>
-										</div>
+										<select class="form-control" name="cbo-reg4ta" required="">
+											<option value=""></option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="text-left col-md-4"><label class="control-label">Rég. 5ta Categ:</label></div>
+									<div class="col-md-8">
+										<select class="form-control" name="cbo-reg5ta" required="">
+											<option value=""></option>
+										</select>
 									</div>
 								</div>
 								<div class="form-group">
 									<div class="text-left col-md-4"><label class="control-label">Rég. Laboral:</label></div>
 									<div class="col-md-8">
-										<div class="input-icon right">
-											<i class="fa"></i>
-											<input type="text" class="form-control" name="txtreglab"/>
-										</div>
+										<select class="form-control" name="cbo-reglab" required="">
+											<option value=""></option>
+										</select>
 									</div>
 								</div>
 								<div class="form-group">
