@@ -39,7 +39,6 @@ class UserModel extends CI_Model {
 /*************************************************************************/
 	public function get_submenu($role_id,$menu_id)
 	{
-
 		$query=$this->db->query("CALL sp_GetSubMenu($role_id,$menu_id)");
 
 		if ($query->num_rows()>0)
@@ -57,7 +56,6 @@ class UserModel extends CI_Model {
 /*************************************************************************/
 	public function get_all_users()
 	{
-
 		$query=$this->db->query("CALL sp_GetAllUsers()");
 
 		if ($query->num_rows()>0)

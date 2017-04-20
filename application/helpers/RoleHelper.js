@@ -132,12 +132,12 @@ function fnc_validation_role(_form) {
 }
 /*****************************************************************************************************************************************************************************/
 function fnc_set_role() {
-  
+
+  var url_role = flagnew_role!=true?"update-role":"insert-role";  
   var data={};
   data.txt_rolename =  $txtrole.val();
-  data.roleid       =  roleid;
-    
-  var url_role = flagnew_role!=true?"update-role":"insert-role";
+  data.roleid   =  roleid;    
+
   $.ajax({
     type: "POST",
     url: url_role,
@@ -145,20 +145,16 @@ function fnc_set_role() {
     contentType: "application/json; charset=utf-8",
     dataType: "json",
     async: true,
-    beforeSend: function () 
-    {  
+    beforeSend: function (){  
       $('#spinner-loading').show();          
     },
-    success: function (resp) 
-    {
+    success: function (resp){
       if(resp){
-        switch(resp.status)
-        {
+        switch(resp.status){
           case true:
+            datatable.ajax.reload();          
             $modal_role.modal('hide');
             fnc_msj_alert(resp.type,resp.message,'',resp.icon,5);
-            datatable.ajax.reload();
-            $('#spinner-loading').hide();
             break;
 
           case false:
@@ -168,11 +164,9 @@ function fnc_set_role() {
         }
       }
     },
-    complete: function () 
-    {     
+    complete: function(){     
     },
-    error: function(resp)
-    {
+    error: function(resp){
       fnc_msj_alert('danger','Error de Conexión, Vuelva intentarlo.','.modal-msj-alert','warning',5);
       $('#spinner-loading').hide();
     }

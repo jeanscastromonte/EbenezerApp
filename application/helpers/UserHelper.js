@@ -62,7 +62,6 @@ function InitUser(){
     autoclose: true,
     language: 'es'
     });
-
 }
 /*****************************************************************************************************************************************************************************/
 function fnc_datatable_user(_datatable){
@@ -79,7 +78,8 @@ function fnc_datatable_user(_datatable){
         },
         complete: function () 
         {
-            $('#spinner-loading').hide();           
+            $('#spinner-loading').hide();
+            $modal_user.modal('hide');           
         },
       },
       "bLengthChange" : false,
@@ -144,7 +144,8 @@ function fnc_select2_roles(_cbo){
 }
 /*****************************************************************************************************************************************************************************/
 function fnc_clear_form(_form) {
-  $('.fileinput-exists').trigger('click'); 
+
+  $('.fileinput-exists a.fileinput-exists').trigger('click'); 
   $('.fileinput-preview').empty();
 
   $txtbirthday.datepicker('setDate', null);  
@@ -245,9 +246,8 @@ function fnc_set_user() {
     contentType: "application/json; charset=utf-8",
     dataType: "json",
     async: true,
-    beforeSend: function () 
-    {  
-      $('#spinner-loading').show();          
+    beforeSend: function (){  
+     $('#spinner-loading').show();   
     },
     success: function (resp) 
     {
@@ -255,11 +255,10 @@ function fnc_set_user() {
         switch(resp.status)
         {
           case true:
-            $modal_user.modal('hide');
-            fnc_msj_alert(resp.type,resp.message,'',resp.icon,5);
             datatable.ajax.reload();
+            fnc_msj_alert(resp.type,resp.message,'',resp.icon,5);
+            
             $(".dropdown-user").load(location.href+" .dropdown-user>*","");
-            $('#spinner-loading').hide();
             break;
 
           case false:
@@ -366,8 +365,7 @@ function fnc_delete_user() {
           case true:        
             $modal_user_message.modal('hide');
             fnc_msj_alert(resp.type,resp.message,'',resp.icon,5);
-            datatable.ajax.reload();
-            $('#spinner-loading').hide();
+            datatable.ajax.reload();           
             break;
 
           case false:
