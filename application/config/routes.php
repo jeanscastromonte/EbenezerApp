@@ -23,6 +23,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	$route['insert-user'] 		= 'UserController/insert_user';
 	$route['update-user'] 		= 'UserController/update_user';
 	$route['delete-user'] 		= 'UserController/delete_user';
+
+	$route['cargar_archivo'] 		= 'UserController/cargar_archivo';
 # End Region
 /*********************************************************************/
 # Region "Role"

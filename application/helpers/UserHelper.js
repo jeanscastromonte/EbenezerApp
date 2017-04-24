@@ -238,45 +238,64 @@ function fnc_set_user() {
   data.file_imageuser= $file_imageuser[0].files[0].result;
   data.userid       =  userid;
 
-  var url_user = flagnew_user!=true?"update-user":"insert-user";
-  $.ajax({
-    type: "POST",
-    url: url_user,
-    data: JSON.stringify(data),
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    async: true,
-    beforeSend: function (){  
-     $('#spinner-loading').show();   
-    },
-    success: function (resp) 
-    {
-      if(resp){
-        switch(resp.status)
-        {
-          case true:
-            datatable.ajax.reload();
-            fnc_msj_alert(resp.type,resp.message,'',resp.icon,5);
-            
-            $(".dropdown-user").load(location.href+" .dropdown-user>*","");
-            break;
+  console.log(data.file_imageuser);
 
-          case false:
-            fnc_msj_alert(resp.type,resp.message,'.modal-msj-alert',resp.icon,5);
-            $('#spinner-loading').hide();        
-            break;
-        }
-      }
-    },
-    complete: function () 
-    {     
-    },
-    error: function(resp)
-    {
-      fnc_msj_alert('danger','Error de Conexión, Vuelva intentarlo.','.modal-msj-alert','warning',5);
-      $('#spinner-loading').hide();
-    }
-  });
+  //var url_user = flagnew_user!=true?"update-user":"insert-user";
+  // $.ajax({
+  //   type: "POST",
+  //   url: url_user,
+  //   data: JSON.stringify(data),
+  //   contentType: "application/json; charset=utf-8",
+  //   dataType: "json",
+  //   async: true,
+  //   beforeSend: function (){  
+  //    $('#spinner-loading').show();   
+  //   },
+  //   success: function (resp) 
+  //   {
+  //     if(resp){
+  //       switch(resp.status)
+  //       {
+  //         case true:
+  //           datatable.ajax.reload();
+  //           fnc_msj_alert(resp.type,resp.message,'',resp.icon,5);
+            
+  //           $(".dropdown-user").load(location.href+" .dropdown-user>*","");
+  //           break;
+
+  //         case false:
+  //           fnc_msj_alert(resp.type,resp.message,'.modal-msj-alert',resp.icon,5);
+  //           $('#spinner-loading').hide();        
+  //           break;
+  //       }
+  //     }
+  //   },
+  //   complete: function () 
+  //   {     
+  //   },
+  //   error: function(resp)
+  //   {
+  //     fnc_msj_alert('danger','Error de Conexión, Vuelva intentarlo.','.modal-msj-alert','warning',5);
+  //     $('#spinner-loading').hide();
+  //   }
+  // });
+
+  var file_data = $file_imageuser.prop('files')[0];   
+    var form_data = new FormData();                  
+    form_data.append('file', file_data);
+    alert(form_data);                             
+    $.ajax({
+                url: 'update-user', // point to server-side PHP script 
+                dataType: 'text',  // what to expect back from the PHP script, if anything
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: form_data,                         
+                type: 'post',
+                success: function(php_script_response){
+                    alert(php_script_response); // display response from the PHP script, if any
+                }
+     });
 }
 /*****************************************************************************************************************************************************************************/
 function fnc_get_user() {

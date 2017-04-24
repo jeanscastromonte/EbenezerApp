@@ -33,7 +33,12 @@
 			</div>
 			<div class="portlet-body">
 				<table class="table table-striped table-bordered table-hover" id="datatable-user">					
-				</table>	
+				</table>
+				<form action="cargar_archivo" method="post" enctype="multipart/form-data">
+				<input type="file" name="mi_archivo">
+				<input type="submit" value="Submit">
+				
+				</form>
 			</div>
 		</div>
 		<!-- END EXAMPLE TABLE PORTLET-->
