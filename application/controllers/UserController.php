@@ -127,26 +127,8 @@ class UserController extends  MasterController{
 	{
 		$json =	file_get_contents('php://input');
 		$data =	json_decode($json,TRUE);
-		// $output=$this->UserModel->update_user($data);
-		// echo json_encode($output);
-		$mi_archivo = $_FILES['file']['tmp_name'];
-		// $config['upload_path'] = "file/";
-		// $config['file_name'] = "nombre_archivo";
-		// $config['allowed_types'] = "*";
-		// $config['max_size'] = "50000";
-		// $config['max_width'] = "2000";
-		// $config['max_height'] = "2000";
-		// $this->load->library('upload', $config); 
-		// if (!$this->upload->do_upload($mi_archivo)) {
-		// //*** ocurrio un error
-		// 	$data['uploadError'] = $this->upload->display_errors();
-		// 	echo $this->upload->display_errors();
-		// 	return;
-		// }
-
-		// $data['uploadSuccess'] = $this->upload->data();
-		 move_uploaded_file($_FILES['file']['tmp_name'], 'file/' . $_FILES['file']['name']);
-		 echo $_FILES['file']['name']."-----".pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);;
+		$output=$this->UserModel->update_user($data);
+		echo json_encode($output);		 
 	}
 /****************************************************************************************************/
 	public function delete_user()
@@ -157,27 +139,11 @@ class UserController extends  MasterController{
 		echo json_encode($output);
 	}
 /****************************************************************************************************/
-public function cargar_archivo() {
+	public function upload_file()
+	{
+        move_uploaded_file($_FILES['file']['tmp_name'], 'file/' . $_FILES['file']['name']);
+		echo $_FILES['file']['name']."-----".pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
 
-        $mi_archivo = 'mi_archivo';
-        $config['upload_path'] = "file/";
-        $config['file_name'] = "nombre_archivo";
-        $config['allowed_types'] = "*";
-        $config['max_size'] = "50000";
-        $config['max_width'] = "2000";
-        $config['max_height'] = "2000";
-
-        $this->load->library('upload', $config);
-        
-        if (!$this->upload->do_upload($mi_archivo)) {
-            //*** ocurrio un error
-            $data['uploadError'] = $this->upload->display_errors();
-            echo $this->upload->display_errors();
-            return;
-        }
-        echo "Exito";
-
-        $data['uploadSuccess'] = $this->upload->data();
     }
 /****************************************************************************************************/
 }

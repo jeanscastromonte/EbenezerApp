@@ -13,6 +13,7 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `db_ebenezer`
 --
+DROP DATABASE IF EXISTS `db_ebenezer`;
 CREATE DATABASE IF NOT EXISTS `db_ebenezer` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `db_ebenezer`;
 
@@ -243,11 +244,13 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_InsertRole` (IN `_rolename` VARC
 END$$
 
 DROP PROCEDURE IF EXISTS `sp_InsertUser`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_InsertUser` (IN `_roleid` INT, IN `_user` VARCHAR(10), IN `_password` VARCHAR(20), IN `_name` VARCHAR(100), IN `_lastname` VARCHAR(100), IN `_birthday` DATE, IN `_telephone` VARCHAR(50), IN `_email` VARCHAR(100), IN `_status` BIT, IN `_imageuser` LONGBLOB, IN `_userid` INT)  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_InsertUser` (IN `_roleid` INT, IN `_user` VARCHAR(10), IN `_password` VARCHAR(20), IN `_name` VARCHAR(100), IN `_lastname` VARCHAR(100), IN `_birthday` DATE, IN `_telephone` VARCHAR(50), IN `_email` VARCHAR(100), IN `_status` BIT, IN `_imageuser` LONGBLOB, IN `_useregisterid` INT,OUT IN `_userid` INT)  BEGIN
   INSERT INTO `user`(UserRoleId,
   UserName,UserLastName,UserLoginName,UserLoginPassword,UserBirthdate,
   UserTelephone,UserEmail,UserStatus,UserImage,UserRegisterUserId)
-  VALUES (_roleid,_name,_lastname,_user,_password,_birthday,_telephone,_email,_status,_imageuser,_userid); 
+  VALUES (_roleid,_name,_lastname,_user,_password,_birthday,_telephone,_email,_status,_imageuser,_useregisterid);
+
+  SELECT LAST_INSERT_ID('user') INTO _userid; 
 END$$
 
 DROP PROCEDURE IF EXISTS `sp_LoginUser`$$
