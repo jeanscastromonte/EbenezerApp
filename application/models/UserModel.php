@@ -98,29 +98,24 @@ class UserModel extends CI_Model {
     	$telephone	   = $data['txt_telephone'];
     	$email		   = $data['txt_email'];
     	$status		   = $data['chck_status'];
-    	$file_imageuser= base64_encode($data['file_imageuser']);
+    	// $file_imageuser= base64_encode($data['file_imageuser']);
+    	$file_imageuser= "";
     	$respuserid	   = $this->session->userdata('UserId');
 
     	$query=$this->db->query("CALL sp_InsertUser($roleid,'$user','$password','$name','$lastname','$birthday','$telephone',
-    	'$email',$status,'$file_imageuser',$respuserid)");
+    	'$email',$status,'$file_imageuser',$respuserid,@out_userid)");
 
-    	if($query)
+    	if ($query->num_rows()==1)
 		{
-			$output = array(
-			"status" => TRUE,
-			"message"=>"Se registró exitosamente",
-			"type"=>"success",
-			"icon"=>"check");			
+			$resp= $query->row();
+			// $query->next_result();
+			// $query->free_result();
+			return $resp;
 		}
 		else
 		{
-			$output = array(
-			"status" => FALSE,
-			"message"=>"ERROR, No se puede registrar, Vuelva a intentarlo.",
-			"type"=>"danger",
-			"icon"=>"warning");	
-		}		
-		return $output;
+			return FALSE; 
+		}
     }
 /*************************************************************************/
 	public function update_user($data)

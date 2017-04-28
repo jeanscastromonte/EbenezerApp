@@ -119,7 +119,30 @@ class UserController extends  MasterController{
 	{
 		$json =	file_get_contents('php://input');
 		$data =	json_decode($json,TRUE);
-		$output=$this->UserModel->insert_user($data);
+		$insert_user=$this->UserModel->insert_user($data);
+
+		if($insert_user)
+		{
+			$output = array(
+			"status" => TRUE,
+			"message"=>"Se registró exitosamente",
+			"type"=>"success",
+			"icon"=>"check");
+
+			$userid=$insert_user->out_userid;
+
+			move_uploaded_file($_FILES[$data['file']]['tmp_name'], 'file/' . $_FILES[$data['file']]['name']);
+			//echo $userid.' :::::'.$_FILES['file']['name']."-----".pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+		}
+		else
+		{
+			$output = array(
+			"status" => FALSE,
+			"message"=>"ERROR, No se puede registrar, Vuelva a intentarlo.",
+			"type"=>"danger",
+			"icon"=>"warning");	
+		}
+
 		echo json_encode($output);
 	}	
 /****************************************************************************************************/
@@ -141,8 +164,7 @@ class UserController extends  MasterController{
 /****************************************************************************************************/
 	public function upload_file()
 	{
-        move_uploaded_file($_FILES['file']['tmp_name'], 'file/' . $_FILES['file']['name']);
-		echo $_FILES['file']['name']."-----".pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+       
 
     }
 /****************************************************************************************************/

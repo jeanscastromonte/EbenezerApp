@@ -239,6 +239,21 @@ function fnc_set_user() {
 
   var file_data = $file_imageuser.prop('files')[0];   
   var form_data = new FormData();      
+  form_data.append('file', file_data);
+
+  data.file=file_data;      
+  // $.ajax({
+  //   url: 'upload-file',
+  //   dataType: 'text', 
+  //   cache: false,
+  //   contentType: false,
+  //   processData: false,
+  //   data: form_data,                         
+  //   type: 'post',
+  //   success: function(php_script_response){
+  //     alert(php_script_response);
+  //   }
+  // });
 
   var url_user = flagnew_user!=true?"update-user":"insert-user";
   $.ajax({
@@ -256,24 +271,14 @@ function fnc_set_user() {
       if(resp){
         switch(resp.status)
         {
-          form_data.append('file', file_data);      
-          $.ajax({
-            url: 'upload-file',
-            dataType: 'text', 
-            cache: false,
-            contentType: false,
-            processData: false,
-            data: form_data,                         
-            type: 'post',
-            success: function(php_script_response){
-              alert(php_script_response);
-            }
-          });
+          
           case true:
             datatable.ajax.reload();
             fnc_msj_alert(resp.type,resp.message,'',resp.icon,5);
             
             $(".dropdown-user").load(location.href+" .dropdown-user>*","");
+
+            alert(resp.out_userid);
             break;
 
           case false:
