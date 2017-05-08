@@ -123,16 +123,14 @@ class UserController extends  MasterController{
 
 		if($insert_user)
 		{
+			$userid=$insert_user->out_userid;
+
 			$output = array(
 			"status" => TRUE,
 			"message"=>"Se registró exitosamente",
 			"type"=>"success",
-			"icon"=>"check");
-
-			$userid=$insert_user->out_userid;
-
-			move_uploaded_file($_FILES[$data['file']]['tmp_name'], 'file/' . $_FILES[$data['file']]['name']);
-			//echo $userid.' :::::'.$_FILES['file']['name']."-----".pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+			"icon"=>"check",
+			"out_userid"=>$userid);
 		}
 		else
 		{
@@ -164,8 +162,44 @@ class UserController extends  MasterController{
 /****************************************************************************************************/
 	public function upload_file()
 	{
-       
+		try {
+			$SourceID 		= 	$this->input->post('userid', TRUE);
+			$file 			=	$_FILES['file']['tmp_name'];
+			$FileExtension	=	pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
 
+			$date 			= 	date('YmdHis');
+			$cod			=	substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 3);
+
+			$FileName  		=	$date.$cod;
+			$TypeSourceFile =	'US';
+
+			$Dir=$_SERVER['DOCUMENT_ROOT'].'/EbenezerApp/files/'.$TypeSourceFile.'/'.$SourceID;
+			
+			if(!file_exists($Dir)){
+				mkdir($Dir, 0777, true);
+			}
+
+
+			$FilePath 		=	$Dir.'/'.$FileName.'.'.$FileExtension;			
+
+			move_uploaded_file($file, $FilePath);
+			//chmod($Dir, 0755);
+
+			$output=$this->UserModel->upload_file($SourceID,$FilePath,$FileName,$FileExtension);
+			
+			if($output){
+				echo 'Exito';
+			}
+			else{
+				echo 'Error';
+			}
+							
+		} 
+		catch( Exception $e ) {
+			echo "Error: ".$e->getMessage();
+			logging_function($e->getMessage());
+			throw $e;
+		}		
     }
 /****************************************************************************************************/
 }

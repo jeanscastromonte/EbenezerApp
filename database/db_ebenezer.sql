@@ -21,6 +21,13 @@ DELIMITER $$
 --
 -- Procedimientos
 --
+DROP PROCEDURE IF EXISTS `sp_InsertFile`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_InsertFile` (IN `_sourceid` INT,IN `_filepath` TEXT,IN `_filename` VARCHAR(100),
+IN `_fileextension` VARCHAR(10))  BEGIN
+  INSERT INTO `file`(SourceID,FilePath,FileName,FileExtension)
+  VALUES(_sourceid,_filepath,_filename,_fileextension);
+END$$
+
 DROP PROCEDURE IF EXISTS `sp_DeleteCustomer`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_DeleteCustomer` (IN `_customerid` INT)  BEGIN
   DELETE FROM `customer` WHERE CustomerId=`_customerid`;
@@ -838,6 +845,7 @@ DROP TABLE IF EXISTS `file`;
 CREATE TABLE `file` (
   `FileID` int(11) NOT NULL,
   `SourceID` int(11) NOT NULL,
+  `TypeSourceFile` CHAR(2) NOT NULL,
   `FilePath` text NOT NULL,
   `FileName` varchar(100) NOT NULL,
   `FileExtension` varchar(10) NOT NULL

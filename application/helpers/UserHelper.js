@@ -241,20 +241,6 @@ function fnc_set_user() {
   var form_data = new FormData();      
   form_data.append('file', file_data);
 
-  data.file=file_data;      
-  // $.ajax({
-  //   url: 'upload-file',
-  //   dataType: 'text', 
-  //   cache: false,
-  //   contentType: false,
-  //   processData: false,
-  //   data: form_data,                         
-  //   type: 'post',
-  //   success: function(php_script_response){
-  //     alert(php_script_response);
-  //   }
-  // });
-
   var url_user = flagnew_user!=true?"update-user":"insert-user";
   $.ajax({
     type: "POST",
@@ -269,8 +255,7 @@ function fnc_set_user() {
     success: function (resp) 
     {
       if(resp){
-        switch(resp.status)
-        {
+        switch(resp.status){
           
           case true:
             datatable.ajax.reload();
@@ -278,7 +263,19 @@ function fnc_set_user() {
             
             $(".dropdown-user").load(location.href+" .dropdown-user>*","");
 
-            alert(resp.out_userid);
+            form_data.append('userid', resp.out_userid);
+            $.ajax({
+              url: 'upload-file',
+              dataType: 'text', 
+              cache: false,
+              contentType: false,
+              processData: false,
+              data: form_data,                         
+              type: 'post',
+              success: function(resp){
+                //alert(resp);
+              }
+            });
             break;
 
           case false:
