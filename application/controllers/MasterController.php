@@ -96,7 +96,7 @@ class MasterController extends CI_Controller {
 
 		$data= array(
 		'UserId'=>$output->UserId,
-		'UserImage'=>base64_decode($output->UserImage),
+		'UserImage'=>$output->FilePath,
 		'UserLoginName'=>$output->UserLoginName,
 		'UserName'=>$output->UserName,
 		'UserStatus'=>$output->UserStatus,

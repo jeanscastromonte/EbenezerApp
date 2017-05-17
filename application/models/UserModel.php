@@ -179,9 +179,9 @@ class UserModel extends CI_Model {
 		return $output;
     }
 /*************************************************************************/
-	public function upload_file($SourceID,$FilePath,$FileName,$FileExtension)
+	public function upload_file($SourceID,$TypeSourceFile,$FilePath,$FileName,$FileExtension)
 	{
-		$query=$this->db->query("CALL sp_InsertFile($SourceID,'$FilePath','$FileName','$FileExtension')");
+		$query=$this->db->query("CALL sp_InsertFile($SourceID,'$TypeSourceFile','$FilePath','$FileName','$FileExtension')");
 		if($query){
 			return true;
 		}

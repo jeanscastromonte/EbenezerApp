@@ -74,7 +74,7 @@ class UserController extends  MasterController{
 		foreach ($list as $row)
 		{
 			$data['UserId'] = $row->UserId;
-			$data['UserImage'] = base64_decode($row->UserImage);
+			$data['UserImage'] = $row->FilePath;
 			$data['UserLoginName'] = $row->UserLoginName;
 			$data['UserName'] = $row->UserName;
 			$data['UserLastName'] = $row->UserLastName;
@@ -99,7 +99,7 @@ class UserController extends  MasterController{
 
 		$data= array(
 			'UserId'=>$output->UserId,
-			'UserImage'=>base64_decode($output->UserImage),
+			// 'UserImage'=>base64_decode($output->UserImage),
 			'UserLoginName'=>$output->UserLoginName,
 			'UserLoginPassword'=>$output->UserLoginPassword,
 			'UserName'=>$output->UserName,
@@ -185,7 +185,7 @@ class UserController extends  MasterController{
 			move_uploaded_file($file, $FilePath);
 			//chmod($Dir, 0755);
 
-			$output=$this->UserModel->upload_file($SourceID,$FilePath,$FileName,$FileExtension);
+			$output=$this->UserModel->upload_file($SourceID,$TypeSourceFile,$FilePath,$FileName,$FileExtension);
 			
 			if($output){
 				echo 'Exito';

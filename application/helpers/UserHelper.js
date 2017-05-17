@@ -90,7 +90,7 @@ function fnc_datatable_user(_datatable){
             { "data":"UserId", "title": "ID" ,"sClass": "text-center"},    
             { "data":null, "title": "Imagen","sClass": "text-center",
               "mRender": function(data, type, full) {
-                var image=data['UserImage']!=''?data['UserImage']:"assets/img/avatar.png"
+                var image=data['UserImage']!=null?data['UserImage']:"assets/img/avatar.png"
                 return '<div class="img-responsive"><img src="'+image+'" width="50" height="50"></div>'
               }
             },
